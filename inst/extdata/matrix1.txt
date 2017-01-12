@@ -1,0 +1,9 @@
+Column_1	Column_2	Column_3	GO_Process	Name
+#!{Description}				Name
+#!{Type}E	E	E	C	T
+#!{C:Grouping}Group1	Group2	Group3		
+-1.860574	-0.3910594	0.2870352		Row 1
+-1.044365	1.472807	-0.5056471		Row 2
+NaN	-0.4742951	0.849998		Row 3
+0.4721563	0.6996973	-0.6752246		Row 4
+0.7463229	-0.114423	2.212531		Row 5

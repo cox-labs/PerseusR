@@ -1,0 +1,14 @@
+Package: PerseusR
+Title: Perseus R Interop
+Version: 0.1.0
+Author: Jan Rudolph <rudolph@biochem.mpg.de>
+Maintainer: Jan Rudolph <rudolph@biochem.mpg.de>
+Description: Provides utility functions for Perseus and R interop.
+Depends:
+    R (>= 3.3.1)
+License: GPL
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
+Imports: utils, plyr
+Suggests: testthat
