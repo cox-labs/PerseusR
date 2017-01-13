@@ -6,6 +6,11 @@
 \usage{
 annotRows(mdata) <- value
 }
+\arguments{
+\item{mdata}{matrixData}
+
+\item{value}{value}
+}
 \description{
 Set annotation rows
 }

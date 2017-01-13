@@ -6,6 +6,9 @@
 \usage{
 annotCols(mdata)
 }
+\arguments{
+\item{mdata}{matrixData}
+}
 \description{
 Get annotation columns
 }

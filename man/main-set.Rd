@@ -6,6 +6,11 @@
 \usage{
 main(mdata) <- value
 }
+\arguments{
+\item{mdata}{matrixData}
+
+\item{value}{value}
+}
 \description{
 Set main columns
 }

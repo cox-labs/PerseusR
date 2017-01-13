@@ -35,15 +35,21 @@ checkMatrixData <- function(object) {
     errors <- c(errors, msg)
   }
 
-  if (length(object@description) != length(names(object))) {
-    msg <- paste('Discriptions do not fit columns, found',
-                 length(object@description), 'expected', length(names(object)))
+  nDescr <- length(object@description)
+  if (nDescr > 0 && nDescr != length(names(object))) {
+    msg <- paste('Descriptions do not fit columns, found',
+                 nDescr, 'expected', length(names(object)))
+    errors <- c(errors, msg)
   }
 
   if (length(errors) == 0) TRUE else errors
 }
 
-#' MatrixData class
+#' MatrixData
+#' @slot main Main expression \code{data.frame}.
+#' @slot annotCols Annotation Columns \code{data.frame}.
+#' @slot annotRows Annotation Rows \code{data.frame}.
+#' @slot description Column descriptions.
 #' @export
 setClass("matrixData",
          slots = c(main="data.frame",
@@ -52,91 +58,115 @@ setClass("matrixData",
                    description="character"),
          validity = checkMatrixData)
 #' matrixData constructor
+#' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}
 #' @export
 matrixData <- function(...) {
-  new("matrixData", ...)
+  methods::new("matrixData", ...)
 }
 
 getNames <- function(x) {c(colnames(x@main), colnames(x@annotCols))}
+
+#' Get names
+#'
+#' Get the column names of main and annotation columns.
+#'
+#' @param x matrixData
+#' @export
+#' @docType methods
+#' @rdname matrixData-methods
 setMethod("names", "matrixData", getNames)
+
 #' Column names of main and annotation columns
+#' @param x matrixData
 #' @export
 names.matrixData <- getNames
 
 #' Get main columns
+#' @param mdata matrixData
 #' @export
 main <- function(mdata) {
   mdata@main
 }
 
 #' Set main columns
+#' @param mdata matrixData
+#' @param value value
 #' @export
 `main<-` <- function(mdata, value) {
   mdata@main <- value
-  validObject(mdata)
+  methods::validObject(mdata)
   return(mdata)
 }
 
 #' Get annotation columns
+#' @param mdata matrixData
 #' @export
 annotCols <- function(mdata) {
   mdata@annotCols
 }
 
 #' Set annotation columns
+#' @param mdata matrixData
+#' @param value value
 #' @export
 `annotCols<-` <- function(mdata, value) {
   mdata@annotCols <- value
-  validObject(mdata)
+  methods::validObject(mdata)
   return(mdata)
 }
 
 #' Get annotation rows
+#' @param mdata matrixData
 #' @export
 annotRows <- function(mdata) {
   mdata@annotRows
 }
 
 #' Set annotation rows
+#' @param mdata matrixData
+#' @param value value
 #' @export
 `annotRows<-` <- function(mdata, value) {
   mdata@annotRows <- value
-  validObject(mdata)
+  methods::validObject(mdata)
   return(mdata)
 }
 
 #' Get column description
+#' @param mdata matrixData
 #' @export
 description <- function(mdata) {
   mdata@description
 }
 
 #' Set column description
+#' @param mdata matrixData
+#' @param value value
 #' @export
 `description<-` <- function(mdata, value) {
   mdata@description <- value
-  validObject(mdata)
+  methods::validObject(mdata)
   return(mdata)
 }
 
 setMethod("Ops", signature(e1="matrixData", e2="matrixData"),
           function(e1, e2) {
-            e1@main <- callGeneric(main(e1), main(e2))
-            validObject(e1)
+            e1@main <- methods::callGeneric(main(e1), main(e2))
+            methods::validObject(e1)
             return(e1)
           }
 )
 setMethod("Ops", signature(e1="matrixData", e2="numeric"),
           function(e1, e2) {
-            e1@main <- callGeneric(main(e1), e2)
-            validObject(e1)
+            e1@main <- methods::callGeneric(main(e1), e2)
+            methods::validObject(e1)
             return(e1)
           }
 )
 setMethod("Ops", signature(e1="numeric", e2="matrixData"),
           function(e1, e2) {
-            e1@main <- callGeneric(e1, main(e2))
-            validObject(e1)
+            e1@main <- methods::callGeneric(e1, main(e2))
+            methods::validObject(e1)
             return(e1)
           }
 )

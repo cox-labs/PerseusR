@@ -6,6 +6,9 @@
 \usage{
 \method{names}{matrixData}(x)
 }
+\arguments{
+\item{x}{matrixData}
+}
 \description{
 Column names of main and annotation columns
 }

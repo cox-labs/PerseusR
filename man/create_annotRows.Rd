@@ -6,7 +6,15 @@
 \usage{
 create_annotRows(commentRows, isMain)
 }
+\arguments{
+\item{commentRows}{list of comment rows}
+
+\item{isMain}{logical array indicating all main columns}
+}
 \description{
 Create the annotation rows data.frame from the list
 of comment rows parsed from the input file and the main columns indicator
+}
+\seealso{
+used by \code{\link{read.perseus}}
 }

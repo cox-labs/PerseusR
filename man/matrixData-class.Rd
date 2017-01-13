@@ -3,7 +3,19 @@
 \docType{class}
 \name{matrixData-class}
 \alias{matrixData-class}
-\title{MatrixData class}
+\title{MatrixData}
 \description{
-MatrixData class
+MatrixData
 }
+\section{Slots}{
+
+\describe{
+\item{\code{main}}{Main expression \code{data.frame}.}
+
+\item{\code{annotCols}}{Annotation Columns \code{data.frame}.}
+
+\item{\code{annotRows}}{Annotation Rows \code{data.frame}.}
+
+\item{\code{description}}{Column descriptions.}
+}}
+

@@ -6,6 +6,9 @@
 \usage{
 description(mdata)
 }
+\arguments{
+\item{mdata}{matrixData}
+}
 \description{
 Get column description
 }

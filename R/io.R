@@ -4,6 +4,9 @@ library(plyr)
 #'
 #' Create the annotation rows data.frame from the list
 #' of comment rows parsed from the input file and the main columns indicator
+#' @param commentRows list of comment rows
+#' @param isMain logical array indicating all main columns
+#' @seealso used by \code{\link{read.perseus}}
 create_annotRows <- function(commentRows, isMain) {
   annotRows <- list()
   for(name in names(commentRows)) {
@@ -11,7 +14,7 @@ create_annotRows <- function(commentRows, isMain) {
       annotRows[[substring(name, 3)]] <- factor(commentRows[[name]][isMain])
     }
     else {
-      warning("Found unrecognized annotation rowi: ", name)
+      warning("Found unrecognized annotation row: ", name)
     }
   }
   return(as.data.frame(annotRows))
@@ -28,7 +31,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' @seealso \code{\link{write.perseus}}
 #' @examples
 #' testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
-#' df <- read.perseus(testFile)
+#' mdata <- read.perseus(testFile)
 read.perseus <- function(inFile) {
   con <- file(inFile, open='r')
   columns <- strsplit(readLines(con, n=1), '\t')[[1]]
@@ -74,14 +77,13 @@ infer_perseus_annotation_types <- function(df, typeMap) {
   plyr::mapvalues(colClasses, from=typeMap$R, to=typeMap$Perseus, warn_missing=FALSE)
 }
 
-#' Write annotated DataFrame in Perseus matrix format
+#' Write matrixData in Perseus matrix format
 #'
-#' Write a DataFrame to file in the custom Perseus matrix file format.
-#' The DataFrame should have a 'annotationRows' attribute set.
+#' Write a matrixData to file in the custom Perseus matrix file format.
 #'
-#' @param df The DataFrame
+#' @param mdata The matrixData
 #' @param outFile Path to output file
-#' @seealso \code{\link{read.perseus}}
+#' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
 #' @export
 write.perseus <- function(mdata, outFile) {
   typeMap <- list(Perseus=c('N', 'C', 'T'),

@@ -6,6 +6,9 @@
 \usage{
 matrixData(...)
 }
+\arguments{
+\item{...}{\code{main}, \code{annotCols}, \code{annotRows}, \code{description}}
+}
 \description{
 matrixData constructor
 }

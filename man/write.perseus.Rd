@@ -2,19 +2,18 @@
 % Please edit documentation in R/io.R
 \name{write.perseus}
 \alias{write.perseus}
-\title{Write annotated DataFrame in Perseus matrix format}
+\title{Write matrixData in Perseus matrix format}
 \usage{
 write.perseus(mdata, outFile)
 }
 \arguments{
-\item{outFile}{Path to output file}
+\item{mdata}{The matrixData}
 
-\item{df}{The DataFrame}
+\item{outFile}{Path to output file}
 }
 \description{
-Write a DataFrame to file in the custom Perseus matrix file format.
-The DataFrame should have a 'annotationRows' attribute set.
+Write a matrixData to file in the custom Perseus matrix file format.
 }
 \seealso{
-\code{\link{read.perseus}}
+\code{\link{read.perseus}} \code{\link{matrixData}}
 }

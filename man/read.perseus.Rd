@@ -21,7 +21,7 @@ in Perseus, such as 'Column 1' will be changed to 'Column.1'
 }
 \examples{
 testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
-df <- read.perseus(testFile)
+mdata <- read.perseus(testFile)
 }
 \seealso{
 \code{\link{write.perseus}}

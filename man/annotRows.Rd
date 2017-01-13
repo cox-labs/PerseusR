@@ -6,6 +6,9 @@
 \usage{
 annotRows(mdata)
 }
+\arguments{
+\item{mdata}{matrixData}
+}
 \description{
 Get annotation rows
 }

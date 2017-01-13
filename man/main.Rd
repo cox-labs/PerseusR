@@ -6,6 +6,9 @@
 \usage{
 main(mdata)
 }
+\arguments{
+\item{mdata}{matrixData}
+}
 \description{
 Get main columns
 }
