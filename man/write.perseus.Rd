@@ -4,12 +4,12 @@
 \alias{write.perseus}
 \title{Write annotated DataFrame in Perseus matrix format}
 \usage{
-write.perseus(df, outFile)
+write.perseus(mdata, outFile)
 }
 \arguments{
-\item{df}{The DataFrame}
-
 \item{outFile}{Path to output file}
+
+\item{df}{The DataFrame}
 }
 \description{
 Write a DataFrame to file in the custom Perseus matrix file format.
@@ -18,4 +18,3 @@ The DataFrame should have a 'annotationRows' attribute set.
 \seealso{
 \code{\link{read.perseus}}
 }
-
