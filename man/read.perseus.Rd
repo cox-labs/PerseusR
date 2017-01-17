@@ -4,10 +4,10 @@
 \alias{read.perseus}
 \title{Read Perseus matrix files}
 \usage{
-read.perseus(inFile)
+read.perseus(con)
 }
 \arguments{
-\item{inFile}{path to input file}
+\item{con}{A \code{\link{connection}} object or the path to input file}
 }
 \value{
 DataFrame with additional 'annotationRows' attribute
@@ -18,10 +18,14 @@ Read the custom Perseus matrix file format *.txt into R.
 \note{
 Limitations to column names in R still apply. Column names valid
 in Perseus, such as 'Column 1' will be changed to 'Column.1'
+
+If the provided connection \code{con} is a character string, it will assumed
+to be a file path. A \code{\link{connection}} which is not seekable (see \code{\link{isSeekable}})
+will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
 }
 \examples{
 testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
-mdata <- read.perseus(testFile)
+mdata <- read.perseus(con=testFile)
 }
 \seealso{
 \code{\link{write.perseus}}

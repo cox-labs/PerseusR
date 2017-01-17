@@ -26,14 +26,25 @@ create_annotRows <- function(commentRows, isMain) {
 #' @note Limitations to column names in R still apply. Column names valid
 #' in Perseus, such as 'Column 1' will be changed to 'Column.1'
 #' @export
-#' @param inFile path to input file
+#' @param con A \code{\link{connection}} object or the path to input file
 #' @return DataFrame with additional 'annotationRows' attribute
 #' @seealso \code{\link{write.perseus}}
+#' @note If the provided connection \code{con} is a character string, it will assumed
+#' to be a file path. A \code{\link{connection}} which is not seekable (see \code{\link{isSeekable}})
+#' will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
 #' @examples
 #' testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
-#' mdata <- read.perseus(testFile)
-read.perseus <- function(inFile) {
-  con <- file(inFile, open='r')
+#' mdata <- read.perseus(con=testFile)
+read.perseus <- function(con) {
+  if (is.character(con)) {
+    con <- file(con, open='r')
+  }
+  else if (!isSeekable(con)) {
+    fileCon <- file()
+    writeLines(readLines(con), fileCon)
+    close(con)
+    con <- fileCon
+  }
   columns <- strsplit(readLines(con, n=1), '\t')[[1]]
   nCols <- length(columns)
   commentRows <- list()
@@ -43,21 +54,22 @@ read.perseus <- function(inFile) {
     rowValues <- strsplit(rowStr, '\t')[[1]]
     commentRows[[name]] <- rowValues
   }
-  close(con)
   types <- commentRows$Type
-  description <- commentRows$Description
+  descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
   typeMap <- list(Perseus=c('E', 'N', 'C', 'T'),
                     R=c('numeric', 'numeric', 'factor', 'character'))
   colClasses <- map_perseus_types(types, typeMap)
-  df <- utils::read.table(inFile, header = TRUE, sep = '\t', comment.char = '#',
+  seek(con, 0)
+  df <- utils::read.table(con, header = TRUE, sep = '\t', comment.char = '#',
                           colClasses = colClasses)
+  close(con)
   isMain <- types == 'E'
   main <- df[isMain]
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
   return(matrixData(main = main, annotCols = annotCols,
-                    annotRows = annotRows, description = description))
+                    annotRows = annotRows, description = descr))
 }
 
 
@@ -82,19 +94,23 @@ infer_perseus_annotation_types <- function(df, typeMap) {
 #' Write a matrixData to file in the custom Perseus matrix file format.
 #'
 #' @param mdata The matrixData
-#' @param outFile Path to output file
+#' @param con A \code{\link{connection}} object or the path to output file
 #' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
 #' @export
-write.perseus <- function(mdata, outFile) {
+write.perseus <- function(mdata, con) {
   typeMap <- list(Perseus=c('N', 'C', 'T'),
                   R=c('numeric', 'factor', 'character'))
-  con <- file(outFile, open='w')
+  closeAtEnd <- FALSE
+  if (is.character(con)) {
+    con <- file(con, open='w')
+    closeAtEnd <- TRUE
+  }
   columns <- names(mdata)
   writeLines(paste0(columns, collapse='\t'), con)
-  description <- description(mdata)
-  if (length(description) != 0) {
-    description[1] <- paste0('#!{Description}', description[1])
-    writeLines(paste0(description, collapse='\t'), con)
+  descr <- description(mdata)
+  if (length(descr) != 0) {
+    descr[1] <- paste0('#!{Description}', descr[1])
+    writeLines(paste0(descr, collapse='\t'), con)
   }
   type <- c(rep('E', ncol(main(mdata))), infer_perseus_annotation_types(annotCols(mdata), typeMap))
   type[1] <- paste0('#!{Type}', type[1])
@@ -118,5 +134,6 @@ write.perseus <- function(mdata, outFile) {
   utils::write.table(df, con, sep='\t', quote=FALSE,
                      row.names=FALSE, col.names=FALSE,
                      na='NaN')
-  close(con)
+  if (closeAtEnd) close(con)
+  return()
 }

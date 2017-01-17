@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Parameters>
+  <ParameterGroup Name="specific" CollapsedDefault="false">
+    <IntParam Type="BaseLibS.Param.IntParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Power">
+      <Value>5</Value>
+    </IntParam>
+    <SingleChoiceParam Type="BaseLibS.Param.SingleChoiceParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Network type">
+      <Value>0</Value>
+      <Values>
+        <Item>unsigned</Item>
+        <Item>signed</Item>
+        <Item>signed hybrid</Item>
+      </Values>
+    </SingleChoiceParam>
+    <SingleChoiceParam Type="BaseLibS.Param.SingleChoiceParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Correlation function">
+      <Value>0</Value>
+      <Values>
+        <Item>cor</Item>
+        <Item>bicor</Item>
+      </Values>
+    </SingleChoiceParam>
+  </ParameterGroup>
+  <ParameterGroup Name="generic" CollapsedDefault="false">
+    <FileParam Type="BaseLibS.Param.FileParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Executable">
+      <Value />
+    </FileParam>
+    <LabelParam Type="BaseLibS.Param.LabelParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Download data for preview">
+      <Value />
+    </LabelParam>
+    <LabelParam Type="BaseLibS.Param.LabelParam, BaseLibS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Name="Download parameter for preview">
+      <Value />
+    </LabelParam>
+  </ParameterGroup>
+</Parameters>

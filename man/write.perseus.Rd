@@ -4,12 +4,12 @@
 \alias{write.perseus}
 \title{Write matrixData in Perseus matrix format}
 \usage{
-write.perseus(mdata, outFile)
+write.perseus(mdata, con)
 }
 \arguments{
 \item{mdata}{The matrixData}
 
-\item{outFile}{Path to output file}
+\item{con}{A \code{\link{connection}} object or the path to output file}
 }
 \description{
 Write a matrixData to file in the custom Perseus matrix file format.
