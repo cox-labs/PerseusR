@@ -16,23 +16,36 @@ install_github('jdrudolph/perseusr')
 
 `PerseusR` provides two functions for reading and writing files from/to Perseus.
 You can use them to write simple scripts which can be used as
-`MatrixProcessing` activities in Perseus.
+`MatrixProcessing` activities in Perseus. Additionally you can parse Perseus
+parameters and extract their values.
 
 ```{R}
+# if applicable: read command-line arguments
 args = commandArgs(trailingOnly=TRUE)
-
-if (length(args) != 2) {
-        stop("Should provide two arguments: inFile outFile", call.=FALSE)
+if (length(args) != 3) {
+	stop("Should provide two arguments: inFile outFile", call.=FALSE)
 }
-
-inFile <- args[1]
-outFile <- args[2]
+paramFile <- args[1]
+inFile <- args[2]
+outFile <- args[3]
 
 library(PerseusR)
+# extract parameters
+parameters <- parseParameters(paramFile)
+networkType <- singleChoiceParamValue(parameters, "Network type")
+corFnc <- singleChoiceParamValue(parameters, "Correlation function")
+power <- intParamValue(parameters, "Power")
+# read data
+mdata <- read.perseus(inFile)
 
-print(paste('reading from', inFile))
-df <- read.perseus(inFile)
+# run any kind of analysis
+library(WGCNA)
+net <- blockwiseModules(t(main(mdata)), power = power, corFnc = corFnc, networkType = networkType)
+c1 <- net$dendrograms[[1]]
+df <- as.data.frame(cbind(c1$merge, c1$height))
+colnames(df) <- c('left', 'right', 'distance')
 
-print(paste('writing to', outFile))
-write.perseus(df, outFile)
+# save results to matrixData and write to file
+outMdata <- matrixData(main=df)
+write.perseus(outMdata, outFile)
 ```
