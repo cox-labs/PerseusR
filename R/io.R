@@ -68,6 +68,9 @@ read.perseus <- function(con) {
   main <- df[isMain]
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
+  if (is.null(descr)) {
+    descr <- character(0)
+  }
   return(matrixData(main = main, annotCols = annotCols,
                     annotRows = annotRows, description = descr))
 }

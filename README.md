@@ -23,7 +23,7 @@ parameters and extract their values.
 # if applicable: read command-line arguments
 args = commandArgs(trailingOnly=TRUE)
 if (length(args) != 3) {
-	stop("Should provide two arguments: inFile outFile", call.=FALSE)
+	stop("Should provide three arguments: parameters inFile outFile", call.=FALSE)
 }
 paramFile <- args[1]
 inFile <- args[2]

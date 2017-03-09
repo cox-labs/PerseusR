@@ -22,6 +22,11 @@ test_that('reading and writing out immediately preserves the exact file content'
   lapply(dataFiles, roundtrip)
 })
 
+test_that('reading small example with categorical row works', {
+  con <- textConnection("a\tb\n#!{Type}E\tE\n#!{C:site}s1\ts2\n")
+  df <- read.perseus(con)
+})
+
 test_that('reading and writing from a connection is possible', {
   roundtrip <- function(fileName) {
     df <- read.perseus(fileName)
