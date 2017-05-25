@@ -62,7 +62,7 @@ read.perseus <- function(con) {
   colClasses <- map_perseus_types(types, typeMap)
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE, sep = '\t', comment.char = '#',
-                          colClasses = colClasses)
+                          colClasses = colClasses, fill=TRUE, quote="")
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
