@@ -1,6 +1,6 @@
-context("testCohersionMethods")
+context("testCoercionMethods")
 
-test_that("can coherse matrixData to ExpressionSet", {
+test_that("can coerce matrixData to ExpressionSet", {
   mD <- matrixData(
     main=data.frame(a=1:3, b=6:8),
     annotCols=data.frame(b=c('a','b','c')),

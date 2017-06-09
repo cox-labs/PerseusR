@@ -1,6 +1,6 @@
-#' Converts a MatrixData ExpressionSet
+#' Coerces a MatrixData into an ExpressionSet
 #'
-#' Converts a MatrixData ExpressionSet
+#' Coerces a MatrixData object into an ExpressionSet object
 #'
 #' function fo convert a \code{\link[PerseusR]{matrixData}} \code{\link[Biobase]{ExpressionSet}}
 #'
@@ -31,12 +31,6 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
   colNames <- colnames(mainData)
   rowNames <- annotCols(mdata)[['Name']]
 
-  descriptions <- PerseusR::description(mdata)
-  is_main <- rep(F, length(descriptions))
-  is_main[seq_len(ncol(mainData))] <- T
-  main_descriptions <- descriptions[is_main]
-  annot_descriptions <- descriptions[!is_main]
-
   # Make main matrix
 
   rownames(mainData) <- rowNames
@@ -45,7 +39,6 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
   # (which means it is actually a row)
   phenoData <- annotRows(mdata)
   rownames(phenoData) <- colNames
-  #phenoData$main_descriptions <- main_descriptions
 
   phenoData <- methods::new(
     'AnnotatedDataFrame',
@@ -55,20 +48,16 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
   # (which means it is actually a collumn)
   featureData <- annotCols(mdata)
   rownames(featureData) <- rowNames
-  #annot_descriptions <- data.frame(labelDescription = annot_descriptions)
-  #rownames(annot_descriptions) <- names(annotCols(mdata))
 
   featureData <- methods::new(
     'AnnotatedDataFrame',
-    featureData)#,
-    #varMetadata = data.frame(labelDescription = annot_descriptions))
+    featureData)
 
   eSet <- Biobase::ExpressionSet(
     assayData = mainData,
     phenoData = phenoData,
     annotation = PerseusR::description(mdata),
-    featureData = featureData)#,
-    #description = PerseusR::description(mdata))
+    featureData = featureData)
   return(eSet)
 
 }
@@ -78,9 +67,9 @@ setAs("matrixData", "ExpressionSet",
       function(from) as.ExpressionSet.matrixData_(from))
 
 
-#' Converts a MatrixData ExpressionSet
+#' Coerces a MatrixData into an ExpressionSet
 #'
-#' Converts a MatrixData ExpressionSet
+#' Coerces a MatrixData object into an ExpressionSet object
 #'
 #' @inheritParams as.ExpressionSet.matrixData_
 #'
@@ -93,7 +82,7 @@ as.ExpressionSet.matrixData <- function(mdata) {
 }
 
 
-#' Converts a ExpressionSet MatrixData
+#' Coerces an ExpressionSet into a MatrixData
 #'
 #' function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
 #' \code{\link[PerseusR]{matrixData}}
