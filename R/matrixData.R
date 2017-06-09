@@ -45,11 +45,17 @@ checkMatrixData <- function(object) {
   if (length(errors) == 0) TRUE else errors
 }
 
+
 #' MatrixData
 #' @slot main Main expression \code{data.frame}.
 #' @slot annotCols Annotation Columns \code{data.frame}.
 #' @slot annotRows Annotation Rows \code{data.frame}.
 #' @slot description Column descriptions.
+#'
+#' @name matrixData-class
+#' @rdname matrixData-class
+#' @family matrixData basic functions
+#'
 #' @export
 setClass("matrixData",
          slots = c(main="data.frame",
@@ -57,20 +63,27 @@ setClass("matrixData",
                    annotRows="data.frame",
                    description="character"),
          validity = checkMatrixData)
+
 #' matrixData constructor
 #' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}
+#' @inherit matrixData-class
+#' @family matrixData basic functions
 #' @export
 matrixData <- function(...) {
   methods::new("matrixData", ...)
 }
 
 getNames <- function(x) {c(colnames(x@main), colnames(x@annotCols))}
+#TODO: check if it would be better to have a list returned with one element
+#having the col names and the other the row names
+
 
 #' Get names
 #'
 #' Get the column names of main and annotation columns.
 #'
 #' @param x matrixData
+#' @family matrixData basic functions
 #' @export
 #' @docType methods
 #' @rdname matrixData-methods
@@ -82,7 +95,12 @@ setMethod("names", "matrixData", getNames)
 names.matrixData <- getNames
 
 #' Get main columns
+#'
+#' Gets the main collumns (main matrix) of a \code{\link[matrixData]{PerseusR}}
+#' object as a data.frame object
+#'
 #' @param mdata matrixData
+#' @family matrixData basic functions
 #' @export
 main <- function(mdata) {
   mdata@main
@@ -91,6 +109,7 @@ main <- function(mdata) {
 #' Set main columns
 #' @param mdata matrixData
 #' @param value value
+#' @family matrixData basic functions
 #' @export
 `main<-` <- function(mdata, value) {
   mdata@main <- value
@@ -100,6 +119,7 @@ main <- function(mdata) {
 
 #' Get annotation columns
 #' @param mdata matrixData
+#' @family matrixData basic functions
 #' @export
 annotCols <- function(mdata) {
   mdata@annotCols
@@ -108,6 +128,7 @@ annotCols <- function(mdata) {
 #' Set annotation columns
 #' @param mdata matrixData
 #' @param value value
+#' @family matrixData basic functions
 #' @export
 `annotCols<-` <- function(mdata, value) {
   mdata@annotCols <- value
@@ -117,6 +138,7 @@ annotCols <- function(mdata) {
 
 #' Get annotation rows
 #' @param mdata matrixData
+#' @family matrixData basic functions
 #' @export
 annotRows <- function(mdata) {
   mdata@annotRows
@@ -125,6 +147,7 @@ annotRows <- function(mdata) {
 #' Set annotation rows
 #' @param mdata matrixData
 #' @param value value
+#' @family matrixData basic functions
 #' @export
 `annotRows<-` <- function(mdata, value) {
   mdata@annotRows <- value
@@ -134,6 +157,7 @@ annotRows <- function(mdata) {
 
 #' Get column description
 #' @param mdata matrixData
+#' @family matrixData basic functions
 #' @export
 description <- function(mdata) {
   mdata@description
@@ -142,6 +166,7 @@ description <- function(mdata) {
 #' Set column description
 #' @param mdata matrixData
 #' @param value value
+#' @family matrixData basic functions
 #' @export
 `description<-` <- function(mdata, value) {
   mdata@description <- value

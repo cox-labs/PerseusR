@@ -1,5 +1,3 @@
-library(plyr)
-
 #' Create annotation rows
 #'
 #' Create the annotation rows data.frame from the list
@@ -76,6 +74,7 @@ read.perseus <- function(con) {
 }
 
 
+#' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
   plyr::mapvalues(typeAnnotation, from=typeMap$Perseus, to=typeMap$R, warn_missing=FALSE)
 }
