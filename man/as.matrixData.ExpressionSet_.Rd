@@ -8,14 +8,14 @@
 as.matrixData.ExpressionSet_(ExpressionSet)
 }
 \arguments{
-\item{ExpressionSet}{an \code{\link[ExpressionSet]{Biobase}}}
+\item{ExpressionSet}{an \code{\link[Biobase]{ExpressionSet}}}
 }
 \value{
-a \code{\link[matrixData]{PerseusR}} object
+a \code{\link[PerseusR]{matrixData}} object
 }
 \description{
-function fo convert an \code{\link[ExpressionSet]{Biobase}} object into a
-\code{\link[matrixData]{PerseusR}}
+function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
+\code{\link[PerseusR]{matrixData}}
 }
 \examples{
 

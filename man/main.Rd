@@ -10,7 +10,7 @@ main(mdata)
 \item{mdata}{matrixData}
 }
 \description{
-Gets the main collumns (main matrix) of a \code{\link[matrixData]{PerseusR}}
+Gets the main collumns (main matrix) of a \code{\link[PerseusR]{matrixData}}
 object as a data.frame object
 }
 \seealso{

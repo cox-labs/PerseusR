@@ -1,13 +1,13 @@
-#' @title Converts a MatrixData ExpressionSet
+#' Converts a MatrixData ExpressionSet
 #'
 #' Converts a MatrixData ExpressionSet
 #'
-#' function fo convert a \code{\link[matrixData]{PerseusR}} \code{\link[ExpressionSet]{Biobase}}
+#' function fo convert a \code{\link[PerseusR]{matrixData}} \code{\link[Biobase]{ExpressionSet}}
 #'
-#' @param mdata a \code{\link[matrixData]{PerseusR}} object
+#' @param mdata a \code{\link[PerseusR]{matrixData}} object
 #'
 #' @return an ExpressionSet object
-#' @importClassesFrom Biobase AnnotatedDataFrame ExpressionSet
+#' @importFrom methods as new
 #' @inheritParams main
 #' @export
 #' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
@@ -47,7 +47,7 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
   rownames(phenoData) <- colNames
   #phenoData$main_descriptions <- main_descriptions
 
-  phenoData <- new(
+  phenoData <- methods::new(
     'AnnotatedDataFrame',
     phenoData)
 
@@ -58,7 +58,7 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
   #annot_descriptions <- data.frame(labelDescription = annot_descriptions)
   #rownames(annot_descriptions) <- names(annotCols(mdata))
 
-  featureData <- new(
+  featureData <- methods::new(
     'AnnotatedDataFrame',
     featureData)#,
     #varMetadata = data.frame(labelDescription = annot_descriptions))
@@ -74,31 +74,36 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
 }
 
 
-#' @importClassesFrom Biobase ExpressionSet
 setAs("matrixData", "ExpressionSet",
       function(from) as.ExpressionSet.matrixData_(from))
 
 
-#' @title Converts a MatrixData ExpressionSet
+#' Converts a MatrixData ExpressionSet
+#'
+#' Converts a MatrixData ExpressionSet
+#'
+#' @inheritParams as.ExpressionSet.matrixData_
+#'
 #' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
+#' @importFrom methods as new
 #' @export
 #'
-as.ExpressionSet.matrixData <- function(x) {
-  as(x, "ExpressionSet")
+as.ExpressionSet.matrixData <- function(mdata) {
+  methods::as(mdata, "ExpressionSet")
 }
 
 
 #' Converts a ExpressionSet MatrixData
 #'
-#' function fo convert an \code{\link[ExpressionSet]{Biobase}} object into a
-#' \code{\link[matrixData]{PerseusR}}
+#' function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
+#' \code{\link[PerseusR]{matrixData}}
 #'
-#' @param ExpressionSet an \code{\link[ExpressionSet]{Biobase}}
+#' @param ExpressionSet an \code{\link[Biobase]{ExpressionSet}}
 #'
-#' @return a \code{\link[matrixData]{PerseusR}} object
+#' @return a \code{\link[PerseusR]{matrixData}} object
 #' @aliases as.matrixData.ExpressionSet_ as.matrixData.ExpressionSet
+#' @importFrom methods as new
 #' @export
-#' @importFrom Biobase exprs
 #'
 #' @examples
 #'
@@ -113,22 +118,26 @@ as.matrixData.ExpressionSet_ <- function(ExpressionSet) {
 
   mdata <- matrixData(
     main=data.frame(Biobase::exprs(ExpressionSet)),
-    annotRows=as(ExpressionSet@phenoData, 'data.frame'),
+    annotRows=methods::as(ExpressionSet@phenoData, 'data.frame'),
     description=Biobase::annotation(ExpressionSet),
-    annotCols=as(ExpressionSet@featureData, 'data.frame'))
+    annotCols=methods::as(ExpressionSet@featureData, 'data.frame'))
 
   return(mdata)
 }
 
-#' @importClassesFrom Biobase ExpressionSet
 setAs("ExpressionSet", "matrixData",
       function(from) as.matrixData.ExpressionSet_(from))
 
 
-#' @title Converts a MatrixData ExpressionSet
+#' Converts a MatrixData to ExpressionSet
+#'
+#' Converts a MatrixData object into an ExpressionSet object (bioconductor)
+#'
+#' @inheritParams as.matrixData.ExpressionSet_
 #' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
+#' @importFrom methods as new
 #' @export
 #'
-as.matrixData.ExpressionSet <- function(x) {
-  as(x, "matrixData")
+as.matrixData.ExpressionSet <- function(ExpressionSet) {
+  methods::as(ExpressionSet, "matrixData")
 }

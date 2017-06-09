@@ -4,7 +4,13 @@
 \alias{as.matrixData.ExpressionSet}
 \alias{as.ExpressionSet.matrixData}
 \alias{as.ExpressionSet.matrixData_}
-\title{Converts a MatrixData ExpressionSet}
+\title{Converts a MatrixData to ExpressionSet}
 \usage{
-as.matrixData.ExpressionSet(x)
+as.matrixData.ExpressionSet(ExpressionSet)
+}
+\arguments{
+\item{ExpressionSet}{an \code{\link[Biobase]{ExpressionSet}}}
+}
+\description{
+Converts a MatrixData object into an ExpressionSet object (bioconductor)
 }

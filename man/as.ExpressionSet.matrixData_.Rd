@@ -3,19 +3,21 @@
 \name{as.ExpressionSet.matrixData_}
 \alias{as.ExpressionSet.matrixData_}
 \alias{as.ExpressionSet.matrixData}
-\title{Converts a MatrixData ExpressionSet
-
-Converts a MatrixData ExpressionSet
-
-function fo convert a \code{\link[matrixData]{PerseusR}} \code{\link[ExpressionSet]{Biobase}}}
+\title{Converts a MatrixData ExpressionSet}
 \usage{
 as.ExpressionSet.matrixData_(mdata)
 }
 \arguments{
-\item{mdata}{a \code{\link[matrixData]{PerseusR}} object}
+\item{mdata}{a \code{\link[PerseusR]{matrixData}} object}
 }
 \value{
 an ExpressionSet object
+}
+\description{
+Converts a MatrixData ExpressionSet
+}
+\details{
+function fo convert a \code{\link[PerseusR]{matrixData}} \code{\link[Biobase]{ExpressionSet}}
 }
 \examples{
 mD <- matrixData(

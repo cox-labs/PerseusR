@@ -96,7 +96,7 @@ names.matrixData <- getNames
 
 #' Get main columns
 #'
-#' Gets the main collumns (main matrix) of a \code{\link[matrixData]{PerseusR}}
+#' Gets the main collumns (main matrix) of a \code{\link[PerseusR]{matrixData}}
 #' object as a data.frame object
 #'
 #' @param mdata matrixData

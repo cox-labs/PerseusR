@@ -5,5 +5,11 @@
 \alias{as.ExpressionSet.matrixData_}
 \title{Converts a MatrixData ExpressionSet}
 \usage{
-as.ExpressionSet.matrixData(x)
+as.ExpressionSet.matrixData(mdata)
+}
+\arguments{
+\item{mdata}{a \code{\link[PerseusR]{matrixData}} object}
+}
+\description{
+Converts a MatrixData ExpressionSet
 }
