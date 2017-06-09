@@ -3,23 +3,32 @@
 \name{as.matrixData.ExpressionSet_}
 \alias{as.matrixData.ExpressionSet_}
 \alias{as.matrixData.ExpressionSet}
-\title{Converts a ExpressionSet MatrixData}
+\title{Coerces an ExpressionSet into a MatrixData}
 \usage{
 as.matrixData.ExpressionSet_(ExpressionSet)
+
+as.matrixData.ExpressionSet(ExpressionSet)
 }
 \arguments{
-\item{ExpressionSet}{an \code{\link[Biobase]{ExpressionSet}}}
+\item{ExpressionSet}{an \code{\link[Biobase]{ExpressionSet}} object}
 }
 \value{
-a \code{\link[PerseusR]{matrixData}} object
+returns a \code{\link[PerseusR]{matrixData}} object
 }
 \description{
 function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
 \code{\link[PerseusR]{matrixData}}
 }
+\section{Functions}{
+\itemize{
+\item \code{as.matrixData.ExpressionSet}: Coerces an ExpressionSet into a MatrixData
+}}
+
 \examples{
 
+\dontrun{
 eSet <- eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
 mD <- as(eSet, "matrixData")
 print(mD)
+}
 }

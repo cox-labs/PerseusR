@@ -3,6 +3,9 @@
 
 Convenience functions for interop between Perseus and R.
 
+Based on the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
+for the Perseus framework
+
 # Installation
 
 PerseusR is currently under developement and therefore is not available in CRAN 

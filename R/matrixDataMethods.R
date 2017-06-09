@@ -6,11 +6,10 @@
 #'
 #' @param mdata a \code{\link[PerseusR]{matrixData}} object
 #'
-#' @return an ExpressionSet object
+#' @return returns an \code{\link[Biobase]{ExpressionSet}} object
 #' @importFrom methods as new
 #' @inheritParams main
 #' @export
-#' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
 #'
 #' @examples
 #'
@@ -72,14 +71,8 @@ setAs("matrixData", "ExpressionSet",
 
 #' Coerces a MatrixData into an ExpressionSet
 #'
-#' Coerces a MatrixData object into an ExpressionSet object
-#'
-#' @inheritParams as.ExpressionSet.matrixData_
-#'
-#' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
-#' @importFrom methods as new
+#' @describeIn as.ExpressionSet.matrixData_ Coerces a MatrixData into an ExpressionSet
 #' @export
-#'
 as.ExpressionSet.matrixData <- function(mdata) {
   methods::as(mdata, "ExpressionSet")
 }
@@ -90,10 +83,10 @@ as.ExpressionSet.matrixData <- function(mdata) {
 #' function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
 #' \code{\link[PerseusR]{matrixData}}
 #'
-#' @param ExpressionSet an \code{\link[Biobase]{ExpressionSet}}
+#' @param ExpressionSet an \code{\link[Biobase]{ExpressionSet}} object
+#' @inheritParams main
 #'
-#' @return a \code{\link[PerseusR]{matrixData}} object
-#' @aliases as.matrixData.ExpressionSet_ as.matrixData.ExpressionSet
+#' @return returns a \code{\link[PerseusR]{matrixData}} object
 #' @importFrom methods as new
 #' @export
 #'
@@ -123,15 +116,8 @@ setAs("ExpressionSet", "matrixData",
       function(from) as.matrixData.ExpressionSet_(from))
 
 
-#' Converts a MatrixData to ExpressionSet
-#'
-#' Converts a MatrixData object into an ExpressionSet object (bioconductor)
-#'
-#' @inheritParams as.matrixData.ExpressionSet_
-#' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
-#' @importFrom methods as new
+#' @describeIn as.matrixData.ExpressionSet_ Coerces an ExpressionSet into a MatrixData
 #' @export
-#'
 as.matrixData.ExpressionSet <- function(ExpressionSet) {
   methods::as(ExpressionSet, "matrixData")
 }
