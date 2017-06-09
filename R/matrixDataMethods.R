@@ -13,6 +13,8 @@
 #' @aliases as.ExpressionSet.matrixData as.ExpressionSet.matrixData_
 #'
 #' @examples
+#'
+#'\dontrun{
 #' mD <- matrixData(
 #' main=data.frame(a=1:3, b=6:8),
 #' annotCols=data.frame(b=c('a','b','c')),
@@ -20,6 +22,7 @@
 #'
 #' eSet <- as(mD, "ExpressionSet")
 #' print(eSet)
+#' }
 as.ExpressionSet.matrixData_ <- function(mdata) {
 
   if (!requireNamespace("Biobase", quietly = TRUE)) {
@@ -96,9 +99,11 @@ as.ExpressionSet.matrixData <- function(mdata) {
 #'
 #' @examples
 #'
+#'\dontrun{
 #' eSet <- eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
 #' mD <- as(eSet, "matrixData")
 #' print(mD)
+#' }
 as.matrixData.ExpressionSet_ <- function(ExpressionSet) {
 
   if (!requireNamespace("Biobase", quietly = TRUE)) {
