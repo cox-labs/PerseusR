@@ -4,18 +4,18 @@ context('Input/output')
 dataFolder <- system.file('extdata', package = 'PerseusR')
 dataFiles <- list.files(dataFolder, pattern = "matrix[[:digit:]]*.txt", full.names=TRUE)
 test_that('all the example files are read without error', {
-  lapply(dataFiles, read.perseus)
+  lapply(dataFiles, read.perseus.as.matrixData)
 })
 
 test_that('reading and writing out immediately preserves the exact file content', {
   roundtrip <- function(fileName) {
-    df <- read.perseus(fileName)
+    df <- read.perseus.as.matrixData(fileName)
     fileName2 <- paste0(fileName, '.tmp')
     write.perseus(df, fileName2)
     original <- readLines(fileName)
     written <- readLines(fileName2)
     expect_equal(written, original, info=paste('file content of', fileName))
-    df2 <- read.perseus(fileName2)
+    df2 <- read.perseus.as.matrixData(fileName2)
     expect_equal(df2, df, info=paste('read written for', fileName))
     file.remove(fileName2)
   }
@@ -24,17 +24,17 @@ test_that('reading and writing out immediately preserves the exact file content'
 
 test_that('reading small example with categorical row works', {
   con <- textConnection("a\tb\n#!{Type}E\tE\n#!{C:site}s1\ts2\n")
-  df <- read.perseus(con)
+  df <- read.perseus.as.matrixData(con)
 })
 
 test_that('reading and writing from a connection is possible', {
   roundtrip <- function(fileName) {
-    df <- read.perseus(fileName)
+    df <- read.perseus.as.matrixData(fileName)
     con1 <- textConnection('writeOut', 'w')
     write.perseus(df, con1)
     close(con1)
     con2 <- textConnection(writeOut, 'r')
-    df2 <- read.perseus(con2)
+    df2 <- read.perseus.as.matrixData(con2)
     expect_equal(df, df2)
   }
   lapply(dataFiles, roundtrip)

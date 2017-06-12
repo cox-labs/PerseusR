@@ -1,3 +1,5 @@
+.typeMap <- list(Perseus = c('E', 'N', 'C', 'T', 'M'),
+                  R = c('numeric', 'numeric', 'factor', 'character', 'character'))
 #' Create annotation rows
 #'
 #' Create the annotation rows data.frame from the list
@@ -7,7 +9,7 @@
 #' @seealso used by \code{\link{read.perseus}}
 create_annotRows <- function(commentRows, isMain) {
   annotRows <- list()
-  for(name in names(commentRows)) {
+  for (name in names(commentRows)) {
     if (startsWith(name, 'C:')) {
       annotRows[[substring(name, 3)]] <- factor(commentRows[[name]][isMain])
     }
@@ -33,20 +35,18 @@ create_annotRows <- function(commentRows, isMain) {
 #' @examples
 #' testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
 #' mdata <- read.perseus(con=testFile)
-read.perseus <- function(con) {
+read.perseus.default <- function(con, check = TRUE) {
   if (is.character(con)) {
-    con <- file(con, open='r')
-  }
-  else if (!isSeekable(con)) {
+    con <- file(con, open = 'r')
+  } else if (!isSeekable(con)) {
     fileCon <- file()
     writeLines(readLines(con), fileCon)
     close(con)
     con <- fileCon
   }
-  columns <- strsplit(readLines(con, n=1), '\t')[[1]]
-  nCols <- length(columns)
+  invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
-  while(startsWith(oneLine <- readLines(con, n=1), '#!')) {
+  while (startsWith(oneLine <- readLines(con, n = 1), '#!')) {
     name <- strsplit(substring(oneLine, 4), '}')[[1]][1]
     rowStr <- substring(oneLine, nchar(name) + 5)
     rowValues <- strsplit(rowStr, '\t')[[1]]
@@ -55,12 +55,12 @@ read.perseus <- function(con) {
   types <- commentRows$Type
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
-  typeMap <- list(Perseus=c('E', 'N', 'C', 'T'),
-                    R=c('numeric', 'numeric', 'factor', 'character'))
-  colClasses <- map_perseus_types(types, typeMap)
+  colClasses <- map_perseus_types(types, .typeMap)
   seek(con, 0)
-  df <- utils::read.table(con, header = TRUE, sep = '\t', comment.char = '#',
-                          colClasses = colClasses, fill=TRUE, quote="")
+  df <- utils::read.table(con, header = TRUE,
+                          sep = '\t', comment.char = '#',
+                          colClasses = colClasses, fill = TRUE,
+                          quote = "")
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
@@ -69,14 +69,61 @@ read.perseus <- function(con) {
   if (is.null(descr)) {
     descr <- character(0)
   }
-  return(matrixData(main = main, annotCols = annotCols,
-                    annotRows = annotRows, description = descr))
+
+  if ('Name' %in% colnames(df)) {
+    rowNames <- make.names(df$Name, unique = T)
+    colNames <- colnames(main)
+    rownames(main) <- rowNames
+    rownames(annotCols) <- rowNames
+    rownames(annotRows) <- colNames
+  }
+
+  perseus.list <- list(main = main,
+                      annotCols = annotCols,
+                      annotRows = annotRows,
+                      description = descr)
+  if (check) MatrixDataCheck(perseus.list)
+  return(perseus.list)
+}
+
+read.perseus.as.list <- function(con) {
+  return(read.perseus.default(con))
+}
+
+read.perseus.as.matrixData <- function(con) {
+  perseus.list <- read.perseus.default(con)
+  return(matrixData(main = perseus.list$main,
+                    annotCols = perseus.list$annotCols,
+                    annotRows = perseus.list$annotRows,
+                    description = perseus.list$descr))
+}
+
+read.perseus.as.ExpressionSet <- function(con) {
+
+  if (!requireNamespace("Biobase", quietly = TRUE)) {
+    stop('This function requires the Biobase package, please install it in the bioconductor repository')
+  }
+
+  perseus.list <- read.perseus.default(con)
+
+  eSet <- Biobase::ExpressionSet(
+    assayData = perseus.list$main,
+    phenoData = methods::new('AnnotatedDataFrame',
+                             perseus.list$annotRows),
+    annotation = perseus.list$descr,
+    featureData = methods::new('AnnotatedDataFrame',
+                               perseus.list$annotCols))
+
+  return(eSet)
 }
 
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
-  plyr::mapvalues(typeAnnotation, from=typeMap$Perseus, to=typeMap$R, warn_missing=FALSE)
+  plyr::mapvalues(typeAnnotation,
+                  from = typeMap$Perseus,
+                  to = typeMap$R,
+                  warn_missing = FALSE)
 }
 
 #' Infer Perseus type annotation row from DataFrame column classes
@@ -86,9 +133,12 @@ map_perseus_types <- function(typeAnnotation, typeMap) {
 #' @return A vector with perseus type annotations
 #' @seealso Based on \code{\link{mapvalues}}
 infer_perseus_annotation_types <- function(df, typeMap) {
-  colClasses <- as.vector(sapply(df, class))
+  colClasses <- plyr::laply(df, class)
   if (length(colClasses) == 0) return(colClasses)
-  plyr::mapvalues(colClasses, from=typeMap$R, to=typeMap$Perseus, warn_missing=FALSE)
+  plyr::mapvalues(colClasses,
+                  from = typeMap$R,
+                  to = typeMap$Perseus,
+                  warn_missing = FALSE)
 }
 
 #' Write matrixData in Perseus matrix format
@@ -100,26 +150,25 @@ infer_perseus_annotation_types <- function(df, typeMap) {
 #' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
 #' @export
 write.perseus <- function(mdata, con) {
-  typeMap <- list(Perseus=c('N', 'C', 'T'),
-                  R=c('numeric', 'factor', 'character'))
   closeAtEnd <- FALSE
   if (is.character(con)) {
-    con <- file(con, open='w')
+    con <- file(con, open = 'w')
     closeAtEnd <- TRUE
   }
   columns <- names(mdata)
-  writeLines(paste0(columns, collapse='\t'), con)
+  writeLines(paste0(columns, collapse = '\t'), con)
   descr <- description(mdata)
   if (length(descr) != 0) {
     descr[1] <- paste0('#!{Description}', descr[1])
-    writeLines(paste0(descr, collapse='\t'), con)
+    writeLines(paste0(descr, collapse = '\t'), con)
   }
-  type <- c(rep('E', ncol(main(mdata))), infer_perseus_annotation_types(annotCols(mdata), typeMap))
+  type <- c(rep('E', ncol(main(mdata))),
+            infer_perseus_annotation_types(annotCols(mdata), .typeMap))
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   annotationRows <- as.list(annotRows(mdata))
   for (name in names(annotationRows)) {
-    values <- paste0(annotationRows[[name]], collapse='\t')
+    values <- paste0(annotationRows[[name]], collapse = '\t')
     writeLines(sprintf('#!{C:%s}%s', name, values), con)
   }
   main <- main(mdata)
@@ -133,9 +182,9 @@ write.perseus <- function(mdata, con) {
       df <- cbind(main, annotCols)
     }
   }
-  utils::write.table(df, con, sep='\t', quote=FALSE,
-                     row.names=FALSE, col.names=FALSE,
-                     na='NaN')
+  utils::write.table(df, con, sep = '\t', quote = FALSE,
+                     row.names = FALSE, col.names = FALSE,
+                     na = 'NaN')
   if (closeAtEnd) close(con)
   return()
 }

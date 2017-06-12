@@ -1,23 +1,33 @@
-checkMatrixData <- function(object) {
+MatrixDataCheck <- function(object) {
+  UseMethod("MatrixDataCheck", object)
+}
+
+MatrixDataCheck.default <- function(main,
+                            annotationRows,
+                            annotationCols,
+                            descriptions,
+                            all_colnames) {
   errors <- character()
 
-  numCols <- sapply(object@main, is.numeric)
+  numCols <- sapply(main, is.numeric)
   if (!all(numCols)) {
     msg <- paste('Main columns should be numeric: Columns',
-                 paste(names(which(!numCols)), sep=','), 'are not numeric')
+                 paste(names(which(!numCols)), sep = ','),
+                 'are not numeric')
     errors <- c(errors, msg)
   }
 
-  if (ncol(object@annotRows) > 0) {
-    catAnnotRows <- sapply(object@annotRows, is.factor)
+  if (ncol(annotationRows) > 0) {
+    catAnnotRows <- sapply(annotationRows, is.factor)
     if (!all(catAnnotRows)) {
       msg <- paste('Annotation rows should be factors: Rows',
-                   paste(names(which(!catAnnotRows)), sep=','), 'are not factors')
+                   paste(names(which(!catAnnotRows)), sep = ','),
+                   'are not factors')
       errors <- c(errors, msg)
     }
 
-    nColMain <- ncol(object@main)
-    nColAnnotRows <- nrow(object@annotRows)
+    nColMain <- ncol(main)
+    nColAnnotRows <- nrow(annotationRows)
     if (nColMain != nColAnnotRows) {
       msg <- paste('Size of annotation rows not matching:',
                    nColMain, 'main columns, but',
@@ -26,8 +36,8 @@ checkMatrixData <- function(object) {
     }
   }
 
-  nMain <- nrow(object@main)
-  nAnnot <- nrow(object@annotCols)
+  nMain <- nrow(main)
+  nAnnot <- nrow(annotationCols)
   if (nAnnot > 0 && nMain > 0 && nMain != nAnnot) {
     msg <- paste('Number of rows not matching:',
                  nMain, 'rows in main data, but',
@@ -35,14 +45,63 @@ checkMatrixData <- function(object) {
     errors <- c(errors, msg)
   }
 
-  nDescr <- length(object@description)
-  if (nDescr > 0 && nDescr != length(names(object))) {
+  nDescr <- length(descriptions)
+  if (nDescr > 0 && nDescr != length(all_colnames)) {
     msg <- paste('Descriptions do not fit columns, found',
-                 nDescr, 'expected', length(names(object)))
+                 nDescr, 'expected', length(all_colnames))
     errors <- c(errors, msg)
   }
 
   if (length(errors) == 0) TRUE else errors
+}
+
+MatrixDataCheck.matrixData <- function(object) {
+  mainDF <- object@main
+  annotationRows <- object@annotRows
+  annotationCols <- object@annotCols
+  descriptions <- object@description
+  all_colnames <- c(colnames(mainDF), colnames(annotationCols))
+
+  ret <- MatrixDataCheck.default(mainDF,
+                         annotationRows,
+                         annotationCols,
+                         descriptions,
+                         all_colnames)
+  return(ret)
+}
+
+MatrixDataCheck.list <- function(object) {
+  mainDF <- object$main
+  annotationRows <- object$annotRows
+  annotationCols <- object$annotCols
+  descriptions <- object$description
+  all_colnames <- c(colnames(mainDF), colnames(annotationCols))
+
+  ret <- MatrixDataCheck.default(mainDF,
+                                 annotationRows,
+                                 annotationCols,
+                                 descriptions,
+                                 all_colnames)
+  return(ret)
+}
+
+MatrixDataCheck.ExpressionSet <- function(object) {
+  if (!requireNamespace("Biobase", quietly = TRUE)) {
+    stop('This function requires the Biobase package, please install it in the bioconductor repository')
+  }
+
+  mainDF <- data.frame(Biobase::exprs(object))
+  annotationRows <- methods::as(object@phenoData, 'data.frame')
+  descriptions <- Biobase::annotation(object)
+  annotationCols <- methods::as(object@featureData, 'data.frame')
+  all_colnames <- c(colnames(mainDF), colnames(annotationCols))
+
+  ret <- MatrixDataCheck.default(mainDF,
+                                 annotationRows,
+                                 annotationCols,
+                                 descriptions,
+                                 all_colnames)
+  return(ret)
 }
 
 
@@ -62,7 +121,7 @@ setClass("matrixData",
                    annotCols="data.frame",
                    annotRows="data.frame",
                    description="character"),
-         validity = checkMatrixData)
+         validity = MatrixDataCheck)
 
 #' matrixData constructor
 #' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}
