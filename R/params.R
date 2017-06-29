@@ -1,5 +1,3 @@
-library(XML)
-
 #' Parse parameters
 #'
 #' Parse parameters from the parameters xml file.

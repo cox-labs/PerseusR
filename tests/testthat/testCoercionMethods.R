@@ -8,6 +8,7 @@ check_biobase <- function() {
 
 test_that("can coerce matrixData to ExpressionSet", {
   check_biobase()
+  require(Biobase)
   mD <- matrixData(
     main=data.frame(a=1:3, b=6:8),
     annotCols=data.frame(b=c('a','b','c')),
@@ -17,6 +18,7 @@ test_that("can coerce matrixData to ExpressionSet", {
 
 test_that("can ExpressionSet to matrixData", {
   check_biobase()
+  require(Biobase)
   eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
   expect_s4_class(as(eSet, "matrixData"), "matrixData")
 })
@@ -25,6 +27,7 @@ test_that("can ExpressionSet to matrixData", {
 # TODO: check if the fact that the rownames are different is relevant
 test_that("matrixData coherced back and forth to Expression set is identical", {
   check_biobase()
+  require(Biobase)
   mD <- matrixData(
     main=data.frame(a=1:3, b=6:8),
     annotCols=data.frame(b=c('a','b','c')),

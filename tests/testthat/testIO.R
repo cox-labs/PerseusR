@@ -68,3 +68,67 @@ test_that('writing matrixData without main/annotCols/annotRows/description works
   close(con)
   expect_equal(5, length(df3))
 })
+
+test_that('writing matrixData from lists works', {
+  my_list <- list(main = data.frame(A = 1:5, B = 6:10),
+                  annotRows = data.frame(is_control = c(TRUE, FALSE)),
+                  annotCols = data.frame(Names = letters[1:5]),
+                  descr = c('something',
+                            'something else',
+                            'yet another thing'))
+
+  con <- textConnection('text_rep', 'w')
+  write.perseus(my_list, con)
+  close(con)
+  expect_match(text_rep[2], "#!\\{Description\\}")
+  expect_match(text_rep[3], "#!\\{Type\\}")
+  expect_equal(9, length(text_rep))
+
+  my_list <- list(main = data.frame(A = 1:5, B = 6:10),
+                  descr = c('something',
+                            'something else',
+                            'yet another thing'))
+
+  con <- textConnection('text_rep', 'w')
+  write.perseus(my_list, con)
+  close(con)
+  expect_match(text_rep[2], "#!\\{Description\\}")
+  expect_match(text_rep[3], "#!\\{Type\\}")
+  expect_equal(8, length(text_rep))
+
+})
+
+test_that('writing matrixData from matrices works', {
+
+  matrices <- list(
+    matrix1 = matrix(1:10, ncol = 2,
+                      dimnames = list(letters[11:15], letters[1:2])),
+    matrix2 = matrix(1:10, ncol = 2)
+
+  )
+
+  for (matrix in matrices) {
+    con <- textConnection('text_rep', 'w')
+    write.perseus(matrix, con)
+    close(con)
+    expect_match(text_rep[2], "#!\\{Type\\}")
+    expect_equal(7, length(text_rep))
+  }
+
+})
+
+test_that('writing matrixData from data.frames works', {
+  dfs <- list(
+    df1 = data.frame(Con1 = 1:3, Con2 = 4:6, An1 = letters[1:3]),
+    df2 = data.frame(Con1 = 1:3, Con2 = 4:6)
+  )
+
+  for (df in dfs) {
+    con <- textConnection('text_rep', 'w')
+    write.perseus(df, con)
+    close(con)
+    expect_match(text_rep[2], "#!\\{Type\\}")
+    expect_equal(5, length(text_rep))
+  }
+
+})

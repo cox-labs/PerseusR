@@ -1,5 +1,36 @@
-.typeMap <- list(Perseus = c('E', 'N', 'C', 'T', 'M'),
-                  R = c('numeric', 'numeric', 'factor', 'character', 'character'))
+# helper variable that maps between R and perseus types
+.typeMap <- list(Perseus = c('E', 'N',
+                             'C', 'T',
+                             'M'),
+                  R = c('numeric', 'numeric',
+                        'factor', 'character',
+                        'character'))
+
+
+#' @importFrom plyr mapvalues
+map_perseus_types <- function(typeAnnotation, typeMap) {
+  plyr::mapvalues(typeAnnotation,
+                  from = typeMap$Perseus,
+                  to = typeMap$R,
+                  warn_missing = FALSE)
+}
+
+#' Infer Perseus type annotation row from DataFrame column classes
+#'
+#' @param df The data.frame
+#' @param typeMap A list with elements 'Perseus' and 'R'. The ordering determines the mapping
+#' @importFrom plyr laply
+#' @return A vector with perseus type annotations
+#' @seealso Based on \code{\link{mapvalues}}
+infer_perseus_annotation_types <- function(df, typeMap) {
+  colClasses <- plyr::laply(df, class)
+  if (length(colClasses) == 0) return(colClasses)
+  plyr::mapvalues(colClasses,
+                  from = typeMap$R,
+                  to = typeMap$Perseus,
+                  warn_missing = FALSE)
+}
+
 #' Create annotation rows
 #'
 #' Create the annotation rows data.frame from the list
@@ -20,21 +51,31 @@ create_annotRows <- function(commentRows, isMain) {
   return(as.data.frame(annotRows))
 }
 
+
 #' Read Perseus matrix files
 #'
 #' Read the custom Perseus matrix file format *.txt into R.
 #' @note Limitations to column names in R still apply. Column names valid
 #' in Perseus, such as 'Column 1' will be changed to 'Column.1'
 #' @export
+#'
+#' @family read.perseus
 #' @param con A \code{\link{connection}} object or the path to input file
+#' @param check Logical indicating whether to check for the validity of the exported object (slightly slower)
 #' @return DataFrame with additional 'annotationRows' attribute
 #' @seealso \code{\link{write.perseus}}
+#' @rdname read.perseus
+#' @aliases read.perseus
 #' @note If the provided connection \code{con} is a character string, it will assumed
 #' to be a file path. A \code{\link{connection}} which is not seekable (see \code{\link{isSeekable}})
 #' will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
+#' \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
 #' @examples
-#' testFile <- system.file('extdata', 'matrix1.txt', package='PerseusR')
+#'
+#' \dontrun{
 #' mdata <- read.perseus(con=testFile)
+#' }
+#'
 read.perseus.default <- function(con, check = TRUE) {
   if (is.character(con)) {
     con <- file(con, open = 'r')
@@ -86,28 +127,41 @@ read.perseus.default <- function(con, check = TRUE) {
   return(perseus.list)
 }
 
-read.perseus.as.list <- function(con) {
-  return(read.perseus.default(con))
+#' @export
+read.perseus <- read.perseus.default
+
+#' @describeIn read.perseus Difference between the mean and the median
+#' @family read.perseus
+#' @export
+read.perseus.as.list <- function(con, check = TRUE) {
+  return(read.perseus.default(con, check = check))
 }
 
-read.perseus.as.matrixData <- function(con) {
-  perseus.list <- read.perseus.default(con)
+
+#' @describeIn read.perseus Difference between the mean and the median
+#' @family read.perseus
+#' @export
+read.perseus.as.matrixData <- function(con, check = TRUE) {
+  perseus.list <- read.perseus.default(con, check = check)
   return(matrixData(main = perseus.list$main,
                     annotCols = perseus.list$annotCols,
                     annotRows = perseus.list$annotRows,
                     description = perseus.list$descr))
 }
 
-read.perseus.as.ExpressionSet <- function(con) {
+#' @describeIn read.perseus Difference between the mean and the median
+#' @family read.perseus
+#' @export
+read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
   if (!requireNamespace("Biobase", quietly = TRUE)) {
     stop('This function requires the Biobase package, please install it in the bioconductor repository')
   }
 
-  perseus.list <- read.perseus.default(con)
+  perseus.list <- read.perseus.default(con, check = check)
 
   eSet <- Biobase::ExpressionSet(
-    assayData = perseus.list$main,
+    assayData = data.matrix(perseus.list$main),
     phenoData = methods::new('AnnotatedDataFrame',
                              perseus.list$annotRows),
     annotation = perseus.list$descr,
@@ -117,63 +171,67 @@ read.perseus.as.ExpressionSet <- function(con) {
   return(eSet)
 }
 
-
-#' @importFrom plyr mapvalues
-map_perseus_types <- function(typeAnnotation, typeMap) {
-  plyr::mapvalues(typeAnnotation,
-                  from = typeMap$Perseus,
-                  to = typeMap$R,
-                  warn_missing = FALSE)
+#' Write data to a perseus text file or connection
+#'
+#' Write data to a perseus text file or connection
+#'
+#' @title write.perseus: function to generate a perseus-readable text document
+#'
+#' @param object an expressionSet, matrixData, list or table-like object.
+#'
+#' @return writes to disk a perseus-interpretable text representation of an R objet
+#' @rdname write.perseus
+#'
+#' @export write.perseus
+write.perseus <- function(object = NULL, con = NULL, ...) {
+  UseMethod("write.perseus", object)
 }
 
-#' Infer Perseus type annotation row from DataFrame column classes
+#' Write Data to Perseus matrix format
 #'
-#' @param df The data.frame
-#' @param typeMap A list with elements 'Perseus' and 'R'. The ordering determines the mapping
-#' @return A vector with perseus type annotations
-#' @seealso Based on \code{\link{mapvalues}}
-infer_perseus_annotation_types <- function(df, typeMap) {
-  colClasses <- plyr::laply(df, class)
-  if (length(colClasses) == 0) return(colClasses)
-  plyr::mapvalues(colClasses,
-                  from = typeMap$R,
-                  to = typeMap$Perseus,
-                  warn_missing = FALSE)
-}
-
-#' Write matrixData in Perseus matrix format
+#' Write Data to file in the custom Perseus matrix file format.
 #'
-#' Write a matrixData to file in the custom Perseus matrix file format.
-#'
-#' @param mdata The matrixData
+#' @param main a data frame containing
+#' @param annotCols a df containing collumns containing metadata (about the rows)
+#' @param annotRows a df containing collumns containing metadata (about the columns)
+#' @param descr a character vector that describes the collumns in main and in annotCols (in that order)
 #' @param con A \code{\link{connection}} object or the path to output file
+#' @param ... additional arguments passed to other functions
 #' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
+#' @inheritParams write.perseus
+#'
+#' @rdname write.perseus
+#' @method write.perseus default
+#'
 #' @export
-write.perseus <- function(mdata, con) {
+write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
+                          annotRows = NULL, descr = NULL, ...) {
+
+  stopifnot(is.data.frame(main) | is.data.frame(annotCols))
+
+  if (is.null(annotCols)) assign('annotCols', value = data.frame())
+
+  columns <- c(names(main), names(annotCols))
+  df <- main
+
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
     closeAtEnd <- TRUE
   }
-  columns <- names(mdata)
   writeLines(paste0(columns, collapse = '\t'), con)
-  descr <- description(mdata)
   if (length(descr) != 0) {
     descr[1] <- paste0('#!{Description}', descr[1])
     writeLines(paste0(descr, collapse = '\t'), con)
   }
-  type <- c(rep('E', ncol(main(mdata))),
-            infer_perseus_annotation_types(annotCols(mdata), .typeMap))
+  type <- c(rep('E', ncol(main)),
+            infer_perseus_annotation_types(annotCols, .typeMap))
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
-  annotationRows <- as.list(annotRows(mdata))
-  for (name in names(annotationRows)) {
-    values <- paste0(annotationRows[[name]], collapse = '\t')
+  for (name in names(annotRows)) {
+    values <- paste0(annotRows[[name]], collapse = '\t')
     writeLines(sprintf('#!{C:%s}%s', name, values), con)
   }
-  main <- main(mdata)
-  annotCols <- annotCols(mdata)
-  df <- main
   if (nrow(annotCols) != 0) {
     if (nrow(main) == 0) {
       df <- annotCols
@@ -188,3 +246,108 @@ write.perseus <- function(mdata, con) {
   if (closeAtEnd) close(con)
   return()
 }
+
+#' @return \code{NULL}
+#'
+#' @inheritParams write.perseus.default
+#'
+#' @export
+#' @method write.perseus matrixData
+#' @rdname write.perseus
+write.perseus.matrixData <- function(object, con , ...) {
+  descr <- description(object)
+  annotRows <- as.list(annotRows(object))
+  main <- main(object)
+  annotCols <- annotCols(object)
+
+  (function(...){
+    write.perseus.default(main = main, annotCols = annotCols,
+                        annotRows = annotRows, descr = descr,
+                        con = con)})(...)
+}
+
+
+#' @return \code{NULL}
+#'
+#' @inheritParams write.perseus.default
+#'
+#' @rdname write.perseus
+#' @method write.perseus list
+#'
+#' @export
+write.perseus.list <- function(object, con, ...) {
+  stopifnot(any(c('main', 'annotCols') %in% names(object)))
+  object$con <- con
+
+  do.call(write.perseus.default, c(list(...), object))
+}
+
+
+#' @return \code{NULL}
+#'
+#' @inheritParams write.perseus.default
+#'
+#' @rdname write.perseus
+#' @method write.perseus data.frame
+#'
+#' @export
+write.perseus.data.frame <- function(object, con, annotCols = NULL, ...) {
+  stopifnot(is.data.frame(object))
+  numeric_cols <- plyr::laply(object, is.numeric)
+  main <- subset.data.frame(object, select = numeric_cols, subset = T)
+
+  if (is.null(annotCols)) {
+    annotCols <- subset.data.frame(object, select = !numeric_cols, subset = T)
+  }
+
+  (function(...){
+    write.perseus.default(main = main,
+                          annotCols = annotCols,
+                          con = con, ...)})(...)
+}
+
+
+#' @return \code{NULL}
+#'
+#' @inheritParams write.perseus.default
+#'
+#' @rdname write.perseus
+#' @method write.perseus matrix
+#'
+#' @export
+write.perseus.matrix <- function(object, con, annotCols = NULL, ...) {
+
+  if (is.null(annotCols) & !is.null(rownames(object))) {
+    annotCols <- as.data.frame(rownames(object))
+    colnames(annotCols) <- 'Names'
+  }
+
+  (function(...){
+    write.perseus.default(main = as.data.frame(object),
+                          annotCols = annotCols,
+                          con = con, ...)})(...)
+}
+
+
+#' @return \code{NULL}
+#'
+#' @inheritParams write.perseus.default
+#'
+#' @rdname write.perseus
+#' @method write.perseus ExpressionSet
+#'
+#' @export
+write.perseus.ExpressionSet <- function(object, con, ...) {
+
+  mainDF <- data.frame(Biobase::exprs(object))
+  annotationRows <- methods::as(object@phenoData, 'data.frame')
+  descriptions <- Biobase::annotation(object)
+  annotationCols <- methods::as(object@featureData, 'data.frame')
+
+
+  (function(...){
+    write.perseus.default(main = mainDF, annotCols = annotationCols,
+                        annotRows = annotationRows, descr = descriptions,
+                        con = con)})(...)
+}
+

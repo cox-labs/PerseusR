@@ -2,17 +2,64 @@
 % Please edit documentation in R/io.R
 \name{write.perseus}
 \alias{write.perseus}
-\title{Write matrixData in Perseus matrix format}
+\alias{write.perseus.default}
+\alias{write.perseus.matrixData}
+\alias{write.perseus.list}
+\alias{write.perseus.data.frame}
+\alias{write.perseus.matrix}
+\alias{write.perseus.ExpressionSet}
+\title{write.perseus: function to generate a perseus-readable text document}
 \usage{
-write.perseus(mdata, con)
+write.perseus(object = NULL, con = NULL, ...)
+
+\method{write.perseus}{default}(object = NULL, con = NULL, main,
+  annotCols = NULL, annotRows = NULL, descr = NULL, ...)
+
+\method{write.perseus}{matrixData}(object, con, ...)
+
+\method{write.perseus}{list}(object, con, ...)
+
+\method{write.perseus}{data.frame}(object, con, annotCols = NULL, ...)
+
+\method{write.perseus}{matrix}(object, con, annotCols = NULL, ...)
+
+\method{write.perseus}{ExpressionSet}(object, con, ...)
 }
 \arguments{
-\item{mdata}{The matrixData}
+\item{object}{an expressionSet, matrixData, list or table-like object.}
 
 \item{con}{A \code{\link{connection}} object or the path to output file}
+
+\item{...}{additional arguments passed to other functions}
+
+\item{main}{a data frame containing}
+
+\item{annotCols}{a df containing collumns containing metadata (about the rows)}
+
+\item{annotRows}{a df containing collumns containing metadata (about the columns)}
+
+\item{descr}{a character vector that describes the collumns in main and in annotCols (in that order)}
+}
+\value{
+writes to disk a perseus-interpretable text representation of an R objet
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
+
+\code{NULL}
 }
 \description{
-Write a matrixData to file in the custom Perseus matrix file format.
+Write data to a perseus text file or connection
+
+Write Data to file in the custom Perseus matrix file format.
+}
+\details{
+Write data to a perseus text file or connection
 }
 \seealso{
 \code{\link{read.perseus}} \code{\link{matrixData}}
