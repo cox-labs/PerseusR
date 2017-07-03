@@ -4,9 +4,16 @@
 
 Convenience functions for interop between Perseus and R.
 
+Based on the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
+for the Perseus framework
+
 # Installation
 
-Make sure to have the `devtools` package installed
+PerseusR is currently under developement and therefore is not available in CRAN 
+or bioconductor.
+
+In order to install it make sure to have the `devtools` package installed.
+(if not install it via `install.packages('devtools')`)
 
 ```{R}
 library(devtools)
@@ -19,6 +26,8 @@ install_github('jdrudolph/perseusr')
 You can use them to write simple scripts which can be used as
 `MatrixProcessing` activities in Perseus. Additionally you can parse Perseus
 parameters and extract their values.
+
+an example R script that could be called though the Perseus plugin:
 
 ```{R}
 # if applicable: read command-line arguments

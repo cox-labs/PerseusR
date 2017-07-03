@@ -10,5 +10,14 @@ main(mdata)
 \item{mdata}{matrixData}
 }
 \description{
-Get main columns
+Gets the main collumns (main matrix) of a \code{\link[PerseusR]{matrixData}}
+object as a data.frame object
+}
+\seealso{
+Other matrixData basic functions: \code{\link{annotCols<-}},
+  \code{\link{annotCols}}, \code{\link{annotRows<-}},
+  \code{\link{annotRows}}, \code{\link{description<-}},
+  \code{\link{description}}, \code{\link{main<-}},
+  \code{\link{matrixData-class}}, \code{\link{matrixData}},
+  \code{\link{names,matrixData-method}}
 }

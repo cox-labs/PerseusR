@@ -1,0 +1,261 @@
+---
+title: "Using Perseus data in R"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+PerseusR provides an interface to use perseus data in R and vice versa
+
+# Reading Perseus data in R
+
+## As a list
+
+The most basic way to import data from perseus into r is as a list whose 
+elements can then be used in any sort of workflow.
+
+```{r}
+library(PerseusR)
+
+dataFolder <- system.file('extdata', package = 'PerseusR')
+dataFiles <- list.files(dataFolder, 
+                        pattern = "matrix[[:digit:]]*.txt",
+                        full.names=TRUE)
+dataFile <- dataFiles[[1]]
+
+default_output <- read.perseus.default(dataFile)
+class(default_output)
+print(default_output)
+```
+
+## As a MatrixData object
+
+The custom `MatrixData` object is the most faithfull representation of a perseus
+matrix in R and is an internal class used by this package to validate whether
+the fields will be compatible with perseus in additional workflows.
+
+```{r}
+dm_out <- read.perseus.as.matrixData(dataFile)
+class(dm_out)
+print(dm_out)
+```
+
+The data matrix object contains the slots that are supported by perseus and can
+be accessed by the methods of the object (not all of them must be present)
+
+```{r}
+main(dm_out)
+annotRows(dm_out)
+annotCols(dm_out)
+PerseusR::description(dm_out) # Biobase has a descr function as well...
+```
+
+
+## As an expressionSet object (for bioconductor usage)
+
+If you feel more confortable with the bioconductor expression set class, 
+you can also import the data as such.
+
+```{r}
+require(Biobase)
+eSet_out <- read.perseus.as.ExpressionSet(dataFile)
+class(eSet_out)
+print(eSet_out)
+
+eSet_out@annotation
+```
+
+and the equivalentes with the perseus functions would go like this:
+
+1. The `exprs` slot in the expressionSet objects would be equivalent to the `main` data frame in perseus.
+2. The `featureData` would be equivalent to the `annotationCols`.
+3. The `phenoData` would be aquivalent to the `annotationRows`.
+4. The `Annotation` would be equivalent to the `descr`.
+
+# Checking Data compatibility in R
+
+There are a series of functions that check the compatibility R objects with
+perseus.
+
+## MatrixData 
+
+This function would not provide much insight on this kind of object because
+it is run when constructing it; Therefore if the data is not compatible it would 
+return an error when trying to create it
+
+```{r error=FALSE}
+
+df <- matrixData(
+    main = data.frame(a = 1:3, b = 6:8),
+    annotCols = data.frame(c = c('a','b','c')),
+    annotRows = data.frame(x = factor(c('1','1'))))
+
+MatrixDataCheck(df)
+
+my_error <- try({
+  matrixData(
+    main = data.frame(a = 1:3, b = 6:8, c = 1:3),
+    annotCols = data.frame(c = c('a','b','c')),
+    annotRows = data.frame(x = factor(c('1','1'))))
+})
+
+print(my_error)
+
+```
+
+## lists
+
+In this case this functions would be usefull, since the object is not inherently 
+compatible.
+
+
+```{r, message=FALSE, warning=FALSE}
+my_list <- list(main = data.frame(a = 1:3, b = 6:8),
+    annotCols = data.frame(c = c('a','b','c')),
+    annotRows = data.frame(x = factor(c('1','1'))))
+
+MatrixDataCheck(my_list)
+
+my_list <- list(main = data.frame(a = 1:3, b = 6:8, c = 1:3),
+    annotCols = data.frame(c = c('a','b','c')),
+    annotRows = data.frame(x = factor(c('1','1'))))
+
+my_error <- try({
+  MatrixDataCheck(my_list)
+})
+print(my_error)
+
+```
+
+## expressionSet objects
+
+Single matrix Expression Sets will usually be compatible, since most of the 
+restriction in  matrix data objects also apply to expression set objects
+(regarding the dimensions and classes of the objects in each of the slots) 
+
+```{r}
+eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
+
+MatrixDataCheck(eSet)
+```
+
+
+
+# Writting Data into Perseus-compatible text representations
+
+This is the way in which perseus will read the data again so here are a couple
+of examples.
+
+## MatrixData
+
+```{r}
+# Here you can use any tipe of conection, similar to th base write... functions
+# The usage should be fairly similar to the write.table function
+# 
+
+write.perseus(dm_out, 'my_output_df.txt')
+
+# which would output somethint like this
+
+cat(readLines('my_output_df.txt'), sep = '\n')
+```
+
+## data.frame
+
+Data frames are converted in such manner that numeric columns are
+transfered as the main DF and non numerics as the annotation cols
+of the perseus DF
+
+```{r}
+
+my_df <- data.frame(Con1 = 1:3, Con2 = 4:6, An1 = letters[1:3])
+
+write.perseus(my_df, con = 'my_output_df.txt')
+
+cat(readLines('my_output_df.txt'), sep = '\n')
+```
+
+## matrix
+
+Numeric matrices can be outputed as well :D
+
+```{r}
+my_matrix <- matrix(1:10, ncol = 2, 
+                    dimnames = list(letters[11:15], letters[1:2]))
+
+write.perseus(my_matrix, con = 'my_output_df.txt')
+
+cat(readLines('my_output_df.txt'), sep = '\n')
+```
+
+## list
+
+Lists are a little trickier, currently it looks for named elements that
+match the arguments, so it would use the elements named: `main` `annotCols`
+`annotRows` and `descr`
+
+```{r}
+
+my_list <- list(main = data.frame(A = 1:5, B = 6:10),
+                annotRows = data.frame(is_control = c(TRUE, FALSE)),
+                annotCols = data.frame(Names = letters[1:5]),
+                descr = c('something',
+                          'something else',
+                          'yet another thing'))
+
+write.perseus(my_list, con = 'my_output_df.txt')
+cat(readLines('my_output_df.txt'), sep = '\n')
+
+
+```
+
+## expressionSet objects
+
+```{r}
+eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
+
+write.perseus(eSet, con = 'my_output_df.txt')
+cat(readLines('my_output_df.txt'), sep = '\n')
+
+```
+
+## Adding elements to the output
+
+Since not all data typer support allthe elements, one can specify them to the
+function and they will be passed over to the output.
+
+```{r}
+my_matrix <- matrix(1:10, ncol = 2, 
+                    dimnames = list(letters[11:15], letters[1:2]))
+my_annotations_rows <- data.frame(My_Names = letters[1:2])
+my_annotations_cols <- data.frame(My_Genes = letters[11:15])
+
+write.perseus(my_matrix, con = 'my_output_df.txt', 
+              annotCols = my_annotations_cols,
+              annotRows = my_annotations_rows)
+
+cat(readLines('my_output_df.txt'), sep = '\n')
+```
+
+## Removing elements form the output
+
+Elements can be set to `NULL` to remove that section from the output
+
+```{r}
+my_matrix <- matrix(1:10, ncol = 2, 
+                    dimnames = list(letters[11:15], letters[1:2]))
+
+write.perseus(my_matrix, con = 'my_output_df.txt', 
+              annotCols = NULL)
+
+cat(readLines('my_output_df.txt'), sep = '\n')
+```
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+try({file.remove('my_output_df.txt')})
+```
+

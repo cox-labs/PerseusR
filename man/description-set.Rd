@@ -14,3 +14,11 @@ description(mdata) <- value
 \description{
 Set column description
 }
+\seealso{
+Other matrixData basic functions: \code{\link{annotCols<-}},
+  \code{\link{annotCols}}, \code{\link{annotRows<-}},
+  \code{\link{annotRows}}, \code{\link{description}},
+  \code{\link{main<-}}, \code{\link{main}},
+  \code{\link{matrixData-class}}, \code{\link{matrixData}},
+  \code{\link{names,matrixData-method}}
+}
