@@ -127,9 +127,6 @@ read.perseus.default <- function(con, check = TRUE) {
   return(perseus.list)
 }
 
-#' @export
-read.perseus <- read.perseus.default
-
 #' @describeIn read.perseus Difference between the mean and the median
 #' @family read.perseus
 #' @export
@@ -170,6 +167,10 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
   return(eSet)
 }
+
+#' @export
+read.perseus <- read.perseus.as.matrixData
+
 
 #' Write data to a perseus text file or connection
 #'
