@@ -59,3 +59,6 @@ colnames(df) <- c('left', 'right', 'distance')
 outMdata <- matrixData(main=df)
 write.perseus(outMdata, outFile)
 ```
+
+# Licensing and contributions
+`PerseusR` is licensed under the MIT license. Contributions are welcome.

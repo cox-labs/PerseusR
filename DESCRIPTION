@@ -6,7 +6,7 @@ Maintainer: Jan Rudolph <rudolph@biochem.mpg.de>
 Description: Provides utility functions for Perseus and R interop.
 Depends:
     R (>= 3.3.1)
-License: GPL
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
