@@ -58,9 +58,6 @@ Write data to a perseus text file or connection
 
 Write Data to file in the custom Perseus matrix file format.
 }
-\details{
-Write data to a perseus text file or connection
-}
 \seealso{
 \code{\link{read.perseus}} \code{\link{matrixData}}
 }

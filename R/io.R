@@ -1,5 +1,5 @@
 # helper variable that maps between R and perseus types
-.typeMap <- list(Perseus = c('E', 'N',
+.typeMap <- list(Perseus = c('N', 'E',
                              'C', 'T',
                              'M'),
                   R = c('numeric', 'numeric',
@@ -43,6 +43,9 @@ create_annotRows <- function(commentRows, isMain) {
   for (name in names(commentRows)) {
     if (startsWith(name, 'C:')) {
       annotRows[[substring(name, 3)]] <- factor(commentRows[[name]][isMain])
+    }
+    else if (startsWith(name, 'N:')) {
+      annotRows[[substring(name, 3)]] <- as.numeric(commentRows[[name]][isMain])
     }
     else {
       warning("Found unrecognized annotation row: ", name)
@@ -174,8 +177,6 @@ read.perseus <- read.perseus.as.matrixData
 
 #' Write data to a perseus text file or connection
 #'
-#' Write data to a perseus text file or connection
-#'
 #' @title write.perseus: function to generate a perseus-readable text document
 #'
 #' @param object an expressionSet, matrixData, list or table-like object.
@@ -185,6 +186,9 @@ read.perseus <- read.perseus.as.matrixData
 #'
 #' @export write.perseus
 write.perseus <- function(object = NULL, con = NULL, ...) {
+  if (is.character(object)) {
+    stop("First argument should be the object to write to file.")
+  }
   UseMethod("write.perseus", object)
 }
 
@@ -230,8 +234,14 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   for (name in names(annotRows)) {
-    values <- paste0(annotRows[[name]], collapse = '\t')
-    writeLines(sprintf('#!{C:%s}%s', name, values), con)
+    values <- annotRows[[name]]
+    line <- paste0(c(as.character(values), rep('', ncol(annotCols))), collapse = '\t')
+    if (is.numeric(values)) {
+      writeLines(sprintf('#!{N:%s}%s', name, line), con)
+    }
+    else {
+      writeLines(sprintf('#!{C:%s}%s', name, line), con)
+    }
   }
   if (nrow(annotCols) != 0) {
     if (nrow(main) == 0) {

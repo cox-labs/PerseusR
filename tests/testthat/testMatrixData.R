@@ -6,13 +6,16 @@ test_that('you can construct a valid matrixData', {
     main=data.frame(a=1:3, b=6:8),
     annotCols=data.frame(c=c('a','b','c')),
     annotRows=data.frame(x=factor(c('1','1'))))
+  expect_is(df, 'matrixData')
 
   df <- matrixData(
     main=data.frame(a=1:3, b=6:8),
     annotCols=data.frame(c=c('a','b','c')))
+  expect_is(df, 'matrixData')
 
   df <- matrixData(
     main=data.frame(a=1:3, b=6:8))
+  expect_is(df, 'matrixData')
 })
 
 test_that('you cannot construct an invalid matrixData', {

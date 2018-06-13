@@ -1,10 +1,11 @@
 library(PerseusR)
 context('Input/output')
+options(scipen = 999)
 
 dataFolder <- system.file('extdata', package = 'PerseusR')
 dataFiles <- list.files(dataFolder, pattern = "matrix[[:digit:]]*.txt", full.names=TRUE)
 test_that('all the example files are read without error', {
-  lapply(dataFiles, read.perseus.as.matrixData)
+  lapply(dataFiles, function(file) {expect_is(read.perseus.as.matrixData(file), 'matrixData')})
 })
 
 test_that('reading and writing out immediately preserves the exact file content', {
@@ -25,6 +26,7 @@ test_that('reading and writing out immediately preserves the exact file content'
 test_that('reading small example with categorical row works', {
   con <- textConnection("a\tb\n#!{Type}E\tE\n#!{C:site}s1\ts2\n")
   df <- read.perseus.as.matrixData(con)
+  expect_is(df, 'matrixData')
 })
 
 test_that('reading and writing from a connection is possible', {

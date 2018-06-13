@@ -58,9 +58,10 @@ MatrixDataCheck.default <- function(object = NULL,  main,
 
   if (ncol(annotationRows) > 0) {
     catAnnotRows <- sapply(annotationRows, is.factor)
-    if (!all(catAnnotRows)) {
-      msg <- paste('Annotation rows should be factors: Rows',
-                   paste(names(which(!catAnnotRows)), sep = ','),
+    numAnnotRows <- sapply(annotationRows, is.numeric)
+    if (!all(catAnnotRows | numAnnotRows)) {
+      msg <- paste('Annotation rows should be factors or numeric: Rows',
+                   paste(names(which(!(catAnnotRows | numAnnotRows))), sep = ','),
                    'are not factors')
       errors <- c(errors, msg)
     }
