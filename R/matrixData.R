@@ -218,6 +218,21 @@ matrixData <- function(...) {
   methods::new("matrixData", ...)
 }
 
+#' matrixData initializer
+#' @description Initializes the annotCols data frame to have the
+#' same number of rows as the main data. This might not be the
+#' cleanest solution.
+setMethod(initialize, "matrixData", function(.Object, ...) {
+  args <- list(...)
+  if ("main" %in% names(args) && !("annotCols" %in% names(args))) {
+    main <- args[['main']]
+    args[["annotCols"]] <- data.frame(matrix(nrow=nrow(main), ncol=0))
+  }
+  args[['.Object']] <- .Object
+  do.call(callNextMethod, args)
+})
+
+
 getNames <- function(x) {c(colnames(x@main), colnames(x@annotCols))}
 #TODO: check if it would be better to have a list returned with one element
 #having the col names and the other the row names

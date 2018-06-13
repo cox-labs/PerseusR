@@ -47,3 +47,17 @@ test_that('the column names span main columns and annotation columns',{
   cn <- names(df)
   expect_equal(cn, c('a','b','b'))
 })
+
+test_that('you can add simple annotation columns to an existing matrix data', {
+  df <- matrixData(main=data.frame(a=1:3, b=6:8))
+  annotCols(df)['test'] <- 'a'
+  expect_equal(annotCols(df)[['test']], rep('a', 3))
+})
+
+test_that('you should be able to add new columns regardless of the existance of descriptions', {
+  df <- matrixData(main=data.frame(a=1:3, b=6:8), description=c('a','b'))
+  warning("TODO: test uses workaround!")
+  description(df) <- character(0) # TODO: remove this line, test should still pass, then remove warning
+  main(df)['c'] <- 9:11
+  expect_equal(main(df)[['c']], 9:11)
+})
