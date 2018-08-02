@@ -27,7 +27,7 @@ singleChoiceParamValue <- function(parameters, name) {
 #' @export
 #' @return The selected number
 intParamValue <- function(parameters, name) {
-  XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]])
+  as.numeric(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
 }
 
 #' Bool parameter value
