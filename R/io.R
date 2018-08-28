@@ -15,9 +15,7 @@
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, conCheck) {
   df <- utils::read.table(conCheck, header = TRUE,
-                          sep = '\t', comment.char = '#',
-                          colClasses = colClasses, fill = TRUE,
-                          quote = "")
+                          sep = '\t', comment.char = '#')
   if (grepl(';', df[1, 1])){
     plyr::mapvalues(typeAnnotation,
                     from = typeMapAddition$Perseus,
