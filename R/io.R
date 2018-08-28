@@ -124,11 +124,11 @@ read.perseus.default <- function(con, check = TRUE) {
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
-  imputeData <- matrix(FALSE, ncol = ncol(main), nrow = nrow(main))
+  imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
   for (i in 1:nrow(main)){
     for (j in 1:ncol(main)){
-      mainDataList <- unlist(strsplit(main, ';'))
+      mainDataList <- unlist(strsplit(main[i, j], ';'))
       if (length(mainDataList) == 1){
       } else {
         main[i, j] <- as.numeric(mainDataList[1])
