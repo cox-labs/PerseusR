@@ -9,6 +9,9 @@
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
+
+  lapply(typeAnnotation, write, "C:\\Users\\shyu\\Documents\\BBB.txt", append=TRUE)
+  lapply(typeMap, write, "C:\\Users\\shyu\\Documents\\XXX.txt", append=TRUE)
   plyr::mapvalues(typeAnnotation,
                   from = typeMap$Perseus,
                   to = typeMap$R,
@@ -95,7 +98,6 @@ read.perseus.default <- function(con, check = TRUE) {
     rowStr <- substring(oneLine, nchar(name) + 5)
     rowValues <- strsplit(rowStr, '\t')[[1]]
     commentRows[[name]] <- rowValues
-    lapply(commentRows, write, "C:\\Users\\shyu\\Documents\\BBB.txt", append=TRUE)
   }
   types <- commentRows$Type
   descr <- commentRows$Description
