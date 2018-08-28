@@ -132,6 +132,7 @@ read.perseus.default <- function(con, check = TRUE) {
       if (length(mainDataList) == 1){
       } else {
         main[i, j] <- as.numeric(mainDataList[1])
+        cat(typeof(main[i, j]), file='C:\\Users\\shyu\\Documents\\AAA.txt')
         imputeData[i, j] <- mainDataList[2]
         qualityData[i, j] <- mainDataList[3]
       }
