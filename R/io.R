@@ -1,21 +1,34 @@
 # helper variable that maps between R and perseus types
-.typeMap <- list(Perseus = c('N', 'E',
-                             'C', 'T',
-                             'M'),
-                  R = c('numeric', 'numeric',
-                        'factor', 'character',
-                        'character'))
-
+.typeMapNormal <- list(Perseus = c('N', 'E',
+                                   'C', 'T',
+                                   'M'),
+                        R = c('numeric', 'numeric',
+                              'factor', 'character',
+                              'character'))
+.typeMapAddition <- list(Perseus = c('N', 'E',
+                                     'C', 'T',
+                                     'M'),
+                         R = c('numeric', 'numeric',
+                               'factor', 'character',
+                               'character'))
 
 #' @importFrom plyr mapvalues
-map_perseus_types <- function(typeAnnotation, typeMap) {
-
-  lapply(typeAnnotation, write, "C:\\Users\\shyu\\Documents\\BBB.txt", append=TRUE)
-  lapply(typeMap, write, "C:\\Users\\shyu\\Documents\\XXX.txt", append=TRUE)
-  plyr::mapvalues(typeAnnotation,
-                  from = typeMap$Perseus,
-                  to = typeMap$R,
-                  warn_missing = FALSE)
+map_perseus_types <- function(typeAnnotation, conCheck) {
+  df <- utils::read.table(conCheck, header = TRUE,
+                          sep = '\t', comment.char = '#',
+                          colClasses = colClasses, fill = TRUE,
+                          quote = "")
+  if (grepl(';', df[1, 1])){
+    plyr::mapvalues(typeAnnotation,
+                    from = typeMapAddition$Perseus,
+                    to = typeMapAddition$R,
+                    warn_missing = FALSE)
+  } else {
+    plyr::mapvalues(typeAnnotation,
+                    from = typeMapNormal$Perseus,
+                    to = typeMapNormal$R,
+                    warn_missing = FALSE)
+  }
 }
 
 #' Infer Perseus type annotation row from DataFrame column classes
@@ -85,11 +98,13 @@ create_annotRows <- function(commentRows, isMain) {
 read.perseus.default <- function(con, check = TRUE) {
   if (is.character(con)) {
     con <- file(con, open = 'r')
+    conCheck <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
     fileCon <- file()
     writeLines(readLines(con), fileCon)
     close(con)
     con <- fileCon
+    conCheck <- file(con, open = 'r')
   }
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
@@ -102,7 +117,8 @@ read.perseus.default <- function(con, check = TRUE) {
   types <- commentRows$Type
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
-  colClasses <- map_perseus_types(types, .typeMap)
+#  colClasses <- map_perseus_types(types, .typeMap)
+  colClasses <- map_perseus_types(types, conCheck)
   seek(con)
   cat(colClasses, file='C:\\Users\\shyu\\Documents\\CCC.txt')
   df <- utils::read.table(con, header = TRUE,
