@@ -117,12 +117,10 @@ read.perseus.default <- function(con, check = TRUE) {
   }
   close(conCheck)
   seek(con)
-  cat(colClasses, file='C:\\Users\\shyu\\Documents\\CCC.txt')
   df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
@@ -133,13 +131,12 @@ read.perseus.default <- function(con, check = TRUE) {
       mainDataList <- strsplit(main[i, j], ";")
       if (length(mainDataList) == 1){
       } else {
-        main[i, j] <- mainDataList[1]
+        main[i, j] <- as.numeric(mainDataList[1])
         imputeData[i, j] <- mainDataList[2]
         qualityData[i, j] <- mainDataList[3]
       }
     }
   }
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
