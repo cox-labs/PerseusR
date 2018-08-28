@@ -162,7 +162,6 @@ read.perseus.default <- function(con, check = TRUE) {
                       imputeData = imputeData,
                       qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
-  cat('VVV', file='C:\\Users\\shyu\\Documents\\XXX.txt')
   return(perseus.list)
 }
 
@@ -251,7 +250,7 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #' @export
 write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
                           annotRows = NULL, descr = NULL, ...) {
-
+  cat('VVV', file='C:\\Users\\shyu\\Documents\\XXX.txt')
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
