@@ -80,6 +80,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' }
 #'
 read.perseus.default <- function(con, check = TRUE) {
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   if (is.character(con)) {
     con <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
