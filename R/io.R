@@ -128,7 +128,7 @@ read.perseus.default <- function(con, check = TRUE) {
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
   for (i in 1:nrow(main)){
     for (j in 1:ncol(main)){
-      mainDataList <- strsplit(main[i, j], ";")
+      mainDataList <- unlist(strsplit(main, ';'))
       if (length(mainDataList) == 1){
       } else {
         main[i, j] <- as.numeric(mainDataList[1])
