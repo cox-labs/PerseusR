@@ -8,7 +8,7 @@
 .typeMapAddition <- list(Perseus = c('N', 'E',
                                      'C', 'T',
                                      'M'),
-                         R = c('numeric', 'numeric',
+                         R = c('numeric', 'character',
                                'factor', 'character',
                                'character'))
 
@@ -105,7 +105,7 @@ read.perseus.default <- function(con, check = TRUE) {
     writeLines(readLines(con), fileCon)
     close(con)
     con <- fileCon
-    conCheck <- file(con, open = 'r')
+    conCheck <- fileCon
   }
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
