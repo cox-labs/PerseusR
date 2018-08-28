@@ -121,7 +121,7 @@ read.perseus.default <- function(con, check = TRUE) {
       }
     }
   }
-  print("AAAA")
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
