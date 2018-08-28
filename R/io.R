@@ -90,7 +90,6 @@ read.perseus.default <- function(con, check = TRUE) {
   }
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   while (startsWith(oneLine <- readLines(con, n = 1), '#!')) {
     name <- strsplit(substring(oneLine, 4), '}')[[1]][1]
     rowStr <- substring(oneLine, nchar(name) + 5)
@@ -101,6 +100,7 @@ read.perseus.default <- function(con, check = TRUE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
   colClasses <- map_perseus_types(types, .typeMap)
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
@@ -122,7 +122,6 @@ read.perseus.default <- function(con, check = TRUE) {
       }
     }
   }
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
