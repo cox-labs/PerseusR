@@ -29,6 +29,7 @@ map_perseus_types <- function(typeAnnotation, conCheck) {
                     to = typeMapNormal$R,
                     warn_missing = FALSE)
   }
+  close(conCheck)
 }
 
 #' Infer Perseus type annotation row from DataFrame column classes
