@@ -133,7 +133,7 @@ read.perseus.default <- function(con, check = TRUE) {
       } else {
         main[i, j] <- mainDataList[1]
         main[i, j] <- as.numeric(main[i, j])
-        cat(typeof(main[i, j]), file='C:\\Users\\shyu\\Documents\\AAA.txt')
+        cat(mainDataList[1], file='C:\\Users\\shyu\\Documents\\AAA.txt')
         imputeData[i, j] <- mainDataList[2]
         qualityData[i, j] <- mainDataList[3]
       }
