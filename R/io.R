@@ -131,18 +131,14 @@ read.perseus.default <- function(con, check = TRUE) {
       mainDataList <- unlist(strsplit(main[i, j], ';'))
       if (length(mainDataList) == 1){
       } else {
-        if (is.na(main[i, j])){
-          main[i, j] <- as.numeric(NA)
-        } else {
-          main[i, j] <- as.numeric(mainDataList[1])
-        }
+        main[i, j] <- mainDataList[1]
         imputeData[i, j] <- mainDataList[2]
         qualityData[i, j] <- mainDataList[3]
       }
     }
   }
   main <- as.data.frame(sapply(main, as.numeric))
-  cat(mainDataList[1], file='C:\\Users\\shyu\\Documents\\AAA.txt')
+  cat(typeof(main[1,1]), file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
@@ -166,6 +162,7 @@ read.perseus.default <- function(con, check = TRUE) {
                       imputeData = imputeData,
                       qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
+  cat('VVV', file='C:\\Users\\shyu\\Documents\\XXX.txt')
   return(perseus.list)
 }
 
