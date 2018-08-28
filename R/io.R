@@ -108,6 +108,22 @@ read.perseus.default <- function(con, check = TRUE) {
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
+  imputeData <- matrix(FALSE, ncol = ncol(main), nrow = nrow(main))
+  qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
+  for (i in 1:nrow(main)){
+    for (j in 1:ncol(main)){
+      mainDataList <- strsplit(main[i, j], ";")
+      if (length(mainDataList) == 1){
+      } else {
+        main[i, j] <- mainDataList[1]
+        imputeData[i, j] <- mainDataList[2]
+        qualityData[i, j] <- mainDataList[3]
+      }
+    }
+  }
+  print("AAAA")
+  imputeData <- data.frame(imputeData)
+  qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
   if (is.null(descr)) {
@@ -125,7 +141,9 @@ read.perseus.default <- function(con, check = TRUE) {
   perseus.list <- list(main = main,
                       annotCols = annotCols,
                       annotRows = annotRows,
-                      description = descr)
+                      description = descr,
+                      imputeData = imputeData,
+                      qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
   return(perseus.list)
 }
@@ -146,7 +164,9 @@ read.perseus.as.matrixData <- function(con, check = TRUE) {
   return(matrixData(main = perseus.list$main,
                     annotCols = perseus.list$annotCols,
                     annotRows = perseus.list$annotRows,
-                    description = perseus.list$descr))
+                    description = perseus.list$descr,
+                    imputeData = perseus.list$imputeData,
+                    qualityData = perseus.list$qualityData))
 }
 
 #' @describeIn read.perseus Difference between the mean and the median
@@ -166,7 +186,9 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
                              perseus.list$annotRows),
     annotation = perseus.list$descr,
     featureData = methods::new('AnnotatedDataFrame',
-                               perseus.list$annotCols))
+                               perseus.list$annotCols),
+    imputeData = perseus.list$imputeData,
+    qualityData = perseus.list$qualityData)
 
   return(eSet)
 }
@@ -216,6 +238,13 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
 
+  if ((ncol(imputeData) == ncol(main)) && (nrow(imputeData) == nrow(main))) {
+    for (i in 1:nrow(main)){
+      for (j in 1:ncol(main)){
+        main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
+      }
+    }
+  }
   columns <- c(names(main), names(annotCols))
   df <- main
 
@@ -270,10 +299,13 @@ write.perseus.matrixData <- function(object, con , ...) {
   annotRows <- as.list(annotRows(object))
   main <- main(object)
   annotCols <- annotCols(object)
+  imputeData <- imputeData(object)
+  qualityData <- qualityData(object)
 
   (function(...){
     write.perseus.default(main = main, annotCols = annotCols,
                         annotRows = annotRows, descr = descr,
+                        imputeData = imputeData, qualityData = qualityData,
                         con = con)})(...)
 }
 
