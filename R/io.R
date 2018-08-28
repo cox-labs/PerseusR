@@ -80,7 +80,6 @@ create_annotRows <- function(commentRows, isMain) {
 #' }
 #'
 read.perseus.default <- function(con, check = TRUE) {
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   if (is.character(con)) {
     con <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
@@ -91,6 +90,7 @@ read.perseus.default <- function(con, check = TRUE) {
   }
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   while (startsWith(oneLine <- readLines(con, n = 1), '#!')) {
     name <- strsplit(substring(oneLine, 4), '}')[[1]][1]
     rowStr <- substring(oneLine, nchar(name) + 5)
