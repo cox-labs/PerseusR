@@ -100,12 +100,12 @@ read.perseus.default <- function(con, check = TRUE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
   colClasses <- map_perseus_types(types, .typeMap)
-  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
@@ -122,6 +122,7 @@ read.perseus.default <- function(con, check = TRUE) {
       }
     }
   }
+  cat("AAAA", file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
