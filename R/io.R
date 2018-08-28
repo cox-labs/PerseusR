@@ -95,7 +95,7 @@ read.perseus.default <- function(con, check = TRUE) {
     rowStr <- substring(oneLine, nchar(name) + 5)
     rowValues <- strsplit(rowStr, '\t')[[1]]
     commentRows[[name]] <- rowValues
-    write.csv(commentRows, file='BBB.txt')
+    lapply(commentRows, write, "C:\\Users\\shyu\\Documents\\BBB.txt", append=TRUE)
   }
   types <- commentRows$Type
   descr <- commentRows$Description
