@@ -97,6 +97,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' }
 #'
 read.perseus.default <- function(con, check = TRUE) {
+  cat(con, file='C:\\Users\\shyu\\Documents\\DDD.txt')
   if (is.character(con)) {
     con <- file(con, open = 'r')
     conCheck <- file(con, open = 'r')
