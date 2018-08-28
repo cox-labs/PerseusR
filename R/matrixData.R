@@ -334,6 +334,44 @@ description <- function(mdata) {
   return(mdata)
 }
 
+#' Get column imputation
+#' @param mdata matrixData
+#' @family matrixData basic functions
+#' @export
+imputeData <- function(mdata) {
+  mdata@imputeData
+}
+
+#' Set column imputation
+#' @param mdata matrixData
+#' @param value value
+#' @family matrixData basic functions
+#' @export
+`imputeData<-` <- function(mdata, value) {
+  mdata@imputeData <- value
+  methods::validObject(mdata)
+  return(mdata)
+}
+
+#' Get column quality
+#' @param mdata matrixData
+#' @family matrixData basic functions
+#' @export
+qualityData <- function(mdata) {
+  mdata@qualityData
+}
+
+#' Set column imputation
+#' @param mdata matrixData
+#' @param value value
+#' @family matrixData basic functions
+#' @export
+`qualityData<-` <- function(mdata, value) {
+  mdata@qualityData <- value
+  methods::validObject(mdata)
+  return(mdata)
+}
+
 setMethod("Ops", signature(e1 = "matrixData", e2 = "matrixData"),
           function(e1, e2) {
             e1@main <- methods::callGeneric(main(e1), main(e2))
