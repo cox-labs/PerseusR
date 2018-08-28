@@ -13,21 +13,11 @@
                                'character'))
 
 #' @importFrom plyr mapvalues
-map_perseus_types <- function(typeAnnotation, conCheck) {
-  df <- utils::read.table(conCheck, header = TRUE,
-                          sep = '\t', comment.char = '#')
-  if (grepl(';', df[1, 1])){
+map_perseus_types <- function(typeAnnotation, typeMap) {
     plyr::mapvalues(typeAnnotation,
-                    from = typeMapAddition$Perseus,
-                    to = typeMapAddition$R,
+                    from = typeMap$Perseus,
+                    to = typeMap$R,
                     warn_missing = FALSE)
-  } else {
-    plyr::mapvalues(typeAnnotation,
-                    from = typeMapNormal$Perseus,
-                    to = typeMapNormal$R,
-                    warn_missing = FALSE)
-  }
-  close(conCheck)
 }
 
 #' Infer Perseus type annotation row from DataFrame column classes
@@ -118,7 +108,14 @@ read.perseus.default <- function(con, check = TRUE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
 #  colClasses <- map_perseus_types(types, .typeMap)
-  colClasses <- map_perseus_types(types, conCheck)
+  dfCheck <- utils::read.table(conCheck, header = TRUE,
+                          sep = '\t', comment.char = '#')
+  if (grepl(';', df[1, 1])){
+    colClasses <- map_perseus_types(types, .typeMapAddition)
+  } else {
+    colClasses <- map_perseus_types(types, .typeMapNormal)
+  }
+  close(conCheck)
   seek(con)
   cat(colClasses, file='C:\\Users\\shyu\\Documents\\CCC.txt')
   df <- utils::read.table(con, header = TRUE,
