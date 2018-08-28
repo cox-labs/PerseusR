@@ -95,6 +95,7 @@ read.perseus.default <- function(con, check = TRUE) {
     rowStr <- substring(oneLine, nchar(name) + 5)
     rowValues <- strsplit(rowStr, '\t')[[1]]
     commentRows[[name]] <- rowValues
+    cat(commentRows, file='BBB.txt')
   }
   types <- commentRows$Type
   descr <- commentRows$Description
