@@ -110,7 +110,7 @@ read.perseus.default <- function(con, check = TRUE) {
 #  colClasses <- map_perseus_types(types, .typeMap)
   dfCheck <- utils::read.table(conCheck, header = TRUE,
                           sep = '\t', comment.char = '#')
-  if (grepl(';', df[1, 1])){
+  if (grepl(';', dfCheck[1, 1])){
     colClasses <- map_perseus_types(types, .typeMapAddition)
   } else {
     colClasses <- map_perseus_types(types, .typeMapNormal)
