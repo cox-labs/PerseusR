@@ -100,7 +100,7 @@ read.perseus.default <- function(con, check = TRUE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
   colClasses <- map_perseus_types(types, .typeMap)
-  seek(con, 0)
+  seek(con)
   cat("AAAA", file='C:\\Users\\shyu\\Documents\\CCC.txt')
   df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
