@@ -249,7 +249,7 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
                           annotRows = NULL, descr = NULL, imputeData = NULL,
                           qualityData = NULL, ...) {
-
+  write.csv(imputeData, file = '')
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
@@ -258,10 +258,10 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
       imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
     }
     if (is.null(qualityData)) {
-      cat("GGGGG", file = 'XXX.txt')
+      cat("GGGGG", file = 'C:\\Users\\shyu\\Documents\\XXX.txt')
       qualityData <- matrix('0', ncol = ncol(main), nrow = nrow(main))
     }
-    write(qualityData, file = 'QQQ.txt')
+    write(qualityData, file = 'C:\\Users\\shyu\\Documents\\QQQ.txt')
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
