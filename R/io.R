@@ -315,8 +315,8 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 #' @export
 #' @method write.perseus matrixData
 #' @rdname write.perseus
-write.perseus.matrixData <- function(object, con , ...)
-  write.csv(attributes(object), file = 'C:\\Users\\shyu\\Documents\\YYY.txt'){
+write.perseus.matrixData <- function(object, con , ...){
+  write.csv(attributes(object), file = 'C:\\Users\\shyu\\Documents\\YYY.txt')
   descr <- description(object)
   annotRows <- as.list(annotRows(object))
   main <- main(object)
