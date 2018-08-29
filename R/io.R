@@ -261,8 +261,8 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     }
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
-        write.csv(imputeData[[i, j]], file='C:\\Users\\shyu\\Documents\\LLL.txt')
-        main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
+        mergeMain <- unlist(list(main[i, j], imputeData[i, j], qualityData[i, j]))
+        main[i, j] <- paste(mergeMain, collapse = ';')
       }
     }
   }
