@@ -251,7 +251,7 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
                           annotRows = NULL, descr = NULL, imputeData = NULL,
                           qualityDat = NULL, ...) {
-  write.csv(attributes(object), file = 'C:\\Users\\shyu\\Documents\\YYY.txt')
+
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
@@ -315,7 +315,8 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 #' @export
 #' @method write.perseus matrixData
 #' @rdname write.perseus
-write.perseus.matrixData <- function(object, con , ...) {
+write.perseus.matrixData <- function(object, con , ...)
+  write.csv(attributes(object), file = 'C:\\Users\\shyu\\Documents\\YYY.txt'){
   descr <- description(object)
   annotRows <- as.list(annotRows(object))
   main <- main(object)
