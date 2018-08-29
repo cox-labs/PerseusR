@@ -84,8 +84,8 @@ create_annotRows <- function(commentRows, isMain) {
 #' mdata <- read.perseus(con=testFile)
 #' }
 #'
-read.perseus.default <- function(con, check = TRUE) {
-  cat(con, file='C:\\Users\\shyu\\Documents\\DDD.txt')
+read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
+  cat(addition, file='C:\\Users\\shyu\\Documents\\VVV.txt')
   if (is.character(con)) {
     conCheck <- file(con, open = 'r')
     con <- file(con, open = 'r')
@@ -118,12 +118,13 @@ read.perseus.default <- function(con, check = TRUE) {
   }
   seek(con)
   df <- utils::read.delim(con, header = TRUE,
-                          sep = '\t', comment.char = '#')
+                          sep = '\t', comment.char = '#',
+                          colClasses = colClasses, fill = TRUE,
+                          quote = "")
   close(con)
   write.csv(df, file='C:\\Users\\shyu\\Documents\\ZZZ.txt')
   isMain <- types == 'E'
   main <- df[isMain]
-  write.csv(main, file='C:\\Users\\shyu\\Documents\\VVV.txt')
   cat(main[1, 1], file='C:\\Users\\shyu\\Documents\\BBB.txt')
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
@@ -184,8 +185,8 @@ read.perseus.as.list <- function(con, check = TRUE) {
 #' @describeIn read.perseus Difference between the mean and the median
 #' @family read.perseus
 #' @export
-read.perseus.as.matrixData <- function(con, check = TRUE) {
-  perseus.list <- read.perseus.default(con, check = check)
+read.perseus.as.matrixData <- function(con, check = TRUE, addition = FALSE) {
+  perseus.list <- read.perseus.default(con, check = check, addition = addition)
   return(matrixData(main = perseus.list$main,
                     annotCols = perseus.list$annotCols,
                     annotRows = perseus.list$annotRows,
