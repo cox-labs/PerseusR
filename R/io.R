@@ -260,10 +260,8 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
       imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
     }
     if (plyr::empty(qualityData)) {
-      cat("GGGGG", file = 'C:\\Users\\shyu\\Documents\\XXX.txt')
       qualityData <- matrix('0', ncol = ncol(main), nrow = nrow(main))
     }
-    write(qualityData, file = 'C:\\Users\\shyu\\Documents\\QQQ.txt')
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
@@ -272,7 +270,7 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   columns <- c(names(main), names(annotCols))
   df <- main
-
+  write.csv(df, file = 'C:\\Users\\shyu\\Documents\\QQQ.txt')
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
