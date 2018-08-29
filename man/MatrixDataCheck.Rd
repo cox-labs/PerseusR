@@ -32,6 +32,10 @@ MatrixDataCheck(object, ...)
 
 \item{descriptions}{Descriptions of all the columns}
 
+\item{imputeData}{Imputation (True or False)}
+
+\item{qualityData}{Quality values}
+
 \item{all_colnames}{The colnames to be used}
 }
 \value{

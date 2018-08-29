@@ -39,9 +39,18 @@ write.perseus(object = NULL, con = NULL, ...)
 \item{annotRows}{a df containing collumns containing metadata (about the columns)}
 
 \item{descr}{a character vector that describes the collumns in main and in annotCols (in that order)}
+
+\item{imputeData}{a df containing imputation (True or False) (about the columns)}
+
+\item{qualityData}{a df containing quality value (about the columns)}
+
 }
 \value{
 writes to disk a perseus-interpretable text representation of an R objet
+
+\code{NULL}
+
+\code{NULL}
 
 \code{NULL}
 
