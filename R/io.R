@@ -127,6 +127,7 @@ read.perseus.default <- function(con, check = TRUE) {
   isMain <- types == 'E'
   main <- df[isMain]
   write.csv(main, file='C:\\Users\\shyu\\Documents\\VVV.txt')
+  cat(main[1, 1], file='C:\\Users\\shyu\\Documents\\BBB.txt')
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
   if (addition) {
