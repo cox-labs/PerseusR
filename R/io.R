@@ -259,9 +259,9 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     if (plyr::empty(qualityData)) {
       qualityData <- matrix('0', ncol = ncol(main), nrow = nrow(main))
     }
-    write.csv(imputeData, file='C:\\Users\\shyu\\Documents\\LLL.txt')
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
+        write.csv(imputeData[[i, j]], file='C:\\Users\\shyu\\Documents\\LLL.txt')
         main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
       }
     }
