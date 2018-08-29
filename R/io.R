@@ -256,11 +256,13 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
   if ((!is.null(imputeData)) || (!is.null(qualityData))) {
     if (is.null(imputeData)) {
-      imputeData <- data.frame(matrix('False', ncol = ncol(main), nrow = nrow(main)))
+      imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
     }
     if (is.null(qualityData)) {
-      qualityData <- data.frame(matrix('0', ncol = ncol(main), nrow = nrow(main)))
+      cat("GGGGG", file = 'XXX.txt')
+      qualityData <- matrix('0', ncol = ncol(main), nrow = nrow(main))
     }
+    write(qualityData, file = 'QQQ.txt')
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
