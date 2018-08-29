@@ -138,8 +138,8 @@ read.perseus.default <- function(con, check = TRUE) {
     }
   }
   main <- as.data.frame(sapply(main, as.numeric))
-  cat(typeof(main[1,1]), file='C:\\Users\\shyu\\Documents\\AAA.txt')
   imputeData <- data.frame(imputeData)
+  write.csv(imputeData, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   qualityData <- data.frame(qualityData)
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
