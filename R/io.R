@@ -122,6 +122,7 @@ read.perseus.default <- function(con, check = TRUE) {
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
   close(con)
+  write.csv(df, file='C:\\Users\\shyu\\Documents\\VVV.txt')
   isMain <- types == 'E'
   main <- df[isMain]
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
