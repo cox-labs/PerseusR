@@ -238,11 +238,11 @@ matrixData <- function(...) {
 #' cleanest solution.
 setMethod(initialize, "matrixData", function(.Object, ...) {
   args <- list(...)
-  write.csv(names(args), file='C:\\Users\\shyu\\Documents\\NNN.txt')
   if ("main" %in% names(args) && !("annotCols" %in% names(args))) {
     main <- args[['main']]
     args[["annotCols"]] <- data.frame(matrix(nrow=nrow(main), ncol=0))
   }
+  write.csv(main, file='C:\\Users\\shyu\\Documents\\NNN.txt')
   args[['.Object']] <- .Object
   do.call(callNextMethod, args)
 })
