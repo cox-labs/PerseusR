@@ -212,7 +212,6 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
 #' @export
 read.perseus <- read.perseus.as.matrixData
-write.csv(read.perseus@imputeData, file='FFF.txt')
 
 #' Write data to a perseus text file or connection
 #'
