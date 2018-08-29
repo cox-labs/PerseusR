@@ -288,7 +288,6 @@ main <- function(mdata) {
 #' @export
 `main<-` <- function(mdata, value) {
   mdata@main <- value
-  write.csv(mdata@main, file='C:\\Users\\shyu\\Documents\\NNN.txt')
   methods::validObject(mdata)
   return(mdata)
 }
