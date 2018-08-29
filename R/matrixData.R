@@ -153,7 +153,6 @@ MatrixDataCheck.list <- function(object, ...) {
       error = function(...) eval(defaults[[element]]) )
   }
   all_colnames <- c(colnames(object$main), colnames(object$annotationCols))
-  write.csv(object$imputeData, file='C:\\Users\\shyu\\Documents\\QQQ.txt')
   ret <- MatrixDataCheck.default(main = object$main,
                                  annotationRows = object$annotRows,
                                  annotationCols = object$annotCols,
@@ -206,8 +205,8 @@ MatrixDataCheck.ExpressionSet <- function(object, ...) {
 #' @slot annotCols Annotation Columns \code{data.frame}.
 #' @slot annotRows Annotation Rows \code{data.frame}.
 #' @slot description Column descriptions.
-#' @slot imputeData Isimputed or not \code{data.frame}.
-#' @slot qualityData quality number \code{data.frame}.
+#' @slot imputeData Imputation \code{data.frame}.
+#' @slot qualityData Quality values \code{data.frame}.
 #'
 #' @name matrixData-class
 #' @rdname matrixData-class
@@ -224,7 +223,7 @@ setClass("matrixData",
          validity = MatrixDataCheck.matrixData)
 
 #' matrixData constructor
-#' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}
+#' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}, \code{imputeData}, \code{qualityData}
 #' @inherit matrixData-class
 #' @family matrixData basic functions
 #' @export
@@ -349,7 +348,7 @@ description <- function(mdata) {
   return(mdata)
 }
 
-#' Get column imputation
+#' Get imputation of main data frame
 #' @param mdata matrixData
 #' @family matrixData basic functions
 #' @export
@@ -357,7 +356,7 @@ imputeData <- function(mdata) {
   mdata@imputeData
 }
 
-#' Set column imputation
+#' Set imputation of main data frame
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
@@ -368,7 +367,7 @@ imputeData <- function(mdata) {
   return(mdata)
 }
 
-#' Get column quality
+#' Get quality values of main data frame
 #' @param mdata matrixData
 #' @family matrixData basic functions
 #' @export
@@ -376,7 +375,7 @@ qualityData <- function(mdata) {
   mdata@qualityData
 }
 
-#' Set column imputation
+#' Set quality values of main data frame
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions

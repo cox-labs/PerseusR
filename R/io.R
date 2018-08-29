@@ -235,6 +235,8 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #' @param annotCols a df containing collumns containing metadata (about the rows)
 #' @param annotRows a df containing collumns containing metadata (about the columns)
 #' @param descr a character vector that describes the collumns in main and in annotCols (in that order)
+#' @param imputeData a df containing imputations -- True or False of main data frame
+#' @param qualityData a df containing quality values of main data frame
 #' @param con A \code{\link{connection}} object or the path to output file
 #' @param ... additional arguments passed to other functions
 #' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
