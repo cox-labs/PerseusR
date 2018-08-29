@@ -322,6 +322,7 @@ write.perseus.matrixData <- function(object, con , ...) {
   annotCols <- annotCols(object)
   imputeData <- imputeData(object)
   qualityData <- qualityData(object)
+  write.csv(imputeData(object), file='C:\\Users\\shyu\\Documents\\RRR.txt')
 
   (function(...){
     write.perseus.default(main = main, annotCols = annotCols,
