@@ -108,7 +108,7 @@ read.perseus.default <- function(con, check = TRUE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
 #  colClasses <- map_perseus_types(types, .typeMap)
-  dfCheck <- utils::read.table(conCheck, header = TRUE,
+  dfCheck <- utils::read.delim(conCheck, header = TRUE,
                           sep = '\t', comment.char = '#')
   close(conCheck)
   if (grepl(';', dfCheck[1, 1])){
@@ -117,7 +117,7 @@ read.perseus.default <- function(con, check = TRUE) {
     colClasses <- map_perseus_types(types, .typeMapNormal)
   }
   seek(con)
-  df <- utils::read.table(con, header = TRUE,
+  df <- utils::read.delim(con, header = TRUE,
                           sep = '\t', comment.char = '#',
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
