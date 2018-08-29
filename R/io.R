@@ -116,17 +116,13 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
   close(con)
-  write.csv(df, file='C:\\Users\\shyu\\Documents\\ZZZ.txt')
   isMain <- types == 'E'
   main <- df[isMain]
-  cat(main[1, 1], file='C:\\Users\\shyu\\Documents\\BBB.txt')
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
-  if (addition1) {
+  if (addition) {
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
-        cat(main[i, j], file='C:\\Users\\shyu\\Documents\\OOO.txt')
-        cat(typeof(main[i, j]), file='C:\\Users\\shyu\\Documents\\OOO.txt', append = TRUE)
         mainDataList <- unlist(strsplit(main[i, j], ';'))
         if (length(mainDataList) == 1){
         } else {
