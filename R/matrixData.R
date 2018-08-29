@@ -113,7 +113,6 @@ MatrixDataCheck.matrixData <- function(object) {
   annotationCols <- object@annotCols
   descriptions <- object@description
   imputeData <- object@imputeData
-  write.csv(object@imputeData, file='C:\\Users\\shyu\\Documents\\QQQ.txt')
   qualityData <- object@qualityData
   all_colnames <- c(colnames(mainDF), colnames(annotationCols))
 
@@ -154,7 +153,7 @@ MatrixDataCheck.list <- function(object, ...) {
       error = function(...) eval(defaults[[element]]) )
   }
   all_colnames <- c(colnames(object$main), colnames(object$annotationCols))
-
+  write.csv(object$imputeData, file='C:\\Users\\shyu\\Documents\\QQQ.txt')
   ret <- MatrixDataCheck.default(main = object$main,
                                  annotationRows = object$annotRows,
                                  annotationCols = object$annotCols,
