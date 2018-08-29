@@ -38,5 +38,6 @@ intParamValue <- function(parameters, name) {
 #' @export
 #' @return The selected number
 boolParamValue <- function(parameters, name) {
-  as.logical(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
+  value <- as.logical(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
+  return(value)
 }
