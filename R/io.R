@@ -85,16 +85,13 @@ create_annotRows <- function(commentRows, isMain) {
 #' }
 #'
 read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
-  cat(addition, file='C:\\Users\\shyu\\Documents\\VVV.txt')
   if (is.character(con)) {
-    conCheck <- file(con, open = 'r')
     con <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
     fileCon <- file()
     writeLines(readLines(con), fileCon)
     close(con)
     con <- fileCon
-    conCheck <- fileCon
   }
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
@@ -108,10 +105,7 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
 #  colClasses <- map_perseus_types(types, .typeMap)
-  dfCheck <- utils::read.delim(conCheck, header = TRUE,
-                          sep = '\t', comment.char = '#')
-  close(conCheck)
-  if (grepl(';', dfCheck[1, 1])){
+  if (addition){
     colClasses <- map_perseus_types(types, .typeMapAddition)
   } else {
     colClasses <- map_perseus_types(types, .typeMapNormal)
