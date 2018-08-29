@@ -250,11 +250,14 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #' @export
 write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
                           annotRows = NULL, descr = NULL, ...) {
-  cat('VVV', file='C:\\Users\\shyu\\Documents\\XXX.txt')
+
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
-
+  cat(ncol(imputeData), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n')
+  cat(ncol(main), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
+  cat(nrow(imputeData), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
+  cat(nrow(main), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
   if ((ncol(imputeData) == ncol(main)) && (nrow(imputeData) == nrow(main))) {
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
