@@ -118,9 +118,7 @@ read.perseus.default <- function(con, check = TRUE) {
   }
   seek(con)
   df <- utils::read.delim(con, header = TRUE,
-                          sep = '\t', comment.char = '#',
-                          colClasses = colClasses, fill = TRUE,
-                          quote = "")
+                          sep = '\t', comment.char = '#')
   close(con)
   write.csv(df, file='C:\\Users\\shyu\\Documents\\ZZZ.txt')
   isMain <- types == 'E'
