@@ -196,6 +196,8 @@ MatrixDataCheck.ExpressionSet <- function(object, ...) {
 #' @slot annotCols Annotation Columns \code{data.frame}.
 #' @slot annotRows Annotation Rows \code{data.frame}.
 #' @slot description Column descriptions.
+#' @slot imputeData Isimputed or not.
+#' @slot qualityData quality number.
 #'
 #' @name matrixData-class
 #' @rdname matrixData-class
@@ -206,7 +208,9 @@ setClass("matrixData",
          slots = c(main = "data.frame",
                    annotCols = "data.frame",
                    annotRows = "data.frame",
-                   description = "character"),
+                   description = "character",
+                   imputeData = "character",
+                   qualityData = "character"),
          validity = MatrixDataCheck.matrixData)
 
 #' matrixData constructor
