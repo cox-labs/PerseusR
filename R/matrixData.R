@@ -242,7 +242,7 @@ setMethod(initialize, "matrixData", function(.Object, ...) {
     main <- args[['main']]
     args[["annotCols"]] <- data.frame(matrix(nrow=nrow(main), ncol=0))
   }
-  write.csv(main, file='C:\\Users\\shyu\\Documents\\NNN.txt')
+
   args[['.Object']] <- .Object
   do.call(callNextMethod, args)
 })
@@ -288,6 +288,7 @@ main <- function(mdata) {
 #' @export
 `main<-` <- function(mdata, value) {
   mdata@main <- value
+  write.csv(mdata@main, file='C:\\Users\\shyu\\Documents\\NNN.txt')
   methods::validObject(mdata)
   return(mdata)
 }
