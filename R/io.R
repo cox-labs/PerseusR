@@ -136,8 +136,6 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   main <- as.data.frame(sapply(main, as.numeric))
   imputeData <- as.data.frame(imputeData)
   colnames(imputeData) <- colnames(main)
-  write.csv(imputeData, file='C:\\Users\\shyu\\Documents\\AAA.txt')
-  write.csv(main, file='C:\\Users\\shyu\\Documents\\PPP.txt')
   qualityData <- as.data.frame(qualityData)
   colnames(qualityData) <- colnames(main)
   annotCols <- df[!isMain]
@@ -268,7 +266,6 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   columns <- c(names(main), names(annotCols))
   df <- main
-  write.csv(df, file = 'C:\\Users\\shyu\\Documents\\QQQ.txt')
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
@@ -327,7 +324,6 @@ write.perseus.matrixData <- function(object, con , ...){
   annotCols <- annotCols(object)
   imputeData <- imputeData(object)
   qualityData <- qualityData(object)
-  write.csv(imputeData(object), file='C:\\Users\\shyu\\Documents\\RRR.txt')
 
   (function(...){
     write.perseus.default(main = main, annotCols = annotCols,
