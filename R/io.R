@@ -261,7 +261,6 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     }
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
-        cat(as.character(imputeData[i, j]), file='C:\\Users\\shyu\\Documents\\JJJ.txt')
         mergeMain <- unlist(list(main[i, j], as.character(imputeData[i, j]), qualityData[i, j]))
         main[i, j] <- paste(mergeMain, collapse = ';')
       }
