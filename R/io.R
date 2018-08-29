@@ -122,7 +122,7 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   cat(main[1, 1], file='C:\\Users\\shyu\\Documents\\BBB.txt')
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
-  if (addition) {
+  if (addition1) {
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         cat(main[i, j], file='C:\\Users\\shyu\\Documents\\OOO.txt')
