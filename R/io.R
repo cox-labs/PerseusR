@@ -111,19 +111,18 @@ read.perseus.default <- function(con, check = TRUE) {
   dfCheck <- utils::read.table(conCheck, header = TRUE,
                           sep = '\t', comment.char = '#')
   close(conCheck)
-  addition <- FALSE
   if (grepl(';', dfCheck[1, 1])){
-    df <- dfCheck
-    addition <- TRUE
+    colClasses <- map_perseus_types(types, .typeMapAddition)
   } else {
     colClasses <- map_perseus_types(types, .typeMapNormal)
-    seek(con)
-    df <- utils::read.table(con, header = TRUE,
-                            sep = '\t', comment.char = '#',
-                            colClasses = colClasses, fill = TRUE,
-                            quote = "")
-    close(con)
   }
+  seek(con)
+  df <- utils::read.table(con, header = TRUE,
+                          sep = '\t', comment.char = '#',
+                          colClasses = colClasses, fill = TRUE,
+                          quote = "")
+  close(con)
+  write.csv(df, file='C:\\Users\\shyu\\Documents\\ZZZ.txt')
   isMain <- types == 'E'
   main <- df[isMain]
   write.csv(main, file='C:\\Users\\shyu\\Documents\\VVV.txt')
