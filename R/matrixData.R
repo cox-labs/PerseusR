@@ -8,6 +8,8 @@
 #' @param annotationRows Rows containing annotation information
 #' @param annotationCols Collumns containing annotation information
 #' @param descriptions Descriptions of all the columns
+#' @param imputeData Is imputed or not
+#' @param qualityData quality number
 #' @param all_colnames The colnames to be used
 #'
 #'
@@ -41,7 +43,8 @@ MatrixDataCheck <- function(object, ...) {
 #' @export
 MatrixDataCheck.default <- function(object = NULL,  main,
                                     annotationRows, annotationCols,
-                                    descriptions, all_colnames, ...) {
+                                    descriptions, imputeData, qualityData,
+                                    all_colnames, ...) {
   errors <- character()
 
   # We could consider using a numeric matrix instead of
@@ -109,12 +112,16 @@ MatrixDataCheck.matrixData <- function(object) {
   annotationRows <- object@annotRows
   annotationCols <- object@annotCols
   descriptions <- object@description
+  imputeData <- object@imputeData
+  qualityData <- object@qualityData
   all_colnames <- c(colnames(mainDF), colnames(annotationCols))
 
   ret <- MatrixDataCheck.default(main = mainDF,
                          annotationRows = annotationRows,
                          annotationCols = annotationCols,
                          descriptions = descriptions,
+                         imputeData = imputeData,
+                         qualityData = qualityData,
                          all_colnames = all_colnames)
   return(ret)
 }
@@ -133,7 +140,8 @@ MatrixDataCheck.list <- function(object, ...) {
   stopifnot(sum(c('main', 'annotCols') %in% names(object)) > 0)
 
   slots <- c('main', 'annotRows',
-             'annotCols', 'descriptions')
+             'annotCols', 'descriptions', 'imputeData',
+             'qualityData')
   defaults <- c(
     replicate(3, quote(data.frame())),
     quote(character(
@@ -150,6 +158,8 @@ MatrixDataCheck.list <- function(object, ...) {
                                  annotationRows = object$annotRows,
                                  annotationCols = object$annotCols,
                                  descriptions = object$descriptions,
+                                 imputeData = object$imputeData,
+                                 qualityData = object$qualityData,
                                  all_colnames = all_colnames)
   if (is.logical(ret) & ret) {
     return(ret)
