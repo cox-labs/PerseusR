@@ -110,7 +110,7 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   } else {
     colClasses <- map_perseus_types(types, .typeMapNormal)
   }
-  seek(con)
+  seek(con, 0)
   df <- utils::read.delim(con, header = TRUE,
                           sep = '\t', comment.char = '#',
                           colClasses = colClasses, fill = TRUE,
