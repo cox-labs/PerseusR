@@ -254,11 +254,13 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
-  cat(ncol(imputeData), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n')
-  cat(ncol(main), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
-  cat(nrow(imputeData), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
-  cat(nrow(main), file='C:\\Users\\shyu\\Documents\\XXX.txt', sep='\n', append = TRUE)
-  if ((ncol(imputeData) == ncol(main)) && (nrow(imputeData) == nrow(main))) {
+  if ((!is.null(imputeData)) || (!is.null(qualityData))) {
+    if (is.null(imputeData)) {
+      imputeData <- data.frame(matrix('False', ncol = ncol(main), nrow = nrow(main)))
+    }
+    if (is.null(qualityData)) {
+      qualityData <- data.frame(matrix('0', ncol = ncol(main), nrow = nrow(main)))
+    }
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         main[i, j] <- paste(c(main[i, j], imputeData[i, j], qualityData[i, j]), collapse = ';')
@@ -278,8 +280,13 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     descr[1] <- paste0('#!{Description}', descr[1])
     writeLines(paste0(descr, collapse = '\t'), con)
   }
-  type <- c(rep('E', ncol(main)),
-            infer_perseus_annotation_types(annotCols, .typeMap))
+  if ((!is.null(imputeData)) || (!is.null(qualityData))) {
+    type <- c(rep('E', ncol(main)),
+              infer_perseus_annotation_types(annotCols, .typeMapNormal))
+  } else {
+    type <- c(rep('E', ncol(main)),
+              infer_perseus_annotation_types(annotCols, .typeMapAddition))
+  }
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   for (name in names(annotRows)) {
