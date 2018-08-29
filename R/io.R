@@ -190,7 +190,7 @@ read.perseus.as.matrixData <- function(con, check = TRUE) {
 #' @family read.perseus
 #' @export
 read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
-
+  write.csv("DDDD", file = 'C:\\Users\\shyu\\Documents\\ZZZ.txt')
   if (!requireNamespace("Biobase", quietly = TRUE)) {
     stop('This function requires the Biobase package, please install it in the bioconductor repository')
   }
@@ -403,7 +403,7 @@ write.perseus.matrix <- function(object, con, annotCols = NULL, ...) {
 #'
 #' @export
 write.perseus.ExpressionSet <- function(object, con, ...) {
-
+  write.csv("DDDD", file = 'C:\\Users\\shyu\\Documents\\WWW.txt')
   mainDF <- data.frame(Biobase::exprs(object))
   annotationRows <- methods::as(object@phenoData, 'data.frame')
   descriptions <- Biobase::annotation(object)
