@@ -255,11 +255,11 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
-  if ((!is.null(imputeData)) || (!is.null(qualityData))) {
-    if (is.null(imputeData)) {
+  if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
+    if (plyr::empty(imputeData)) {
       imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
     }
-    if (is.null(qualityData)) {
+    if (plyr::empty(qualityData)) {
       cat("GGGGG", file = 'C:\\Users\\shyu\\Documents\\XXX.txt')
       qualityData <- matrix('0', ncol = ncol(main), nrow = nrow(main))
     }
@@ -283,12 +283,12 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     descr[1] <- paste0('#!{Description}', descr[1])
     writeLines(paste0(descr, collapse = '\t'), con)
   }
-  if ((!is.null(imputeData)) || (!is.null(qualityData))) {
-    type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapNormal))
-  } else {
+  if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
     type <- c(rep('E', ncol(main)),
               infer_perseus_annotation_types(annotCols, .typeMapAddition))
+  } else {
+    type <- c(rep('E', ncol(main)),
+              infer_perseus_annotation_types(annotCols, .typeMapNormal))
   }
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
