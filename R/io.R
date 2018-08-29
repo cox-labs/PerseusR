@@ -212,7 +212,7 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
 #' @export
 read.perseus <- read.perseus.as.matrixData
-
+write.csv(read.perseus@imputeData, file='FFF.txt')
 
 #' Write data to a perseus text file or connection
 #'
@@ -316,7 +316,6 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 #' @method write.perseus matrixData
 #' @rdname write.perseus
 write.perseus.matrixData <- function(object, con , ...){
-  print(attributes(object))
   descr <- description(object)
   annotRows <- as.list(annotRows(object))
   main <- main(object)
