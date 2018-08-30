@@ -20,6 +20,8 @@ read.perseus.as.ExpressionSet(con, check = TRUE)
 \item{con}{A \code{\link{connection}} object or the path to input file}
 
 \item{check}{Logical indicating whether to check for the validity of the exported object (slightly slower)}
+
+\item{addition}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
 }
 \value{
 DataFrame with additional 'annotationRows' attribute
