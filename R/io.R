@@ -151,7 +151,6 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
     rownames(annotCols) <- rowNames
     rownames(annotRows) <- colNames
   }
-  write.csv(main, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   perseus.list <- list(main = main,
                       annotCols = annotCols,
                       annotRows = annotRows,
@@ -285,6 +284,7 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     type <- c(rep('E', ncol(main)),
               infer_perseus_annotation_types(annotCols, .typeMapNormal))
   }
+  write.csv(df, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   for (name in names(annotRows)) {
