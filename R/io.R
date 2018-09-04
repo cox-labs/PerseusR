@@ -14,7 +14,7 @@
 .typeMapAdditionPrint <- list(Perseus = c('N', 'C', 'T',
                                           'M'),
                               R = c('numeric', 'factor',
-                                    'character', 'character')
+                                    'character', 'character'))
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
