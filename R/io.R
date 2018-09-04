@@ -11,6 +11,10 @@
                          R = c('numeric', 'character',
                                'factor', 'character',
                                'character'))
+.typeMapAdditionPrint <- list(Perseus = c('N', 'C', 'T',
+                                          'M'),
+                              R = c('numeric', 'factor',
+                                    'character', 'character')
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
@@ -279,7 +283,7 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
     type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapAddition))
+              infer_perseus_annotation_types(annotCols, .typeMapAdditionPrint))
   } else {
     type <- c(rep('E', ncol(main)),
               infer_perseus_annotation_types(annotCols, .typeMapNormal))
