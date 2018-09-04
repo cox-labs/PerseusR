@@ -151,7 +151,7 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
     rownames(annotCols) <- rowNames
     rownames(annotRows) <- colNames
   }
-
+  write.csv(main, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   perseus.list <- list(main = main,
                       annotCols = annotCols,
                       annotRows = annotRows,
