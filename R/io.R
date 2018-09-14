@@ -18,10 +18,10 @@
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
-    plyr::mapvalues(typeAnnotation,
-                    from = typeMap$Perseus,
-                    to = typeMap$R,
-                    warn_missing = FALSE)
+  plyr::mapvalues(typeAnnotation,
+                  from = typeMap$Perseus,
+                  to = typeMap$R,
+                  warn_missing = FALSE)
 }
 
 #' Infer Perseus type annotation row from DataFrame column classes
@@ -108,14 +108,13 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   types <- commentRows$Type
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
-#  colClasses <- map_perseus_types(types, .typeMap)
   if (addition){
     colClasses <- map_perseus_types(types, .typeMapAddition)
   } else {
     colClasses <- map_perseus_types(types, .typeMapNormal)
   }
   seek(con, 0)
-  df <- utils::read.delim(con, header = TRUE,
+  df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
                           colClasses = colClasses, fill = TRUE,
                           quote = "")
@@ -323,7 +322,7 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 #' @export
 #' @method write.perseus matrixData
 #' @rdname write.perseus
-write.perseus.matrixData <- function(object, con , ...){
+write.perseus.matrixData <- function(object, con , ...) {
   descr <- description(object)
   annotRows <- as.list(annotRows(object))
   main <- main(object)
