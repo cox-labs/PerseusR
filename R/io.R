@@ -279,6 +279,7 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   columns <- c(names(main), names(annotCols))
   df <- main
+  write.csv(df, file="C:\\Users\\shyu\\Documents\\AAA.txt")
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
@@ -296,7 +297,6 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     type <- c(rep('E', ncol(main)),
               infer_perseus_annotation_types(annotCols, .typeMapWithoutAdditionalMatrices))
   }
-  write.csv(type, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   for (name in names(annotRows)) {

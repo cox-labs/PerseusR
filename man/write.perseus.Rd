@@ -13,7 +13,8 @@
 write.perseus(object = NULL, con = NULL, ...)
 
 \method{write.perseus}{default}(object = NULL, con = NULL, main,
-  annotCols = NULL, annotRows = NULL, descr = NULL, ...)
+  annotCols = NULL, annotRows = NULL, descr = NULL, imputeData = NULL,
+  qualityData = NULL...)
 
 \method{write.perseus}{matrixData}(object, con, ...)
 

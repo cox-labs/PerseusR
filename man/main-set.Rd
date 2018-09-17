@@ -20,7 +20,7 @@ Other matrixData basic functions: \code{\link{annotCols<-}},
   \code{\link{annotRows}}, \code{\link{description<-}},
   \code{\link{description}}, \code{\link{main}},
   \code{\link{imputeData}}, \code{\link{imputeData<-}},
-  \code{\link{QualityData}}, \code{\link{qualityData<-}},
+  \code{\link{qualityData}}, \code{\link{qualityData<-}},
   \code{\link{matrixData-class}}, \code{\link{matrixData}},
   \code{\link{names,matrixData-method}}
 }

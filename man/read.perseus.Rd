@@ -8,11 +8,11 @@
 \alias{read.perseus.as.ExpressionSet}
 \title{Read Perseus matrix files}
 \usage{
-read.perseus.default(con, check = TRUE)
+read.perseus.default(con, check = TRUE, additionalMatrices = FALSE)
 
 read.perseus.as.list(con, check = TRUE)
 
-read.perseus.as.matrixData(con, check = TRUE)
+read.perseus.as.matrixData(con, check = TRUE, additionalMatrices = FALSE)
 
 read.perseus.as.ExpressionSet(con, check = TRUE)
 }
@@ -21,7 +21,7 @@ read.perseus.as.ExpressionSet(con, check = TRUE)
 
 \item{check}{Logical indicating whether to check for the validity of the exported object (slightly slower)}
 
-\item{addition}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
+\item{additionMatrices}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
 }
 \value{
 DataFrame with additional 'annotationRows' attribute

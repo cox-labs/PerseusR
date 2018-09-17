@@ -4,7 +4,7 @@
 \alias{boolParamValue}
 \title{Bool parameter value}
 \usage{
-intParamValue(parameters, name)
+boolParamValue(parameters, name)
 }
 \arguments{
 \item{parameters}{The parameters object (see \code{\link{parseParameters}})}

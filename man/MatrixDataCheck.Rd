@@ -11,7 +11,7 @@
 MatrixDataCheck(object, ...)
 
 \method{MatrixDataCheck}{default}(object = NULL, main, annotationRows,
-  annotationCols, descriptions, all_colnames, ...)
+  annotationCols, descriptions, imputeData, qualityData, all_colnames, ...)
 
 \method{MatrixDataCheck}{matrixData}(object)
 
