@@ -1,17 +1,26 @@
 # helper variable that maps between R and perseus types
-.typeMapNormal <- list(Perseus = c('N', 'E',
+
+# without additional matrices, E will be only numeric elements.
+.typeMapWithoutAdditionalMatrices <- list(Perseus = c('N', 'E',
                                    'C', 'T',
                                    'M'),
                         R = c('numeric', 'numeric',
                               'factor', 'character',
                               'character'))
-.typeMapAddition <- list(Perseus = c('N', 'E',
+
+# with additional matrices, main columns (E) will contain intensity,
+# imputation and quality (split by semicolons). Thus,
+# main columns (E) needs to be changed to character.
+.typeMapWithAdditionalMatrices <- list(Perseus = c('N', 'E',
                                      'C', 'T',
                                      'M'),
                          R = c('numeric', 'character',
                                'factor', 'character',
                                'character'))
-.typeMapAdditionPrint <- list(Perseus = c('N', 'C', 'T',
+
+# For printing additional matrices to Perseus, main columns (E) are
+# printed separately in order to avoid the conflict of text columns.
+.typeMapPrintAdditionalMatrices <- list(Perseus = c('N', 'C', 'T',
                                           'M'),
                               R = c('numeric', 'factor',
                                     'character', 'character'))
@@ -88,7 +97,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' mdata <- read.perseus(con=testFile)
 #' }
 #'
-read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
+read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) {
   if (is.character(con)) {
     con <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
@@ -108,10 +117,10 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   types <- commentRows$Type
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
-  if (addition){
-    colClasses <- map_perseus_types(types, .typeMapAddition)
+  if (additionalMatrices){
+    colClasses <- map_perseus_types(types, .typeMapWithAdditionalMatrices)
   } else {
-    colClasses <- map_perseus_types(types, .typeMapNormal)
+    colClasses <- map_perseus_types(types, .typeMapWithoutAdditionalMatrices)
   }
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE,
@@ -123,7 +132,7 @@ read.perseus.default <- function(con, check = TRUE, addition = FALSE) {
   main <- df[isMain]
   imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
   qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
-  if (addition) {
+  if (additionalMatrices) {
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         mainDataList <- unlist(strsplit(main[i, j], ';'))
@@ -175,8 +184,8 @@ read.perseus.as.list <- function(con, check = TRUE) {
 #' @describeIn read.perseus Difference between the mean and the median
 #' @family read.perseus
 #' @export
-read.perseus.as.matrixData <- function(con, check = TRUE, addition = FALSE) {
-  perseus.list <- read.perseus.default(con, check = check, addition = addition)
+read.perseus.as.matrixData <- function(con, check = TRUE, additionalMatrices = FALSE) {
+  perseus.list <- read.perseus.default(con, check = check, additionalMatrices = additionalMatrices)
   return(matrixData(main = perseus.list$main,
                     annotCols = perseus.list$annotCols,
                     annotRows = perseus.list$annotRows,
@@ -282,10 +291,10 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
     type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapAdditionPrint))
+              infer_perseus_annotation_types(annotCols, .typeMapPrintAdditionalMatrices))
   } else {
     type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapNormal))
+              infer_perseus_annotation_types(annotCols, .typeMapWithoutAdditionalMatrices))
   }
   write.csv(type, file='C:\\Users\\shyu\\Documents\\AAA.txt')
   type[1] <- paste0('#!{Type}', type[1])

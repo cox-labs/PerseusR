@@ -48,6 +48,9 @@ power <- intParamValue(parameters, "Power")
 # read data
 mdata <- read.perseus(inFile)
 
+# if additional matrices are included, the additional information like imputation can be extracted.
+imputeMatrix <- imputeData(mdata)
+
 # run any kind of analysis
 library(WGCNA)
 net <- blockwiseModules(t(main(mdata)), power = power, corFnc = corFnc, networkType = networkType)
@@ -58,6 +61,11 @@ colnames(df) <- c('left', 'right', 'distance')
 # save results to matrixData and write to file
 outMdata <- matrixData(main=df)
 write.perseus(outMdata, outFile)
+
+# if the additional matrices like imputation are included, they can be written by using 
+imputeData and qualityData
+
+outdata <- matrixData(main = combine, imputeData = imputeMatrix)
 ```
 
 # Licensing and contributions
