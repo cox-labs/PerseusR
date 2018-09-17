@@ -11,7 +11,7 @@
 MatrixDataCheck(object, ...)
 
 \method{MatrixDataCheck}{default}(object = NULL, main, annotationRows,
-  annotationCols, descriptions, all_colnames, ...)
+  annotationCols, descriptions, imputeData, qualityData, all_colnames, ...)
 
 \method{MatrixDataCheck}{matrixData}(object)
 
@@ -31,6 +31,10 @@ MatrixDataCheck(object, ...)
 \item{annotationCols}{Collumns containing annotation information}
 
 \item{descriptions}{Descriptions of all the columns}
+
+\item{imputeData}{Imputation (True or False)}
+
+\item{qualityData}{Quality values}
 
 \item{all_colnames}{The colnames to be used}
 }

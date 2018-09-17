@@ -29,3 +29,25 @@ singleChoiceParamValue <- function(parameters, name) {
 intParamValue <- function(parameters, name) {
   as.numeric(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
 }
+
+#' Bool parameter value
+#'
+#' Extract the value chosen in an \code{BoolParam}
+#' @param parameters The parameters object (see \code{\link{parseParameters}})
+#' @param name The name of the parameter
+#' @export
+#' @return The selected boolean
+boolParamValue <- function(parameters, name) {
+  as.logical(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
+}
+
+#' Single choice index
+#'
+#' Extract the index chosen in an \code{BoolParam}
+#' @param parameters The parameters object (see \code{\link{parseParameters}})
+#' @param name The name of the parameter
+#' @export
+#' @return The selected index
+singleChoiceParamInd <- function(parameters, name) {
+  as.numeric(XML::xmlValue(parameters[[sprintf("//*[@Name='%s']/Value", name)]]))
+}
