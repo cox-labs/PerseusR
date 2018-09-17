@@ -130,9 +130,9 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
-  imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
-  qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
   if (additionalMatrices) {
+    imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
+    qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         mainDataList <- unlist(strsplit(main[i, j], ';'))
@@ -144,6 +144,9 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
         }
       }
     }
+  } else {
+    imputeData <- NULL
+    qualityData <- NULL
   }
   main <- as.data.frame(sapply(main, as.numeric))
   imputeData <- as.data.frame(imputeData)
@@ -279,7 +282,6 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   columns <- c(names(main), names(annotCols))
   df <- main
-  write.csv(df, file="C:\\Users\\shyu\\Documents\\AAA.txt")
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
