@@ -144,15 +144,15 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
         }
       }
     }
+    imputeData <- as.data.frame(imputeData)
+    colnames(imputeData) <- colnames(main)
+    qualityData <- as.data.frame(qualityData)
+    colnames(qualityData) <- colnames(main)
   } else {
     imputeData <- NULL
     qualityData <- NULL
   }
   main <- as.data.frame(sapply(main, as.numeric))
-  imputeData <- as.data.frame(imputeData)
-  colnames(imputeData) <- colnames(main)
-  qualityData <- as.data.frame(qualityData)
-  colnames(qualityData) <- colnames(main)
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
   if (is.null(descr)) {

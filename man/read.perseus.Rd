@@ -21,7 +21,7 @@ read.perseus.as.ExpressionSet(con, check = TRUE)
 
 \item{check}{Logical indicating whether to check for the validity of the exported object (slightly slower)}
 
-\item{additionMatrices}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
+\item{additionalMatrices}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
 }
 \value{
 DataFrame with additional 'annotationRows' attribute
