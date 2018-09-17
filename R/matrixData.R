@@ -213,23 +213,13 @@ MatrixDataCheck.ExpressionSet <- function(object, ...) {
 #' @family matrixData basic functions
 #'
 #' @export
-if (plyr::empty(imputeData)){
-  imputeType <- NULL
-} else {
-  imputeType <- "data.frame"
-}
-if (plyr::empty(qualityData)){
-  qualityType <- NULL
-} else {
-  qualityType <- "data.frame"
-}
 setClass("matrixData",
          slots = c(main = "data.frame",
                    annotCols = "data.frame",
                    annotRows = "data.frame",
                    description = "character",
-                   imputeData = imputeType,
-                   qualityData = qualityType),
+                   imputeData = "data.frame",
+                   qualityData = "data.frame"),
          validity = MatrixDataCheck.matrixData)
 
 #' matrixData constructor

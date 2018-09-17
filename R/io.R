@@ -144,14 +144,11 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
         }
       }
     }
-    imputeData <- as.data.frame(imputeData)
-    colnames(imputeData) <- colnames(main)
-    qualityData <- as.data.frame(qualityData)
-    colnames(qualityData) <- colnames(main)
-  } else {
-    imputeData <- NULL
-    qualityData <- NULL
   }
+  imputeData <- as.data.frame(imputeData)
+  colnames(imputeData) <- colnames(main)
+  qualityData <- as.data.frame(qualityData)
+  colnames(qualityData) <- colnames(main)
   main <- as.data.frame(sapply(main, as.numeric))
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
@@ -173,6 +170,10 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
                       imputeData = imputeData,
                       qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
+  if (!additionalMatrices) {
+    perseus.list$imputeData <- NULL
+    perseus.list$qualityData <- NULL
+  }
   write.csv(df, file="C:\\Users\\shyu\\Documents\\AAA.txt")
   return(perseus.list)
 }
