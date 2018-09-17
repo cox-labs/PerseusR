@@ -170,11 +170,6 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
                       imputeData = imputeData,
                       qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
-  if (!additionalMatrices) {
-    perseus.list$imputeData <- NULL
-    perseus.list$qualityData <- NULL
-  }
-  write.csv(df, file="C:\\Users\\shyu\\Documents\\AAA.txt")
   return(perseus.list)
 }
 
@@ -269,16 +264,19 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
   if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
-    if (plyr::empty(imputeData)) {
-      imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
+    imputeVector <-as.vector(t(imputeData))
+    qualityVector <-as.vector(t(qualityData))
+    if ((length(unique(imputeVector)) != 1) || (length(unique(qualityVector)) != 1)) {
+      importAdditionalMatrix = TRUE
+    } else {
+      importAdditionalMatrix = FALSE
     }
-    if (plyr::empty(qualityData)) {
-      qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
-    }
-    for (i in 1:nrow(main)){
-      for (j in 1:ncol(main)){
-        mergeMain <- unlist(list(main[i, j], as.character(imputeData[i, j]), qualityData[i, j]))
-        main[i, j] <- paste(mergeMain, collapse = ';')
+    if (importAdditionalMatrix) {
+      for (i in 1:nrow(main)){
+        for (j in 1:ncol(main)){
+          mergeMain <- unlist(list(main[i, j], as.character(imputeData[i, j]), qualityData[i, j]))
+          main[i, j] <- paste(mergeMain, collapse = ';')
+        }
       }
     }
   }
