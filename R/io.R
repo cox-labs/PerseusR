@@ -172,6 +172,7 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
                       description = descr,
                       imputeData = imputeData,
                       qualityData = qualityData)
+  write.csv(df, file="C:\\Users\\shyu\\Documents\\AAA.txt")
   if (check) MatrixDataCheck(perseus.list)
   return(perseus.list)
 }
