@@ -130,9 +130,9 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
+  imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
+  qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
   if (additionalMatrices) {
-    imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
-    qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
     for (i in 1:nrow(main)){
       for (j in 1:ncol(main)){
         mainDataList <- unlist(strsplit(main[i, j], ';'))
