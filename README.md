@@ -50,6 +50,7 @@ mdata <- read.perseus(inFile)
 
 # if additional matrices are included, the additional information like imputation can be extracted.
 imputeMatrix <- imputeData(mdata)
+qualityMatrix <- qualityData(mdata)
 
 # run any kind of analysis
 library(WGCNA)
@@ -62,10 +63,10 @@ colnames(df) <- c('left', 'right', 'distance')
 outMdata <- matrixData(main=df)
 write.perseus(outMdata, outFile)
 
-# if the additional matrices like imputation are included, they can be written by using 
-imputeData and qualityData
+# save results to matrixData and write to file with additional matrices
 
-outdata <- matrixData(main = combine, imputeData = imputeMatrix)
+outdata <- matrixData(main = combine, imputeData = imputeMatrix, qualityData = qualityMatrix)
+write.perseus(outMdata, outFile)
 ```
 
 # Licensing and contributions
