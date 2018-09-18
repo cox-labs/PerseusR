@@ -1,29 +1,25 @@
 # helper variable that maps between R and perseus types
 
-# without additional matrices, E will be only numeric elements.
-.typeMapWithoutAdditionalMatrices <- list(Perseus = c('N', 'E',
-                                   'C', 'T',
-                                   'M'),
-                        R = c('numeric', 'numeric',
-                              'factor', 'character',
-                              'character'))
-
-# with additional matrices, main columns (E) will contain intensity,
-# imputation and quality (split by semicolons). Thus,
-# main columns (E) needs to be changed to character.
-.typeMapWithAdditionalMatrices <- list(Perseus = c('N', 'E',
-                                     'C', 'T',
-                                     'M'),
-                         R = c('numeric', 'character',
-                               'factor', 'character',
-                               'character'))
-
-# For printing additional matrices to Perseus, main columns (E) are
-# printed separately in order to avoid the conflict of text columns.
-.typeMapPrintAdditionalMatrices <- list(Perseus = c('N', 'C', 'T',
-                                          'M'),
-                              R = c('numeric', 'factor',
-                                    'character', 'character'))
+.typeMap <- function(readPerseus = FALSE, writePerseus = FALSE,
+                    additionalMatrices = FALSE){
+  if (additionalMatrices){
+    if (readPerseus){
+      return(list(Perseus = c('N', 'E', 'C', 'T', 'M'),
+                  R = c('numeric', 'character',
+                        'factor', 'character',
+                        'character')))
+    } else if (writePerseus){
+      return(list(Perseus = c('N', 'C', 'T', 'M'),
+                  R = c('numeric', 'factor',
+                        'character', 'character')))
+    }
+  } else {
+    return(list(Perseus = c('N', 'E', 'C', 'T', 'M'),
+                R = c('numeric', 'numeric',
+                      'factor', 'character',
+                      'character')))
+  }
+}
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
@@ -118,9 +114,9 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
   if (additionalMatrices){
-    colClasses <- map_perseus_types(types, .typeMapWithAdditionalMatrices)
+    colClasses <- map_perseus_types(types, .typeMap(readPerseus = TRUE, additionalMatrices = TRUE))
   } else {
-    colClasses <- map_perseus_types(types, .typeMapWithoutAdditionalMatrices)
+    colClasses <- map_perseus_types(types, .typeMap(readPerseus = TRUE))
   }
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE,
@@ -294,10 +290,10 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
   }
   if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
     type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapPrintAdditionalMatrices))
+              infer_perseus_annotation_types(annotCols, .typeMap(writePerseus = TRUE, additionalMatrices = TRUE)))
   } else {
     type <- c(rep('E', ncol(main)),
-              infer_perseus_annotation_types(annotCols, .typeMapWithoutAdditionalMatrices))
+              infer_perseus_annotation_types(annotCols, .typeMap(writePerseus = TRUE)))
   }
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
