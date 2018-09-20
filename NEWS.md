@@ -1,9 +1,8 @@
-# PerseusR (unreleased version) Jun 13, 2018
+# PerseusR (0.3.0) Sept 18, 2018
 
-* PerseusR stable version
+* Manage additional martices (#2, @Sung-Huan)
+* Parsing boolean parameters (#2, @Sung-Huan)
 
-# PerseusR (unreleased version) Sept 18, 2018
+# PerseusR (initial versions -- untagged) Jun 13, 2018
 
-* Manage additional martices
-
-* parsing boolean parameters
+* Initial release

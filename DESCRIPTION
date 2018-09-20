@@ -1,6 +1,6 @@
 Package: PerseusR
 Title: Perseus R Interop
-Version: 0.2.1
+Version: 0.3.0
 Author: Jan Rudolph <rudolph@biochem.mpg.de>
 Maintainer: Jan Rudolph <rudolph@biochem.mpg.de>
 Description: Provides utility functions for Perseus and R interop.
