@@ -1,11 +1,25 @@
 # helper variable that maps between R and perseus types
-.typeMap <- list(Perseus = c('N', 'E',
-                             'C', 'T',
-                             'M'),
-                  R = c('numeric', 'numeric',
-                        'factor', 'character',
-                        'character'))
 
+.typeMap <- function(readPerseus = FALSE, writePerseus = FALSE,
+                    additionalMatrices = FALSE){
+  if (additionalMatrices){
+    if (readPerseus){
+      return(list(Perseus = c('N', 'E', 'C', 'T', 'M'),
+                  R = c('numeric', 'character',
+                        'factor', 'character',
+                        'character')))
+    } else if (writePerseus){
+      return(list(Perseus = c('N', 'C', 'T', 'M'),
+                  R = c('numeric', 'factor',
+                        'character', 'character')))
+    }
+  } else {
+    return(list(Perseus = c('N', 'E', 'C', 'T', 'M'),
+                R = c('numeric', 'numeric',
+                      'factor', 'character',
+                      'character')))
+  }
+}
 
 #' @importFrom plyr mapvalues
 map_perseus_types <- function(typeAnnotation, typeMap) {
@@ -79,7 +93,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' mdata <- read.perseus(con=testFile)
 #' }
 #'
-read.perseus.default <- function(con, check = TRUE) {
+read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) {
   if (is.character(con)) {
     con <- file(con, open = 'r')
   } else if (!isSeekable(con)) {
@@ -99,7 +113,11 @@ read.perseus.default <- function(con, check = TRUE) {
   types <- commentRows$Type
   descr <- commentRows$Description
   commentRows[c('Type', 'Description')] <- NULL
-  colClasses <- map_perseus_types(types, .typeMap)
+  if (additionalMatrices){
+    colClasses <- map_perseus_types(types, .typeMap(readPerseus = TRUE, additionalMatrices = TRUE))
+  } else {
+    colClasses <- map_perseus_types(types, .typeMap(readPerseus = TRUE))
+  }
   seek(con, 0)
   df <- utils::read.table(con, header = TRUE,
                           sep = '\t', comment.char = '#',
@@ -108,6 +126,26 @@ read.perseus.default <- function(con, check = TRUE) {
   close(con)
   isMain <- types == 'E'
   main <- df[isMain]
+  imputeData <- matrix('False', ncol = ncol(main), nrow = nrow(main))
+  qualityData <- matrix(0, ncol = ncol(main), nrow = nrow(main))
+  if (additionalMatrices) {
+    for (i in 1:nrow(main)){
+      for (j in 1:ncol(main)){
+        mainDataList <- unlist(strsplit(main[i, j], ';'))
+        if (length(mainDataList) == 1){
+        } else {
+          main[i, j] <- mainDataList[1]
+          imputeData[i, j] <- mainDataList[2]
+          qualityData[i, j] <- mainDataList[3]
+        }
+      }
+    }
+  }
+  imputeData <- as.data.frame(imputeData)
+  colnames(imputeData) <- colnames(main)
+  qualityData <- as.data.frame(qualityData)
+  colnames(qualityData) <- colnames(main)
+  main <- as.data.frame(sapply(main, as.numeric))
   annotCols <- df[!isMain]
   annotRows <- create_annotRows(commentRows, isMain)
   if (is.null(descr)) {
@@ -121,11 +159,12 @@ read.perseus.default <- function(con, check = TRUE) {
     rownames(annotCols) <- rowNames
     rownames(annotRows) <- colNames
   }
-
   perseus.list <- list(main = main,
                       annotCols = annotCols,
                       annotRows = annotRows,
-                      description = descr)
+                      description = descr,
+                      imputeData = imputeData,
+                      qualityData = qualityData)
   if (check) MatrixDataCheck(perseus.list)
   return(perseus.list)
 }
@@ -141,12 +180,14 @@ read.perseus.as.list <- function(con, check = TRUE) {
 #' @describeIn read.perseus Difference between the mean and the median
 #' @family read.perseus
 #' @export
-read.perseus.as.matrixData <- function(con, check = TRUE) {
-  perseus.list <- read.perseus.default(con, check = check)
+read.perseus.as.matrixData <- function(con, check = TRUE, additionalMatrices = FALSE) {
+  perseus.list <- read.perseus.default(con, check = check, additionalMatrices = additionalMatrices)
   return(matrixData(main = perseus.list$main,
                     annotCols = perseus.list$annotCols,
                     annotRows = perseus.list$annotRows,
-                    description = perseus.list$descr))
+                    description = perseus.list$descr,
+                    imputeData = perseus.list$imputeData,
+                    qualityData = perseus.list$qualityData))
 }
 
 #' @describeIn read.perseus Difference between the mean and the median
@@ -166,14 +207,15 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
                              perseus.list$annotRows),
     annotation = perseus.list$descr,
     featureData = methods::new('AnnotatedDataFrame',
-                               perseus.list$annotCols))
+                               perseus.list$annotCols),
+    imputeData = perseus.list$imputeData,
+    qualityData = perseus.list$qualityData)
 
   return(eSet)
 }
 
 #' @export
 read.perseus <- read.perseus.as.matrixData
-
 
 #' Write data to a perseus text file or connection
 #'
@@ -200,6 +242,8 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #' @param annotCols a df containing collumns containing metadata (about the rows)
 #' @param annotRows a df containing collumns containing metadata (about the columns)
 #' @param descr a character vector that describes the collumns in main and in annotCols (in that order)
+#' @param imputeData a df containing imputations -- True or False of main data frame
+#' @param qualityData a df containing quality values of main data frame
 #' @param con A \code{\link{connection}} object or the path to output file
 #' @param ... additional arguments passed to other functions
 #' @seealso \code{\link{read.perseus}} \code{\link{matrixData}}
@@ -210,15 +254,30 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #'
 #' @export
 write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = NULL,
-                          annotRows = NULL, descr = NULL, ...) {
-
+                          annotRows = NULL, descr = NULL, imputeData = NULL,
+                          qualityData = NULL, ...) {
   stopifnot(is.data.frame(main) | is.data.frame(annotCols))
 
   if (is.null(annotCols)) assign('annotCols', value = data.frame())
-
+  if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
+    imputeVector <-as.vector(t(imputeData))
+    qualityVector <-as.vector(t(qualityData))
+    if ((length(unique(imputeVector)) != 1) || (length(unique(qualityVector)) != 1)) {
+      importAdditionalMatrix = TRUE
+    } else {
+      importAdditionalMatrix = FALSE
+    }
+    if (importAdditionalMatrix) {
+      for (i in 1:nrow(main)){
+        for (j in 1:ncol(main)){
+          mergeMain <- unlist(list(main[i, j], as.character(imputeData[i, j]), qualityData[i, j]))
+          main[i, j] <- paste(mergeMain, collapse = ';')
+        }
+      }
+    }
+  }
   columns <- c(names(main), names(annotCols))
   df <- main
-
   closeAtEnd <- FALSE
   if (is.character(con)) {
     con <- file(con, open = 'w')
@@ -229,8 +288,13 @@ write.perseus.default <- function(object = NULL, con = NULL, main, annotCols = N
     descr[1] <- paste0('#!{Description}', descr[1])
     writeLines(paste0(descr, collapse = '\t'), con)
   }
-  type <- c(rep('E', ncol(main)),
-            infer_perseus_annotation_types(annotCols, .typeMap))
+  if ((!plyr::empty(imputeData)) || (!plyr::empty(qualityData))) {
+    type <- c(rep('E', ncol(main)),
+              infer_perseus_annotation_types(annotCols, .typeMap(writePerseus = TRUE, additionalMatrices = TRUE)))
+  } else {
+    type <- c(rep('E', ncol(main)),
+              infer_perseus_annotation_types(annotCols, .typeMap(writePerseus = TRUE)))
+  }
   type[1] <- paste0('#!{Type}', type[1])
   writeLines(paste0(type, collapse = '\t'), con)
   for (name in names(annotRows)) {
@@ -270,10 +334,13 @@ write.perseus.matrixData <- function(object, con , ...) {
   annotRows <- as.list(annotRows(object))
   main <- main(object)
   annotCols <- annotCols(object)
+  imputeData <- imputeData(object)
+  qualityData <- qualityData(object)
 
   (function(...){
     write.perseus.default(main = main, annotCols = annotCols,
                         annotRows = annotRows, descr = descr,
+                        imputeData = imputeData, qualityData = qualityData,
                         con = con)})(...)
 }
 
