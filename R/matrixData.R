@@ -107,7 +107,7 @@ MatrixDataCheck.default <- function(object = NULL,  main,
 #' @method MatrixDataCheck matrixData
 #'
 #' @export
-MatrixDataCheck.matrixData <- function(object) {
+MatrixDataCheck.matrixData <- function(object, ...) {
   mainDF <- object@main
   annotationRows <- object@annotRows
   annotationCols <- object@annotCols
@@ -187,11 +187,11 @@ MatrixDataCheck.ExpressionSet <- function(object, ...) {
   annotationCols <- methods::as(object@featureData, 'data.frame')
   all_colnames <- c(colnames(mainDF), colnames(annotationCols))
 
-  ret <- MatrixDataCheck.default(mainDF,
-                                 annotationRows,
-                                 annotationCols,
-                                 descriptions,
-                                 all_colnames)
+  ret <- MatrixDataCheck.default(main=mainDF,
+                                 annotationRows=annotationRows,
+                                 annotationCols=annotationCols,
+                                 descriptions=descriptions,
+                                 all_colnames=all_colnames)
   if (is.logical(ret) & ret) {
     return(ret)
   } else {
@@ -220,7 +220,7 @@ setClass("matrixData",
                    description = "character",
                    imputeData = "data.frame",
                    qualityData = "data.frame"),
-         validity = MatrixDataCheck.matrixData)
+         validity = function(object) {MatrixDataCheck.matrixData(object)})
 
 #' matrixData constructor
 #' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}, \code{imputeData}, \code{qualityData}
@@ -232,9 +232,12 @@ matrixData <- function(...) {
 }
 
 #' matrixData initializer
+#' @param .Object Initialized object
+#' @param ... Additional arguments
 #' @description Initializes the annotCols data frame to have the
 #' same number of rows as the main data. This might not be the
 #' cleanest solution.
+#' @importFrom methods callNextMethod
 setMethod(initialize, "matrixData", function(.Object, ...) {
   args <- list(...)
   if ("main" %in% names(args) && !("annotCols" %in% names(args))) {

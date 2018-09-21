@@ -12,7 +12,8 @@ read.perseus.default(con, check = TRUE, additionalMatrices = FALSE)
 
 read.perseus.as.list(con, check = TRUE)
 
-read.perseus.as.matrixData(con, check = TRUE, additionalMatrices = FALSE)
+read.perseus.as.matrixData(con, check = TRUE,
+  additionalMatrices = FALSE)
 
 read.perseus.as.ExpressionSet(con, check = TRUE)
 }
@@ -21,7 +22,7 @@ read.perseus.as.ExpressionSet(con, check = TRUE)
 
 \item{check}{Logical indicating whether to check for the validity of the exported object (slightly slower)}
 
-\item{additionalMatrices}{The input Perseus matrix with/without the information of imputation and quality scores (TRUE or FALSE, Default is FALSE)}
+\item{additionalMatrices}{Logical indication whether to write out quality and imputation matrices in perseus format}
 }
 \value{
 DataFrame with additional 'annotationRows' attribute
@@ -57,3 +58,4 @@ mdata <- read.perseus(con=testFile)
 \seealso{
 \code{\link{write.perseus}}
 }
+\concept{read.perseus}

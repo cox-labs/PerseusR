@@ -79,6 +79,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' @family read.perseus
 #' @param con A \code{\link{connection}} object or the path to input file
 #' @param check Logical indicating whether to check for the validity of the exported object (slightly slower)
+#' @param additionalMatrices Logical indication whether to write out quality and imputation matrices in perseus format
 #' @return DataFrame with additional 'annotationRows' attribute
 #' @seealso \code{\link{write.perseus}}
 #' @rdname read.perseus

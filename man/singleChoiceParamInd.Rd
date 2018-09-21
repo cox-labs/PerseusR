@@ -12,8 +12,8 @@ singleChoiceParamInd(parameters, name)
 \item{name}{The name of the parameter}
 }
 \value{
-The index of the value
+The selected index
 }
 \description{
-Extract the index selected in a \code{SingleChoiceParam}.
+Extract the index chosen in an \code{BoolParam}
 }

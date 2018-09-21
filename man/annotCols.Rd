@@ -16,9 +16,10 @@ Get annotation columns
 Other matrixData basic functions: \code{\link{annotCols<-}},
   \code{\link{annotRows<-}}, \code{\link{annotRows}},
   \code{\link{description<-}}, \code{\link{description}},
+  \code{\link{imputeData<-}}, \code{\link{imputeData}},
   \code{\link{main<-}}, \code{\link{main}},
   \code{\link{matrixData-class}}, \code{\link{matrixData}},
-  \code{\link{imputeData}}, \code{\link{imputeData<-}},
-  \code{\link{qualityData}}, \code{\link{qualityData<-}},
-  \code{\link{names,matrixData-method}}
+  \code{\link{names,matrixData-method}},
+  \code{\link{qualityData<-}}, \code{\link{qualityData}}
 }
+\concept{matrixData basic functions}

@@ -13,7 +13,7 @@ MatrixDataCheck(object, ...)
 \method{MatrixDataCheck}{default}(object = NULL, main, annotationRows,
   annotationCols, descriptions, imputeData, qualityData, all_colnames, ...)
 
-\method{MatrixDataCheck}{matrixData}(object)
+\method{MatrixDataCheck}{matrixData}(object, ...)
 
 \method{MatrixDataCheck}{list}(object, ...)
 
@@ -32,9 +32,9 @@ MatrixDataCheck(object, ...)
 
 \item{descriptions}{Descriptions of all the columns}
 
-\item{imputeData}{Imputation (True or False)}
+\item{imputeData}{Is imputed or not}
 
-\item{qualityData}{Quality values}
+\item{qualityData}{quality number}
 
 \item{all_colnames}{The colnames to be used}
 }

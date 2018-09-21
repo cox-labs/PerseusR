@@ -1,5 +1,6 @@
 ---
-title: "Using Perseus data in R"
+title: "Vignette Title"
+author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -8,6 +9,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 PerseusR provides an interface to use perseus data in R and vice versa
 
 # Reading Perseus data in R
@@ -258,4 +265,3 @@ cat(readLines('my_output_df.txt'), sep = '\n')
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 try({file.remove('my_output_df.txt')})
 ```
-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrixData.R
 \name{qualityData}
 \alias{qualityData}
-\title{Get the quality values of main data frame}
+\title{Get quality values of main data frame}
 \usage{
 qualityData(mdata)
 }
@@ -10,16 +10,17 @@ qualityData(mdata)
 \item{mdata}{matrixData}
 }
 \description{
-Get the quality values of main data frame
+Get quality values of main data frame
 }
 \seealso{
-Other matrixData basic functions:
-  \code{\link{annotCols}}, \code{\link{annotCols<-}},
-  \code{\link{annotRows<-}}, \code{\link{annotRows}},
-  \code{\link{description<-}}, \code{\link{description}},
-  \code{\link{main<-}}, \code{\link{main}},
-  \code{\link{imputeData}}, \code{\link{imputeData<-}},
-  \code{\link{qualityData<-}},
-  \code{\link{matrixData-class}}, \code{\link{matrixData}},
-  \code{\link{names,matrixData-method}}
+Other matrixData basic functions: \code{\link{annotCols<-}},
+  \code{\link{annotCols}}, \code{\link{annotRows<-}},
+  \code{\link{annotRows}}, \code{\link{description<-}},
+  \code{\link{description}}, \code{\link{imputeData<-}},
+  \code{\link{imputeData}}, \code{\link{main<-}},
+  \code{\link{main}}, \code{\link{matrixData-class}},
+  \code{\link{matrixData}},
+  \code{\link{names,matrixData-method}},
+  \code{\link{qualityData<-}}
 }
+\concept{matrixData basic functions}

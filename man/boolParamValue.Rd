@@ -12,7 +12,7 @@ boolParamValue(parameters, name)
 \item{name}{The name of the parameter}
 }
 \value{
-The selected number
+The selected boolean
 }
 \description{
 Extract the value chosen in an \code{BoolParam}

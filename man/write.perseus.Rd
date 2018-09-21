@@ -13,8 +13,8 @@
 write.perseus(object = NULL, con = NULL, ...)
 
 \method{write.perseus}{default}(object = NULL, con = NULL, main,
-  annotCols = NULL, annotRows = NULL, descr = NULL, imputeData = NULL,
-  qualityData = NULL, ...)
+  annotCols = NULL, annotRows = NULL, descr = NULL,
+  imputeData = NULL, qualityData = NULL, ...)
 
 \method{write.perseus}{matrixData}(object, con, ...)
 
@@ -41,17 +41,12 @@ write.perseus(object = NULL, con = NULL, ...)
 
 \item{descr}{a character vector that describes the collumns in main and in annotCols (in that order)}
 
-\item{imputeData}{a df containing imputation (True or False) (about the columns)}
+\item{imputeData}{a df containing imputations -- True or False of main data frame}
 
-\item{qualityData}{a df containing quality value (about the columns)}
-
+\item{qualityData}{a df containing quality values of main data frame}
 }
 \value{
 writes to disk a perseus-interpretable text representation of an R objet
-
-\code{NULL}
-
-\code{NULL}
 
 \code{NULL}
 

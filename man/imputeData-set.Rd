@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrixData.R
 \name{imputeData<-}
 \alias{imputeData<-}
-\title{Set the imputed cells of main data frame}
+\title{Set imputation of main data frame}
 \usage{
 imputeData(mdata) <- value
 }
@@ -12,16 +12,16 @@ imputeData(mdata) <- value
 \item{value}{value}
 }
 \description{
-Set the imputed cells of main data frame
+Set imputation of main data frame
 }
 \seealso{
-Other matrixData basic functions:
-  \code{\link{annotCols}}, \code{\link{annotCols<-}},
-  \code{\link{annotRows<-}}, \code{\link{annotRows}},
-  \code{\link{description<-}}, \code{\link{description}},
+Other matrixData basic functions: \code{\link{annotCols<-}},
+  \code{\link{annotCols}}, \code{\link{annotRows<-}},
+  \code{\link{annotRows}}, \code{\link{description<-}},
+  \code{\link{description}}, \code{\link{imputeData}},
   \code{\link{main<-}}, \code{\link{main}},
   \code{\link{matrixData-class}}, \code{\link{matrixData}},
-  \code{\link{imputeData}},
-  \code{\link{qualityData}},\code{\link{qualityData<-}},
-  \code{\link{names,matrixData-method}}
+  \code{\link{names,matrixData-method}},
+  \code{\link{qualityData<-}}, \code{\link{qualityData}}
 }
+\concept{matrixData basic functions}

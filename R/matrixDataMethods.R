@@ -1,8 +1,11 @@
+#' @importFrom Biobase ExpressionSet
+NULL
+
 #' Coerces a MatrixData into an ExpressionSet
 #'
 #' Coerces a MatrixData object into an ExpressionSet object
 #'
-#' function fo convert a \code{\link[PerseusR]{matrixData}} \code{\link[Biobase]{ExpressionSet}}
+#' function to convert a \code{\link[PerseusR]{matrixData}} \code{\link[Biobase]{ExpressionSet}}
 #'
 #' @param mdata a \code{\link[PerseusR]{matrixData}} object
 #'
@@ -22,7 +25,7 @@
 #' eSet <- as(mD, "ExpressionSet")
 #' print(eSet)
 #' }
-as.ExpressionSet.matrixData_ <- function(mdata) {
+as.ExpressionSet.matrixData <- function(mdata) {
 
   if (!requireNamespace("Biobase", quietly = TRUE)) {
     stop('This function requires the Biobase package, please install it in the bioconductor repository')
@@ -66,21 +69,12 @@ as.ExpressionSet.matrixData_ <- function(mdata) {
 
 
 setAs("matrixData", "ExpressionSet",
-      function(from) as.ExpressionSet.matrixData_(from))
-
-
-#' Coerces a MatrixData into an ExpressionSet
-#'
-#' @describeIn as.ExpressionSet.matrixData_ Coerces a MatrixData into an ExpressionSet
-#' @export
-as.ExpressionSet.matrixData <- function(mdata) {
-  methods::as(mdata, "ExpressionSet")
-}
+      function(from) as.ExpressionSet.matrixData(from))
 
 
 #' Coerces an ExpressionSet into a MatrixData
 #'
-#' function fo convert an \code{\link[Biobase]{ExpressionSet}} object into a
+#' function to convert an \code{\link[Biobase]{ExpressionSet}} object into a
 #' \code{\link[PerseusR]{matrixData}}
 #'
 #' @param ExpressionSet an \code{\link[Biobase]{ExpressionSet}} object
@@ -97,7 +91,7 @@ as.ExpressionSet.matrixData <- function(mdata) {
 #' mD <- as(eSet, "matrixData")
 #' print(mD)
 #' }
-as.matrixData.ExpressionSet_ <- function(ExpressionSet) {
+as.matrixData.ExpressionSet <- function(ExpressionSet) {
 
   if (!requireNamespace("Biobase", quietly = TRUE)) {
     stop('This function requires the Biobase package, please install it in the bioconductor repository')
@@ -113,11 +107,4 @@ as.matrixData.ExpressionSet_ <- function(ExpressionSet) {
 }
 
 setAs("ExpressionSet", "matrixData",
-      function(from) as.matrixData.ExpressionSet_(from))
-
-
-#' @describeIn as.matrixData.ExpressionSet_ Coerces an ExpressionSet into a MatrixData
-#' @export
-as.matrixData.ExpressionSet <- function(ExpressionSet) {
-  methods::as(ExpressionSet, "matrixData")
-}
+      function(from) as.matrixData.ExpressionSet(from))
