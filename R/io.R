@@ -90,7 +90,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
 #' @examples
 #'
-#' \dontrun{
+#' \donttest{
 #' mdata <- read.perseus(con=testFile)
 #' }
 #'

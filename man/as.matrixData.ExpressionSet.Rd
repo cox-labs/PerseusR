@@ -18,7 +18,7 @@ function to convert an \code{\link[Biobase]{ExpressionSet}} object into a
 }
 \examples{
 
-\dontrun{
+\donttest{
 eSet <- eSet <- Biobase::ExpressionSet(matrix(1:10, ncol = 2))
 mD <- as(eSet, "matrixData")
 print(mD)

@@ -50,7 +50,7 @@ will be written to a temporary file. Any connection will be closed when \code{re
 }
 \examples{
 
-\dontrun{
+\donttest{
 mdata <- read.perseus(con=testFile)
 }
 
