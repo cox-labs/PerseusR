@@ -89,9 +89,13 @@ create_annotRows <- function(commentRows, isMain) {
 #' will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
 #' \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
 #' @examples
-#'
+#' write('Column_1\tColumn_2\tColumn_3
+#' #!{Description}\t\t\t
+#' #!{Type}E\tE\tE
+#' -1.860574\t-0.3910594\t0.2870352
+#' NaN\t-0.4742951\t0.849998', file='tmp.txt')
 #' \donttest{
-#' mdata <- read.perseus(con=testFile)
+#' mdata <- read.perseus('tmp.txt')
 #' }
 #'
 read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) {
@@ -226,7 +230,15 @@ read.perseus <- read.perseus.as.matrixData
 #'
 #' @return writes to disk a perseus-interpretable text representation of an R objet
 #' @rdname write.perseus
-#'
+#' @examples
+#' df <- matrixData(
+#' main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(b=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' description=c('a','a','b'))
+#' con <- textConnection('df1', 'w')
+#' write.perseus(df, con)
+#' close(con)
 #' @export write.perseus
 write.perseus <- function(object = NULL, con = NULL, ...) {
   if (is.character(object)) {

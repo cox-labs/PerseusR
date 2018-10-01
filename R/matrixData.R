@@ -226,6 +226,13 @@ setClass("matrixData",
 #' @param ... \code{main}, \code{annotCols}, \code{annotRows}, \code{description}, \code{imputeData}, \code{qualityData}
 #' @inherit matrixData-class
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' description=c('aaa', 'bbb', 'ccc'),
+#' imputeData=data.frame(impute=c('False', 'True', 'False')),
+#' qualityData=data.frame(quality=c('0', '1', '0')))
 #' @export
 matrixData <- function(...) {
   methods::new("matrixData", ...)
@@ -278,6 +285,11 @@ names.matrixData <- getNames
 #'
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' main(mdata)
 #' @export
 main <- function(mdata) {
   mdata@main
@@ -287,6 +299,12 @@ main <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' value<-data.frame(c=c(0,0,0), d=c(1,1,1))
+#' main(mdata) <- value
 #' @export
 `main<-` <- function(mdata, value) {
   mdata@main <- value
@@ -297,6 +315,11 @@ main <- function(mdata) {
 #' Get annotation columns
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' annotCols(mdata)
 #' @export
 annotCols <- function(mdata) {
   mdata@annotCols
@@ -306,6 +329,12 @@ annotCols <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' value <- data.frame(d=c('d', 'e', 'f'))
+#' annotCols(mdata) <- value
 #' @export
 `annotCols<-` <- function(mdata, value) {
   mdata@annotCols <- value
@@ -316,6 +345,11 @@ annotCols <- function(mdata) {
 #' Get annotation rows
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' annotRows(mdata)
 #' @export
 annotRows <- function(mdata) {
   mdata@annotRows
@@ -325,6 +359,12 @@ annotRows <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' value <- data.frame(y=factor(c('2','2')))
+#' annotRows(mdata) <- value
 #' @export
 `annotRows<-` <- function(mdata, value) {
   mdata@annotRows <- value
@@ -335,6 +375,12 @@ annotRows <- function(mdata) {
 #' Get column description
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' description=c('aaa', 'bbb', 'ccc'))
+#' description(mdata)
 #' @export
 description <- function(mdata) {
   mdata@description
@@ -344,6 +390,12 @@ description <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))))
+#' value <- c('aaa', 'bbb', 'ccc')
+#' description(mdata) <- value
 #' @export
 `description<-` <- function(mdata, value) {
   mdata@description <- value
@@ -354,6 +406,12 @@ description <- function(mdata) {
 #' Get imputation of main data frame
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' imputeData=data.frame(impute=c('False', 'True', 'False')))
+#' imputeData(mdata)
 #' @export
 imputeData <- function(mdata) {
   mdata@imputeData
@@ -363,6 +421,13 @@ imputeData <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' imputeData=data.frame(impute=c('False', 'True', 'False')))
+#' value <- data.frame(impute=c('True', 'True', 'True'))
+#' imputeData(mdata) <- value
 #' @export
 `imputeData<-` <- function(mdata, value) {
   mdata@imputeData <- value
@@ -373,6 +438,12 @@ imputeData <- function(mdata) {
 #' Get quality values of main data frame
 #' @param mdata matrixData
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' qualityData=data.frame(quality=c('1', '1', '1')))
+#' qualityData(mdata)
 #' @export
 qualityData <- function(mdata) {
   mdata@qualityData
@@ -382,6 +453,13 @@ qualityData <- function(mdata) {
 #' @param mdata matrixData
 #' @param value value
 #' @family matrixData basic functions
+#' @examples
+#' mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+#' annotCols=data.frame(c=c('a','b','c')),
+#' annotRows=data.frame(x=factor(c('1','1'))),
+#' qualityData=data.frame(quality=c('1', '1', '1')))
+#' value <- data.frame(quality=c('0', '0', '0'))
+#' qualityData(mdata) <- value
 #' @export
 `qualityData<-` <- function(mdata, value) {
   mdata@qualityData <- value

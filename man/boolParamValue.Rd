@@ -17,3 +17,8 @@ The selected boolean
 \description{
 Extract the value chosen in an \code{BoolParam}
 }
+\examples{
+write('<BoolParam Name="test_bool">\\n<Value>false</Value>\\n</BoolParam>', file='tmp.xml')
+parameters <- parseParameters("tmp.xml")
+boolParamValue(parameters, "test_bool")
+}

@@ -63,6 +63,16 @@ Write data to a perseus text file or connection
 
 Write Data to file in the custom Perseus matrix file format.
 }
+\examples{
+df <- matrixData(
+main=data.frame(a=1:3, b=6:8),
+annotCols=data.frame(b=c('a','b','c')),
+annotRows=data.frame(x=factor(c('1','1'))),
+description=c('a','a','b'))
+con <- textConnection('df1', 'w')
+write.perseus(df, con)
+close(con)
+}
 \seealso{
 \code{\link{read.perseus}} \code{\link{matrixData}}
 }
