@@ -17,3 +17,9 @@ The selected index
 \description{
 Extract the index chosen in an \code{BoolParam}
 }
+\examples{
+write('<SingleChoiceParam Name="test_single">\\n<Value>1</Value>\\n
+<Values>\\n<Item>A</Item>\\n<Item>B</Item>\\n</Values>\\n</SingleChoiceParam>', file='tmp.xml')
+parameters <- parseParameters("tmp.xml")
+singleChoiceParamInd(parameters, "test_single")
+}

@@ -17,3 +17,8 @@ The selected number
 \description{
 Extract the value chosen in an \code{IntParam}
 }
+\examples{
+write('<IntParam Name="test_int">\\n<Value>2</Value>\\n</IntParam>', file='tmp.xml')
+parameters <- parseParameters("tmp.xml")
+intParamValue(parameters, "test_int")
+}

@@ -12,3 +12,7 @@ parseParameters(paramFile)
 \description{
 Parse parameters from the parameters xml file.
 }
+\examples{
+write('<IntParam Name="test_int">\\n<Value>2</Value>\\n</IntParam>', file='tmp.xml')
+parameters <- parseParameters("tmp.xml")
+}

@@ -14,6 +14,13 @@ annotCols(mdata) <- value
 \description{
 Set annotation columns
 }
+\examples{
+mdata <- matrixData(main=data.frame(a=1:3, b=6:8),
+annotCols=data.frame(c=c('a','b','c')),
+annotRows=data.frame(x=factor(c('1','1'))))
+value <- data.frame(d=c('d', 'e', 'f'))
+annotCols(mdata) <- value
+}
 \seealso{
 Other matrixData basic functions: \code{\link{annotCols}},
   \code{\link{annotRows<-}}, \code{\link{annotRows}},

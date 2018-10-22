@@ -49,9 +49,13 @@ will be written to a temporary file. Any connection will be closed when \code{re
 \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
 }
 \examples{
-
+write('Column_1\\tColumn_2\\tColumn_3
+#!{Description}\\t\\t\\t
+#!{Type}E\\tE\\tE
+-1.860574\\t-0.3910594\\t0.2870352
+NaN\\t-0.4742951\\t0.849998', file='tmp.txt')
 \donttest{
-mdata <- read.perseus(con=testFile)
+mdata <- read.perseus('tmp.txt')
 }
 
 }
