@@ -228,7 +228,7 @@ read.perseus <- read.perseus.as.matrixData
 #'
 #' @param object an expressionSet, matrixData, list or table-like object.
 #'
-#' @return writes to disk a perseus-interpretable text representation of an R objet
+#' @return writes to disk a perseus-interpretable text representation of an R object
 #' @rdname write.perseus
 #' @examples
 #' df <- matrixData(
@@ -252,9 +252,9 @@ write.perseus <- function(object = NULL, con = NULL, ...) {
 #' Write Data to file in the custom Perseus matrix file format.
 #'
 #' @param main a data frame containing
-#' @param annotCols a df containing collumns containing metadata (about the rows)
-#' @param annotRows a df containing collumns containing metadata (about the columns)
-#' @param descr a character vector that describes the collumns in main and in annotCols (in that order)
+#' @param annotCols a df containing columns containing metadata (about the rows)
+#' @param annotRows a df containing columns containing metadata (about the columns)
+#' @param descr a character vector that describes the columns in main and in annotCols (in that order)
 #' @param imputeData a df containing imputations -- True or False of main data frame
 #' @param qualityData a df containing quality values of main data frame
 #' @param con A \code{\link{connection}} object or the path to output file

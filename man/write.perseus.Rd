@@ -35,18 +35,18 @@ write.perseus(object = NULL, con = NULL, ...)
 
 \item{main}{a data frame containing}
 
-\item{annotCols}{a df containing collumns containing metadata (about the rows)}
+\item{annotCols}{a df containing columns containing metadata (about the rows)}
 
-\item{annotRows}{a df containing collumns containing metadata (about the columns)}
+\item{annotRows}{a df containing columns containing metadata (about the columns)}
 
-\item{descr}{a character vector that describes the collumns in main and in annotCols (in that order)}
+\item{descr}{a character vector that describes the columns in main and in annotCols (in that order)}
 
 \item{imputeData}{a df containing imputations -- True or False of main data frame}
 
 \item{qualityData}{a df containing quality values of main data frame}
 }
 \value{
-writes to disk a perseus-interpretable text representation of an R objet
+writes to disk a perseus-interpretable text representation of an R object
 
 \code{NULL}
 

@@ -20,7 +20,7 @@ MatrixDataCheck(object, ...)
 \method{MatrixDataCheck}{ExpressionSet}(object, ...)
 }
 \arguments{
-\item{object}{object to chech consistency with perseus data frames}
+\item{object}{object to check consistency with perseus data frames}
 
 \item{...}{additional arguments passed to the respective method}
 

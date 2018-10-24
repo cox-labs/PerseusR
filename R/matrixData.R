@@ -2,7 +2,7 @@
 #'
 #' @title MatrixDataCheck: a function to check the validity of an object as a perseus data frame
 #'
-#' @param object object to chech consistency with perseus data frames
+#' @param object object to check consistency with perseus data frames
 #' @param ... additional arguments passed to the respective method
 #' @param main Main Data frame
 #' @param annotationRows Rows containing annotation information
