@@ -1,4 +1,14 @@
-# Unreleased
+# v0.3.3 Oct 24, 2018
+
+* Added examples and improved description according
+  to CRAN reviewer comments.
+* `read.perseus` no longer fails when the last entry
+  of the `#!{Description}` line is empty
+
+# v0.3.1
+
+* Improved documentation so that `devtools::check()`
+  runs through without errors.
 
 # v0.3.0: Sept 18, 2018
 
