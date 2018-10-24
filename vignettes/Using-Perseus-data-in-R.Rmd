@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Using Perseus data in R"
+author: "PerseusR Team"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
