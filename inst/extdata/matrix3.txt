@@ -1,0 +1,6 @@
+Column1	Name
+#!{Description}Main	
+#!{Type}E	T
+#!{C:Grouping}Group1	
+0.365928798913956	Row 1
+0.844130218029022	Row 2

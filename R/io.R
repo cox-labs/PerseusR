@@ -82,6 +82,7 @@ create_annotRows <- function(commentRows, isMain) {
 #' @param additionalMatrices Logical indication whether to write out quality and imputation matrices in perseus format
 #' @return DataFrame with additional 'annotationRows' attribute
 #' @seealso \code{\link{write.perseus}}
+#' @importFrom stringr str_split
 #' @rdname read.perseus
 #' @aliases read.perseus
 #' @note If the provided connection \code{con} is a character string, it will assumed
@@ -110,9 +111,9 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
   invisible(strsplit(readLines(con, n = 1), '\t')[[1]])
   commentRows <- list()
   while (startsWith(oneLine <- readLines(con, n = 1), '#!')) {
-    name <- strsplit(substring(oneLine, 4), '}')[[1]][1]
+    name <- stringr::str_split(substring(oneLine, 4), '[}]')[[1]][1]
     rowStr <- substring(oneLine, nchar(name) + 5)
-    rowValues <- strsplit(rowStr, '\t')[[1]]
+    rowValues <- stringr::str_split(rowStr, '\t')[[1]]
     commentRows[[name]] <- rowValues
   }
   types <- commentRows$Type

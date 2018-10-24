@@ -1,6 +1,6 @@
 Package: PerseusR
 Title: Perseus R Interop
-Version: 0.3.1
+Version: 0.3.2
 Author: Jan Rudolph <rudolph@biochem.mpg.de>
 Maintainer: Jan Rudolph <rudolph@biochem.mpg.de>
 Description: PerseusR enables the interoperability between the Perseus platform for omics data analysis and R. It provides the foundation for developing and running Perseus plugins by providing all required input and output handling, including data and parameter parsing.
@@ -10,6 +10,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
-Imports: utils, plyr, methods, XML, Biobase
+Imports: utils, plyr, methods, XML, Biobase, stringr
 Suggests: testthat, roxygen2, knitr, rmarkdown
 VignetteBuilder: knitr
