@@ -3,8 +3,9 @@
 #' Parse parameters from the parameters xml file.
 #' @param paramFile Parameters xml file
 #' @examples
-#' write('<IntParam Name="test_int">\n<Value>2</Value>\n</IntParam>', file='tmp.xml')
-#' parameters <- parseParameters("tmp.xml")
+#' tmp <- tempfile(fileext = ".xml")
+#' write('<IntParam Name="test_int">\n<Value>2</Value>\n</IntParam>', file=tmp)
+#' parameters <- parseParameters(tmp)
 #' @export
 parseParameters <- function(paramFile) {
 	return(XML::xmlParse(paramFile))
@@ -16,9 +17,10 @@ parseParameters <- function(paramFile) {
 #' @param parameters The parameters object (see \code{\link{parseParameters}})
 #' @param name The name of the parameter
 #' @examples
+#' tmp <- tempfile(fileext = ".xml")
 #' write('<SingleChoiceParam Name="test_single">\n<Value>1</Value>\n
-#' <Values>\n<Item>A</Item>\n<Item>B</Item>\n</Values>\n</SingleChoiceParam>', file='tmp.xml')
-#' parameters <- parseParameters("tmp.xml")
+#' <Values>\n<Item>A</Item>\n<Item>B</Item>\n</Values>\n</SingleChoiceParam>', file=tmp)
+#' parameters <- parseParameters(tmp)
 #' singleChoiceParamValue(parameters, "test_single")
 #' @export
 #' @return The string representing the value
@@ -33,8 +35,9 @@ singleChoiceParamValue <- function(parameters, name) {
 #' @param parameters The parameters object (see \code{\link{parseParameters}})
 #' @param name The name of the parameter
 #' @examples
-#' write('<IntParam Name="test_int">\n<Value>2</Value>\n</IntParam>', file='tmp.xml')
-#' parameters <- parseParameters("tmp.xml")
+#' tmp <- tempfile(fileext = ".xml")
+#' write('<IntParam Name="test_int">\n<Value>2</Value>\n</IntParam>', file=tmp)
+#' parameters <- parseParameters(tmp)
 #' intParamValue(parameters, "test_int")
 #' @export
 #' @return The selected number
@@ -48,8 +51,9 @@ intParamValue <- function(parameters, name) {
 #' @param parameters The parameters object (see \code{\link{parseParameters}})
 #' @param name The name of the parameter
 #' @examples
-#' write('<BoolParam Name="test_bool">\n<Value>false</Value>\n</BoolParam>', file='tmp.xml')
-#' parameters <- parseParameters("tmp.xml")
+#' tmp <- tempfile(fileext = ".xml")
+#' write('<BoolParam Name="test_bool">\n<Value>false</Value>\n</BoolParam>', file=tmp)
+#' parameters <- parseParameters(tmp)
 #' boolParamValue(parameters, "test_bool")
 #' @export
 #' @return The selected boolean
@@ -63,9 +67,10 @@ boolParamValue <- function(parameters, name) {
 #' @param parameters The parameters object (see \code{\link{parseParameters}})
 #' @param name The name of the parameter
 #' @examples
+#' tmp <- tempfile(fileext = ".xml")
 #' write('<SingleChoiceParam Name="test_single">\n<Value>1</Value>\n
-#' <Values>\n<Item>A</Item>\n<Item>B</Item>\n</Values>\n</SingleChoiceParam>', file='tmp.xml')
-#' parameters <- parseParameters("tmp.xml")
+#' <Values>\n<Item>A</Item>\n<Item>B</Item>\n</Values>\n</SingleChoiceParam>', file=tmp)
+#' parameters <- parseParameters(tmp)
 #' singleChoiceParamInd(parameters, "test_single")
 #' @export
 #' @return The selected index

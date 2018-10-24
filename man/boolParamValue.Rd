@@ -18,7 +18,8 @@ The selected boolean
 Extract the value chosen in an \code{BoolParam}
 }
 \examples{
-write('<BoolParam Name="test_bool">\\n<Value>false</Value>\\n</BoolParam>', file='tmp.xml')
-parameters <- parseParameters("tmp.xml")
+tmp <- tempfile(fileext = ".xml")
+write('<BoolParam Name="test_bool">\\n<Value>false</Value>\\n</BoolParam>', file=tmp)
+parameters <- parseParameters(tmp)
 boolParamValue(parameters, "test_bool")
 }

@@ -18,7 +18,8 @@ The selected number
 Extract the value chosen in an \code{IntParam}
 }
 \examples{
-write('<IntParam Name="test_int">\\n<Value>2</Value>\\n</IntParam>', file='tmp.xml')
-parameters <- parseParameters("tmp.xml")
+tmp <- tempfile(fileext = ".xml")
+write('<IntParam Name="test_int">\\n<Value>2</Value>\\n</IntParam>', file=tmp)
+parameters <- parseParameters(tmp)
 intParamValue(parameters, "test_int")
 }

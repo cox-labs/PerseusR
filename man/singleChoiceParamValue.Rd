@@ -18,8 +18,9 @@ The string representing the value
 Extract the value selected in a \code{SingleChoiceParam}.
 }
 \examples{
+tmp <- tempfile(fileext = ".xml")
 write('<SingleChoiceParam Name="test_single">\\n<Value>1</Value>\\n
-<Values>\\n<Item>A</Item>\\n<Item>B</Item>\\n</Values>\\n</SingleChoiceParam>', file='tmp.xml')
-parameters <- parseParameters("tmp.xml")
+<Values>\\n<Item>A</Item>\\n<Item>B</Item>\\n</Values>\\n</SingleChoiceParam>', file=tmp)
+parameters <- parseParameters(tmp)
 singleChoiceParamValue(parameters, "test_single")
 }
