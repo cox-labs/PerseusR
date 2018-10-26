@@ -2,10 +2,10 @@
 % Please edit documentation in R/io.R
 \name{read.perseus.default}
 \alias{read.perseus.default}
-\alias{read.perseus}
 \alias{read.perseus.as.list}
 \alias{read.perseus.as.matrixData}
 \alias{read.perseus.as.ExpressionSet}
+\alias{read.perseus}
 \title{Read Perseus matrix files}
 \usage{
 read.perseus.default(con, check = TRUE, additionalMatrices = FALSE)
@@ -16,6 +16,8 @@ read.perseus.as.matrixData(con, check = TRUE,
   additionalMatrices = FALSE)
 
 read.perseus.as.ExpressionSet(con, check = TRUE)
+
+read.perseus(con, check = TRUE, additionalMatrices = FALSE)
 }
 \arguments{
 \item{con}{A \code{\link{connection}} object or the path to input file}
@@ -25,18 +27,20 @@ read.perseus.as.ExpressionSet(con, check = TRUE)
 \item{additionalMatrices}{Logical indication whether to write out quality and imputation matrices in perseus format}
 }
 \value{
-DataFrame with additional 'annotationRows' attribute
+Defaults to a MatrixData object.
 }
 \description{
 Read the custom Perseus matrix file format *.txt into R.
 }
 \section{Functions}{
 \itemize{
-\item \code{read.perseus.as.list}: Difference between the mean and the median
+\item \code{read.perseus.default}: Returns a list used internally to generate all other outputs
 
-\item \code{read.perseus.as.matrixData}: Difference between the mean and the median
+\item \code{read.perseus.as.list}: Returns explicitly as a list
 
-\item \code{read.perseus.as.ExpressionSet}: Difference between the mean and the median
+\item \code{read.perseus.as.matrixData}: Returns explicitly as a specialized matrix data object
+
+\item \code{read.perseus.as.ExpressionSet}: Returns a bioconductor expression set object
 }}
 
 \note{
@@ -60,5 +64,6 @@ mdata <- read.perseus(tmp)
 }
 \seealso{
 \code{\link{write.perseus}}
+
+\code{\link{MatrixData}}
 }
-\concept{read.perseus}

@@ -69,35 +69,9 @@ create_annotRows <- function(commentRows, isMain) {
 }
 
 
-#' Read Perseus matrix files
-#'
-#' Read the custom Perseus matrix file format *.txt into R.
-#' @note Limitations to column names in R still apply. Column names valid
-#' in Perseus, such as 'Column 1' will be changed to 'Column.1'
-#' @export
-#'
-#' @family read.perseus
-#' @param con A \code{\link{connection}} object or the path to input file
-#' @param check Logical indicating whether to check for the validity of the exported object (slightly slower)
-#' @param additionalMatrices Logical indication whether to write out quality and imputation matrices in perseus format
-#' @return DataFrame with additional 'annotationRows' attribute
-#' @seealso \code{\link{write.perseus}}
+#' @describeIn read.perseus Returns a list used internally to generate all other outputs
 #' @importFrom stringr str_split
-#' @rdname read.perseus
-#' @aliases read.perseus
-#' @note If the provided connection \code{con} is a character string, it will assumed
-#' to be a file path. A \code{\link{connection}} which is not seekable (see \code{\link{isSeekable}})
-#' will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
-#' \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
-#' @examples
-#' tmp <- tempfile(fileext = ".txt")
-#' write('Column_1\tColumn_2\tColumn_3
-#' #!{Description}\t\t
-#' #!{Type}E\tE\tE
-#' -1.860574\t-0.3910594\t0.2870352
-#' NaN\t-0.4742951\t0.849998', file=tmp)
-#' mdata <- read.perseus(tmp)
-#'
+#' @export
 read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) {
   if (is.character(con)) {
     con <- file(con, open = 'r')
@@ -159,11 +133,19 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
 
   if ('Name' %in% colnames(df)) {
     rowNames <- make.names(df$Name, unique = T)
-    colNames <- colnames(main)
-    rownames(main) <- rowNames
-    rownames(annotCols) <- rowNames
+  } else {
+    rowNames <- as.character(seq_len(nrow(df)))
+  }
+
+  colNames <- colnames(main)
+  rownames(main) <- rowNames
+  rownames(annotCols) <- rowNames
+
+  if (all(dim(annotRows) != 0)) {
+    # This fixes a bug where import would fail on matrices without annot. rows
     rownames(annotRows) <- colNames
   }
+
   perseus.list <- list(main = main,
                       annotCols = annotCols,
                       annotRows = annotRows,
@@ -174,16 +156,14 @@ read.perseus.default <- function(con, check = TRUE, additionalMatrices = FALSE) 
   return(perseus.list)
 }
 
-#' @describeIn read.perseus Difference between the mean and the median
-#' @family read.perseus
+#' @describeIn read.perseus Returns explicitly as a list
 #' @export
 read.perseus.as.list <- function(con, check = TRUE) {
   return(read.perseus.default(con, check = check))
 }
 
 
-#' @describeIn read.perseus Difference between the mean and the median
-#' @family read.perseus
+#' @describeIn read.perseus Returns explicitly as a specialized matrix data object
 #' @export
 read.perseus.as.matrixData <- function(con, check = TRUE, additionalMatrices = FALSE) {
   perseus.list <- read.perseus.default(con, check = check, additionalMatrices = additionalMatrices)
@@ -195,8 +175,7 @@ read.perseus.as.matrixData <- function(con, check = TRUE, additionalMatrices = F
                     qualityData = perseus.list$qualityData))
 }
 
-#' @describeIn read.perseus Difference between the mean and the median
-#' @family read.perseus
+#' @describeIn read.perseus Returns a bioconductor expression set object
 #' @export
 read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
@@ -206,19 +185,62 @@ read.perseus.as.ExpressionSet <- function(con, check = TRUE) {
 
   perseus.list <- read.perseus.default(con, check = check)
 
-  eSet <- Biobase::ExpressionSet(
-    assayData = data.matrix(perseus.list$main),
-    phenoData = methods::new('AnnotatedDataFrame',
-                             perseus.list$annotRows),
-    annotation = perseus.list$descr,
-    featureData = methods::new('AnnotatedDataFrame',
-                               perseus.list$annotCols),
-    imputeData = perseus.list$imputeData,
-    qualityData = perseus.list$qualityData)
+  if (max(dim(perseus.list$annotRows)) > 0) {
+    eSet <- Biobase::ExpressionSet(
+      assayData = data.matrix(perseus.list$main),
+      phenoData = methods::new('AnnotatedDataFrame',
+                               perseus.list$annotRows),
+      annotation = perseus.list$descr,
+      featureData = methods::new('AnnotatedDataFrame',
+                                 perseus.list$annotCols),
+      imputeData = perseus.list$imputeData,
+      qualityData = perseus.list$qualityData)
+  } else {
+    eSet <- Biobase::ExpressionSet(
+      assayData = data.matrix(perseus.list$main),
+      annotation = perseus.list$descr,
+      featureData = methods::new('AnnotatedDataFrame',
+                                 perseus.list$annotCols),
+      imputeData = perseus.list$imputeData,
+      qualityData = perseus.list$qualityData)
+  }
+
+
 
   return(eSet)
 }
 
+#' Read Perseus matrix files
+#'
+#' Read the custom Perseus matrix file format *.txt into R.
+#'
+#' @note Limitations to column names in R still apply. Column names valid
+#' in Perseus, such as 'Column 1' will be changed to 'Column.1'
+#'
+#' @param con A \code{\link{connection}} object or the path to input file
+#' @param check Logical indicating whether to check for the validity of the exported object (slightly slower)
+#' @param additionalMatrices Logical indication whether to write out quality and imputation matrices in perseus format
+#'
+#' @return Defaults to a MatrixData object.
+#'
+#' @note If the provided connection \code{con} is a character string, it will assumed
+#' to be a file path. A \code{\link{connection}} which is not seekable (see \code{\link{isSeekable}})
+#' will be written to a temporary file. Any connection will be closed when \code{read.perseus} exits.
+#' \code{read.perseus.as.list}, \code{read.perseus.as.matrixData} and \code{read.perseus.as.ExpressionSet} are also available depending on the class desired as an output
+#' @examples
+#' tmp <- tempfile(fileext = ".txt")
+#' write('Column_1\tColumn_2\tColumn_3
+#' #!{Description}\t\t
+#' #!{Type}E\tE\tE
+#' -1.860574\t-0.3910594\t0.2870352
+#' NaN\t-0.4742951\t0.849998', file=tmp)
+#' mdata <- read.perseus(tmp)
+#'
+#' @rdname read.perseus
+#' @aliases read.perseus
+#' @seealso \code{\link{write.perseus}}
+#' @seealso \code{\link{MatrixData}}
+#'
 #' @export
 read.perseus <- read.perseus.as.matrixData
 

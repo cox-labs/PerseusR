@@ -1,5 +1,7 @@
 #' Check perseus compatibility of an object
 #'
+#' @rdname MatrixDataCheck
+#'
 #' @title MatrixDataCheck: a function to check the validity of an object as a perseus data frame
 #'
 #' @param object object to check consistency with perseus data frames
@@ -12,11 +14,8 @@
 #' @param qualityData quality number
 #' @param all_colnames The colnames to be used
 #'
-#'
 #' @return a logical indicating the validity of the object
 #' (or series of objects) as a perseus DF or the string of errors
-#'
-#' @rdname MatrixDataCheck
 #'
 #' @export
 #'
@@ -30,7 +29,6 @@
 #'     annotRows=data.frame(x=factor(c('1','1'))))
 #'
 #' MatrixDataCheck(mat)
-#'
 #'
 MatrixDataCheck <- function(object, ...) {
   UseMethod("MatrixDataCheck", object)
