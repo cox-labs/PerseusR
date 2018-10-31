@@ -1,4 +1,6 @@
-# v0.3.3 Oct 24, 2018
+# Unreleased
+
+# v0.3.3 CRAN release Oct 31, 2018
 
 * Added examples and improved description according
   to CRAN reviewer comments.
