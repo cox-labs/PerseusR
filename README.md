@@ -1,23 +1,26 @@
 # PerseusR
 
 [![Travis-CI Build Status](https://travis-ci.org/jdrudolph/PerseusR.svg?branch=master)](https://travis-ci.org/jdrudolph/PerseusR)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PerseusR)](https://cran.r-project.org/package=PerseusR)
+
 
 Convenience functions for interop between Perseus and R.
 
-Based on the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
-for the Perseus framework
+Designed to work with the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
+for the Perseus framework.
 
 # Installation
 
-PerseusR is currently under developement and therefore is not available in CRAN 
-or bioconductor.
-
-In order to install it make sure to have the `devtools` package installed.
-(if not install it via `install.packages('devtools')`)
+Make sure to have `R >= 3.5.0` installed. Paste the following lines
+into an running `R` session. You can skip the comment lines starting with `#`.
 
 ```{R}
-library(devtools)
-install_github('jdrudolph/perseusr')
+# installing BioConductor dependencies first
+install.packages('BiocManager')
+BiocManager::install('Biobase')
+
+# installing PerseusR
+install.packages('PerseusR')
 ```
 
 # Usage
