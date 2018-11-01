@@ -5,14 +5,14 @@ options(scipen = 999)
 dataFolder <- system.file('extdata', package = 'PerseusR')
 dataFiles <- list.files(dataFolder, pattern = "matrix[[:digit:]]*.txt", full.names=TRUE)
 
-# Note, Having the for loop externally makes the error message more informative
+# Note: Having the "for" loop externally makes the error message more informative
 for (dataFile in dataFiles) {
+  # Parsing perseus matrix
   test_that(paste('Example file', dataFile, 'is read without error'), {
     expect_is(read.perseus.as.matrixData(dataFile), 'matrixData')
   })
-}
-
-for (dataFile in dataFiles) {
+  
+  # ExpressionSet Conversion
   test_that(paste('Example file', dataFile, 'is read as ExpressionSet'), {
     expect_is(read.perseus.as.ExpressionSet(dataFile), 'ExpressionSet')
   })
