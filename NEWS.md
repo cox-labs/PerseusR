@@ -1,3 +1,11 @@
+# v0.3.4 Nov 04, 2018
+
+* `read.perseus` no longer fails when reading a matrix 
+  with no annotation rows.
+* Added an example matrix as a test case.
+* Lightly modified the IO test for it to be more readable
+  and informative output when tests fail.
+
 # v0.3.3 Oct 24, 2018
 
 * Added examples and improved description according
