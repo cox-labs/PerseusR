@@ -1,6 +1,6 @@
 Package: PerseusR
 Title: Perseus R Interop
-Version: 0.3.3
+Version: 0.3.4
 Author: Jan Rudolph <rudolph@biochem.mpg.de>
 Maintainer: Jan Rudolph <rudolph@biochem.mpg.de>
 Description: Enables the interoperability between the Perseus platform for omics data analysis (Tyanova et al. 2016) <doi:10.1038/nmeth.3901> and R. It provides the foundation for developing and running Perseus plugins implemented in R by providing all required input and output handling, including data and parameter parsing as described in Rudolph and Cox 2018 <doi:10.1101/447268>.

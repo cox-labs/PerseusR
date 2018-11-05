@@ -9,6 +9,12 @@ Convenience functions for interop between Perseus and R.
 Designed to work with the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
 for the Perseus framework.
 
+## Citation
+
+If you use `PerseusR` in your projects, please cite
+
+Rudolph, J D and Cox, J 2018, *A network module for the Perseus software for computational proteomics facilitates proteome interaction graph analysis* [doi:10.1101/447268](https://doi.org/10.1101/447268)
+
 # Installation
 
 Make sure to have `R >= 3.5.0` installed. Paste the following lines

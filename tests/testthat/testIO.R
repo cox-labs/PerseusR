@@ -11,7 +11,7 @@ for (dataFile in dataFiles) {
   test_that(paste('Example file', dataFile, 'is read without error'), {
     expect_is(read.perseus.as.matrixData(dataFile), 'matrixData')
   })
-  
+
   # ExpressionSet Conversion
   test_that(paste('Example file', dataFile, 'is read as ExpressionSet'), {
     expect_is(read.perseus.as.ExpressionSet(dataFile), 'ExpressionSet')
@@ -21,7 +21,7 @@ for (dataFile in dataFiles) {
 test_that('reading and writing out immediately preserves the exact file content', {
   roundtrip <- function(fileName) {
     df <- read.perseus.as.matrixData(fileName)
-    fileName2 <- paste0(fileName, '.tmp')
+    fileName2 <- tempfile(pattern = basename(fileName), fileext = '.txt')
     write.perseus(df, fileName2)
     original <- readLines(fileName)
     written <- readLines(fileName2)
