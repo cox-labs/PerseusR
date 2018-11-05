@@ -28,7 +28,7 @@ MatrixDataCheck(object, ...)
 
 \item{annotationRows}{Rows containing annotation information}
 
-\item{annotationCols}{Collumns containing annotation information}
+\item{annotationCols}{Columns containing annotation information}
 
 \item{descriptions}{Descriptions of all the columns}
 

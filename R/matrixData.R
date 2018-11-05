@@ -8,7 +8,7 @@
 #' @param ... additional arguments passed to the respective method
 #' @param main Main Data frame
 #' @param annotationRows Rows containing annotation information
-#' @param annotationCols Collumns containing annotation information
+#' @param annotationCols Columns containing annotation information
 #' @param descriptions Descriptions of all the columns
 #' @param imputeData Is imputed or not
 #' @param qualityData quality number
@@ -278,7 +278,7 @@ names.matrixData <- getNames
 
 #' Get main columns
 #'
-#' Gets the main collumns (main matrix) of a \code{\link[PerseusR]{matrixData}}
+#' Gets the main columns (main matrix) of a \code{\link[PerseusR]{matrixData}}
 #' object as a data.frame object
 #'
 #' @param mdata matrixData
