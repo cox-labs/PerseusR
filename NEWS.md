@@ -1,5 +1,4 @@
-
-# Unreleased
+# v0.3.4
 
 * `read.perseus` no longer fails when reading a matrix
   with no annotation rows. (#7, @jspaezp)
