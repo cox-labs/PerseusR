@@ -62,5 +62,4 @@ mat <- matrixData(
 
 MatrixDataCheck(mat)
 
-
 }

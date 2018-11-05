@@ -1,4 +1,8 @@
+
 # Unreleased
+
+* `read.perseus` no longer fails when reading a matrix
+  with no annotation rows. (#7, @jspaezp)
 
 # v0.3.3 CRAN release Oct 31, 2018
 
