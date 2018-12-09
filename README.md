@@ -49,24 +49,18 @@ inFile <- args[1]
 outFile <- args[2]
 
 
-# Use PerseusR to read and write the data in Perseus text format
+# Use PerseusR to read and write the data in Perseus text format.
 library(PerseusR)
 mdata <- read.perseus(inFile)
 
 # The mdata object can be easily deconstructed into a number of different
 # data frames. Check reference manual or help() for full list.
 mainMatrix <- main(mdata)
-imputeMatrix <- imputeData(mdata)
-qualityMatrix <- qualityData(mdata)
 
-# run any kind of analysis
-library(WGCNA)
-net <- blockwiseModules(t(mainMatrix), power = 6, corFnc = "bicor", networkType = "signed")
-c1 <- net$dendrograms[[1]]
-df <- as.data.frame(cbind(c1$merge, c1$height))
-colnames(df) <- c('left', 'right', 'distance')
+# Run any kind of analysis on the extracted data.
+df <- mainMatrix + 1
 
-# create a matrixData object which can be conveniently written to file
+# Create a matrixData object which can be conveniently written to file
 # in the Perseus txt format.
 outMdata <- matrixData(main=df)
 write.perseus(outMdata, outFile)
