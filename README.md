@@ -39,42 +39,36 @@ parameters and extract their values.
 an example R script that could be called though the Perseus plugin:
 
 ```{R}
-# if applicable: read command-line arguments
+# Parse command line arguments passed in from Perseus,
+# including input file and output file paths.
 args = commandArgs(trailingOnly=TRUE)
-if (length(args) != 3) {
-	stop("Should provide three arguments: parameters inFile outFile", call.=FALSE)
+if (length(args) != 2) {
+	stop("Do not provide additional arguments!", call.=FALSE)
 }
-paramFile <- args[1]
-inFile <- args[2]
-outFile <- args[3]
+inFile <- args[1]
+outFile <- args[2]
 
+
+# Use PerseusR to read and write the data in Perseus text format
 library(PerseusR)
-# extract parameters
-parameters <- parseParameters(paramFile)
-networkType <- singleChoiceParamValue(parameters, "Network type")
-corFnc <- singleChoiceParamValue(parameters, "Correlation function")
-power <- intParamValue(parameters, "Power")
-# read data
 mdata <- read.perseus(inFile)
 
-# if additional matrices are included, the additional information like imputation can be extracted.
+# The mdata object can be easily deconstructed into a number of different
+# data frames. Check reference manual or help() for full list.
+mainMatrix <- main(mdata)
 imputeMatrix <- imputeData(mdata)
 qualityMatrix <- qualityData(mdata)
 
 # run any kind of analysis
 library(WGCNA)
-net <- blockwiseModules(t(main(mdata)), power = power, corFnc = corFnc, networkType = networkType)
+net <- blockwiseModules(t(mainMatrix), power = 6, corFnc = "bicor", networkType = "signed")
 c1 <- net$dendrograms[[1]]
 df <- as.data.frame(cbind(c1$merge, c1$height))
 colnames(df) <- c('left', 'right', 'distance')
 
-# save results to matrixData and write to file
+# create a matrixData object which can be conveniently written to file
+# in the Perseus txt format.
 outMdata <- matrixData(main=df)
-write.perseus(outMdata, outFile)
-
-# save results to matrixData and write to file with additional matrices
-
-outdata <- matrixData(main = combine, imputeData = imputeMatrix, qualityData = qualityMatrix)
 write.perseus(outMdata, outFile)
 ```
 
