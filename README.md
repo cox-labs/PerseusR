@@ -4,10 +4,14 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PerseusR)](https://cran.r-project.org/package=PerseusR)
 
 
-Convenience functions for interop between Perseus and R.
+This repository contains the source code of the `PerseusR` software package.
+`PerseusR` contains convenience functions which allow for faster and easier development
+of plugins for [Perseus](https://maxquant.org/perseus) in the R programming language.
+This page contains developer information on `PerseusR`, for high-level information please
+refer to the manuscript listed below.
 
-Designed to work with the [PluginInterop](https://github.com/jdrudolph/PluginInterop) plugin
-for the Perseus framework.
+`PerseusR` was designed to work in conjunction with the [PluginInterop](https://github.com/jdrudolph/PluginInterop)
+plugin, but can also be used stand-alone.
 
 ## Citation
 
@@ -29,17 +33,26 @@ BiocManager::install('Biobase')
 install.packages('PerseusR')
 ```
 
-# Usage
+# Developing plugins
 
-`PerseusR` provides two functions for reading and writing files from/to Perseus.
-You can use them to write simple scripts which can be used as
-`MatrixProcessing` activities in Perseus. Additionally you can parse Perseus
-parameters and extract their values.
+Perseus provides activities to call R scripts from within the workflow via
+[PluginInterop](https://github.com/jdrudolph/PluginInterop), e.g. `Matrix => R`.
+Developing a plugin therefore translates to writing an R script that follows
+a small set of conventions. By adhering to these conventions, Perseus will be
+able to successfully communicate with R and transfer inputs and results between
+the programs. `PerseusR` provides the neccessary functions to make plugin development
+in R easy and straight forward.
 
-an example R script that could be called though the Perseus plugin:
+This example R script adds 1 to all main columns in the matrix. While its functionality
+is very simple. It can serve as a starting point for more extensive scripts.
 
 ```{R}
-# Parse command line arguments passed in from Perseus,
+# All plugins can be split into 3 parts
+# 1. Reading the command line arguments provided by Perseus and parsing the data.
+# 2. Perform the desired functionality on the data.
+# 3. Write the results to the expected locations in the Perseus formats.
+
+# 1. Parse command line arguments passed in from Perseus,
 # including input file and output file paths.
 args = commandArgs(trailingOnly=TRUE)
 if (length(args) != 2) {
@@ -57,10 +70,10 @@ mdata <- read.perseus(inFile)
 # data frames. Check reference manual or help() for full list.
 mainMatrix <- main(mdata)
 
-# Run any kind of analysis on the extracted data.
+# 2. Run any kind of analysis on the extracted data.
 df <- mainMatrix + 1
 
-# Create a matrixData object which can be conveniently written to file
+# 3. Create a matrixData object which can be conveniently written to file
 # in the Perseus txt format.
 outMdata <- matrixData(main=df)
 write.perseus(outMdata, outFile)
