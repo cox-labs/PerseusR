@@ -1,6 +1,6 @@
 # PerseusR
 
-[![Travis-CI Build Status](https://travis-ci.org/jdrudolph/PerseusR.svg?branch=master)](https://travis-ci.org/jdrudolph/PerseusR)
+[![Travis-CI Build Status](https://travis-ci.org/cox-labs/PerseusR.svg?branch=master)](https://travis-ci.org/cox-labs/PerseusR)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/PerseusR)](https://cran.r-project.org/package=PerseusR)
 
 
@@ -10,7 +10,7 @@ of plugins for [Perseus](https://maxquant.org/perseus) in the R programming lang
 This page contains developer information on `PerseusR`, for high-level information please
 refer to the manuscript listed below.
 
-`PerseusR` was designed to work in conjunction with the [PluginInterop](https://github.com/jdrudolph/PluginInterop)
+`PerseusR` was designed to work in conjunction with the [PluginInterop](https://github.com/cox-labs/PluginInterop)
 plugin, but can also be used stand-alone.
 
 ## Citation
@@ -36,7 +36,7 @@ install.packages('PerseusR')
 # Developing plugins
 
 Perseus provides activities to call R scripts from within the workflow via
-[PluginInterop](https://github.com/jdrudolph/PluginInterop), e.g. `Matrix => R`.
+[PluginInterop](https://github.com/cox-labs/PluginInterop), e.g. `Matrix => R`.
 Developing a plugin therefore translates to writing an R script that follows
 a small set of conventions. By adhering to these conventions, Perseus will be
 able to successfully communicate with R and transfer inputs and results between
