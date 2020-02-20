@@ -30,7 +30,7 @@ install.packages("devtools")
 
 # install PerseusR via devtools
 library(devtools)
-install_github("coxlabs/PerseusR")
+install_github("cox-labs/PerseusR")
 ```
 
 # Developing plugins
