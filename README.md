@@ -25,6 +25,9 @@ Make sure to have `R >= 3.5.0` installed. Paste the following lines
 into an running `R` session. You can skip the comment lines starting with `#`.
 
 ```{R}
+install.packages(“BiocManager”)
+BiocManager::install(“Biobase”)
+
 # installing devtools first
 install.packages("devtools")
 
